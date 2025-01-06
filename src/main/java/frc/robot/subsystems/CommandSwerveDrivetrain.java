@@ -266,7 +266,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   }
 
   public ChassisSpeeds getCurrentChassisSpeeds(){
-    return this.getCurrentChassisSpeeds();
+    return this.getState().Speeds;
+  }
+
+  public Pose2d getCurrentPosition(){
+    return this.getState().Pose;
   }
 
     @Override

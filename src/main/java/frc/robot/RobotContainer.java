@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -130,7 +131,7 @@ public class RobotContainer {
                                     <= 3),
                     Robot::isRedAlliance)
                 .andThen(
-                    new RunCommand(
+                    new DeferredCommand(
                         () -> {
                           Pose2d currentPose = m_drive.getState().Pose;
                           ChassisSpeeds currentSpeeds =
@@ -143,7 +144,7 @@ public class RobotContainer {
     
                           Pose2d targetPose =
                               Robot.isRedAlliance()
-                                  ? new Pose2d(5,5,new Rotation2d()) //red
+                                  ? new Pose2d(5,5,new Rotation2d())
                                   : new Pose2d(5,5,new Rotation2d());
                           var bezierPoints =
                               PathPlannerPath.waypointsFromPoses(
@@ -160,8 +161,10 @@ public class RobotContainer {
                                   new GoalEndState(0.0, targetPose.getRotation()));
                           path.preventFlipping = true;
     
-                    Command followPathCommand = AutoBuilder.followPath(path);
-                    followPathCommand.schedule();
-                                        })));
+                          return AutoBuilder.followPath(path);
+                        },
+                        Set.of(m_drive)
+                    )
+                ));
       }
 }
