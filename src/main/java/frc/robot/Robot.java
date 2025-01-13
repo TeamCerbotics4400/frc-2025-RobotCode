@@ -1,9 +1,13 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
+// Copyright (c) 2025 FRC 4400//
 package frc.robot;
 
+import com.ctre.phoenix6.Utils;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.Threads;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -11,22 +15,11 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-import com.ctre.phoenix6.Utils;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.Threads;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
-  private PowerDistribution examplePD = new PowerDistribution(1,ModuleType.kRev);
+  private PowerDistribution examplePD = new PowerDistribution(1, ModuleType.kRev);
 
   private final RobotContainer m_robotContainer;
-
-  private final boolean kUseLimelight = false;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -80,21 +73,7 @@ public class Robot extends LoggedRobot {
 
     CommandScheduler.getInstance().run();
 
-    Threads.setCurrentThreadPriority(true, 99);
-
-    /*
-     * This example of adding Limelight is very simple and may not be sufficient for on-field use.
-     * Users typically need to provide a standard deviation that scales with the distance to target
-     * and changes with number of tags available.
-     *
-     * This example is sufficient to show that vision integration is possible, though exact implementation
-     * of how to use vision should be tuned per-robot and to the team's specification.
-     */
-    if (kUseLimelight) {      var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-      if (llMeasurement != null) {
-        m_robotContainer.m_drive.addVisionMeasurement(llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
-      }
-    }
+    Threads.setCurrentThreadPriority(false, 10);
   }
 
   @Override
@@ -148,7 +127,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void simulationPeriodic() {}
 
-    public static boolean isRedAlliance() {
+  public static boolean isRedAlliance() {
     return DriverStation.getAlliance()
         .filter(value -> value == DriverStation.Alliance.Red)
         .isPresent();
