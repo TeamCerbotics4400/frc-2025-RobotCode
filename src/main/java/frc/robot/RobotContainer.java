@@ -3,8 +3,6 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
@@ -14,103 +12,63 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.Commands.FieldCentricDrive;
+import frc.robot.Commands.AutoCommands.AutoCommand;
+import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
+import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
+import frc.robot.subsystems.Swerve.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Swerve.TunerConstants;
+
 import java.util.Set;
 
 public class RobotContainer {
-  private double MaxSpeed =
-      TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-  private double MaxAngularRate =
-      RotationsPerSecond.of(0.75)
-          .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
-  /* Setting up bindings for necessary control of the swerve drive platform */
-  private final SwerveRequest.FieldCentric drive =
-      new SwerveRequest.FieldCentric()
-          .withDeadband(MaxSpeed * 0.1)
-          .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-          .withDriveRequestType(
-              DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-  private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-  private final SwerveRequest.RobotCentric forwardStraight =
-      new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-
-  private final Telemetry logger = new Telemetry(MaxSpeed);
-
-  private final CommandXboxController joystick = new CommandXboxController(0);
+  private final CommandXboxController chassisDriver = new CommandXboxController(0);
 
   public static final CommandSwerveDrivetrain m_drive = TunerConstants.createDrivetrain();
 
+  public static Field2d autoFieldPreview = new Field2d();
+  private final Telemetry logger = new Telemetry(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
+
   /* Path follower */
-  private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<AutoCommand> autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
-    autoChooser = AutoBuilder.buildAutoChooser("Tests");
+
+    autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
+    autoChooser.addOption("Test Auto", new TestAuto());
+
+    autoChooser.onChange(auto->{
+        autoFieldPreview.getObject("path").setPoses(auto.getAllPathPoses());
+    });
+            
     SmartDashboard.putData("Auto Mode", autoChooser);
+    SmartDashboard.putData("Auto Preview", autoFieldPreview);
 
     configureBindings();
   }
 
   private void configureBindings() {
-    // Note that X is defined as forward according to WPILib convention,
-    // and Y is defined as to the left according to WPILib convention.
+
     m_drive.setDefaultCommand(
-        // Drivetrain will execute this command periodically
-        m_drive.applyRequest(
-            () ->
-                drive
-                    .withVelocityX(
-                        -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(
-                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(
-                        -joystick.getRightX()
-                            * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            ));
+        new FieldCentricDrive(
+            m_drive,
+             ()-> chassisDriver.getLeftY(),
+             ()-> chassisDriver.getLeftX(), 
+             ()-> chassisDriver.getRightX()));
 
-    joystick.a().whileTrue(m_drive.applyRequest(() -> brake));
-    joystick
-        .b()
-        .whileTrue(
-            m_drive.applyRequest(
-                () ->
-                    point.withModuleDirection(
-                        new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    chassisDriver.y().onTrue(pathfindAndAlignAmp());
 
-    joystick
-        .pov(0)
-        .whileTrue(m_drive.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
-    joystick
-        .pov(180)
-        .whileTrue(
-            m_drive.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
-
-    // Run SysId routines when holding back/start and X/Y.
-    // Note that each routine should be run exactly once in a single log.
-    /*joystick.back().and(joystick.y()).whileTrue(m_drive.sysIdDynamic(Direction.kForward));
-    joystick.back().and(joystick.x()).whileTrue(m_drive.sysIdDynamic(Direction.kReverse));
-    joystick.start().and(joystick.y()).whileTrue(m_drive.sysIdQuasistatic(Direction.kForward));
-    joystick.start().and(joystick.x()).whileTrue(m_drive.sysIdQuasistatic(Direction.kReverse));*/
-
-    joystick.y().onTrue(pathfindAndAlignAmp());
-
-    // reset the field-centric heading on left bumper press
-    joystick.leftBumper().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
+    chassisDriver.a().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
 
     m_drive.registerTelemetry(logger::telemeterize);
-  }
-
-  public Command getAutonomousCommand() {
-    /* Run the path selected from the auto chooser */
-    return autoChooser.getSelected();
   }
 
   public static Command pathfindAndAlignAmp() {
@@ -172,4 +130,9 @@ public class RobotContainer {
                     },
                     Set.of(m_drive))));
   }
+
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
+  }
+
 }
