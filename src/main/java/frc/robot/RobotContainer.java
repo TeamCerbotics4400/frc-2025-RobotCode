@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.FieldCentricDrive;
 import frc.robot.Commands.AutoCommands.AutoCommand;
@@ -64,14 +67,18 @@ public class RobotContainer {
              ()-> chassisDriver.getLeftX(), 
              ()-> chassisDriver.getRightX()));
 
-    chassisDriver.y().onTrue(pathfindAndAlignAmp());
+    chassisDriver.y().onTrue(
+        new ParallelRaceGroup(
+            pathFindAndAlignCommand(),
+             new SequentialCommandGroup(new WaitCommand(1),
+              new WaitCommand(10000).until(()->isJoystickActive()))));
 
     chassisDriver.a().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
 
     m_drive.registerTelemetry(logger::telemeterize);
   }
 
-  public static Command pathfindAndAlignAmp() {
+  public static Command pathFindAndAlignCommand() {
     return Commands.sequence(
         Commands.either(
                 m_drive
@@ -130,6 +137,13 @@ public class RobotContainer {
                     },
                     Set.of(m_drive))));
   }
+
+  private boolean isJoystickActive() {
+    double deadband = 0.2; // Threshold for joystick movement
+    return Math.abs(chassisDriver.getLeftX()) > deadband ||
+           Math.abs(chassisDriver.getLeftY()) > deadband ||
+           Math.abs(chassisDriver.getRightX()) > deadband;
+}
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();

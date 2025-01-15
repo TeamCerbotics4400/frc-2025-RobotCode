@@ -1,5 +1,5 @@
 // Copyright (c) 2025 FRC 4400//
-package frc.robot;
+package frc.Util;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;

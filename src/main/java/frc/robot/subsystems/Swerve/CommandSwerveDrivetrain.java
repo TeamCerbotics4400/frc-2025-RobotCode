@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants;
 import frc.robot.subsystems.Swerve.TunerConstants.TunerSwerveDrivetrain;
 
 import java.util.function.Supplier;
@@ -39,6 +40,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   private static final PathConstraints constraints =
       new PathConstraints(3.0, 3.0, Units.degreesToRadians(270.0), Units.degreesToRadians(270.0));
   private static final double kSimLoopPeriod = 0.005; // 5 ms
+  private Pose2d placeHolderPose = new Pose2d();
   private Notifier m_simNotifier = null;
   private double m_lastSimTime;
 
@@ -280,6 +282,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
               });
     }
+    this.filterOutOfFieldData();
   }
 
   private void startSimThread() {
@@ -297,5 +300,28 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
               updateSimState(deltaTime, RobotController.getBatteryVoltage());
             });
     m_simNotifier.startPeriodic(kSimLoopPeriod);
+  }
+
+  public void filterOutOfFieldData(){
+    Pose2d currentPosition = this.getCurrentPosition();
+
+          if (currentPosition.getX() < -Constants.FieldConstants.fieldBorderMargin
+          || currentPosition.getX()
+              > Constants.FieldConstants.fieldLength
+                  + Constants.FieldConstants.fieldBorderMargin
+          || currentPosition.getY() < -Constants.FieldConstants.fieldBorderMargin
+          || currentPosition.getY()
+              > Constants.FieldConstants.fieldWidth
+                  + Constants.FieldConstants.fieldBorderMargin) {
+                    placeHolderPose =
+                    new Pose2d(
+                        Math.max(
+                            0, Math.min(Constants.FieldConstants.fieldLength, currentPosition.getX())),
+                        Math.max(
+                            0, Math.min(Constants.FieldConstants.fieldWidth, currentPosition.getY())),
+                        currentPosition.getRotation());
+        
+                      this.resetPose(placeHolderPose);
+                    }
   }
 }
