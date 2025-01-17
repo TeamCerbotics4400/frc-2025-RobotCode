@@ -1,6 +1,9 @@
 // Copyright (c) 2025 FRC 4400//
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -20,6 +23,13 @@ public class Robot extends LoggedRobot {
   private PowerDistribution examplePD = new PowerDistribution(1, ModuleType.kRev);
 
   private final RobotContainer m_robotContainer;
+
+  //Network tables connection
+  NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  NetworkTable table = inst.getTable("Dashboard");
+  NetworkTableEntry matchTimeEntry = table.getEntry("TargetClimbPos");
+
+
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -76,6 +86,8 @@ public class Robot extends LoggedRobot {
     Threads.setCurrentThreadPriority(false, 10);
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     SmartDashboard.putString("Current Robot mode", Constants.currentMode.toString());
+
+    SmartDashboard.putNumber("TESTVAÑ", matchTimeEntry.getDouble(0));
   }
 
   @Override

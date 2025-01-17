@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.Util.OverrideSwitches;
 import frc.robot.Commands.FieldCentricDrive;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
@@ -34,6 +36,8 @@ import java.util.Set;
 public class RobotContainer {
 
   private final CommandXboxController chassisDriver = new CommandXboxController(0);
+  private final OverrideSwitches overrides = new OverrideSwitches(0);
+  private final Trigger robotRelative = overrides.driverSwitch(0);
 
   public static final CommandSwerveDrivetrain m_drive = TunerConstants.createDrivetrain();
 
@@ -54,6 +58,7 @@ public class RobotContainer {
             
     SmartDashboard.putData("Auto Mode", autoChooser);
     SmartDashboard.putData("Auto Preview", autoFieldPreview);
+    SmartDashboard.putBoolean("Detected Override", robotRelative.getAsBoolean());
 
     configureBindings();
   }
