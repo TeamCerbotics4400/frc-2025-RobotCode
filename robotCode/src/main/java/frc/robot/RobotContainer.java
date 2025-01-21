@@ -33,6 +33,8 @@ import frc.robot.subsystems.Swerve.TunerConstants;
 
 import java.util.Set;
 
+import javax.crypto.spec.RC2ParameterSpec;
+
 public class RobotContainer {
 
   private final CommandXboxController chassisDriver = new CommandXboxController(0);
@@ -74,7 +76,7 @@ public class RobotContainer {
 
     chassisDriver.y().onTrue(
         new ParallelRaceGroup(
-            pathFindAndAlignCommand(),
+            pathFindAndAlignCommand(new Pose2d(2,2,new Rotation2d()), new Pose2d(5,5, new Rotation2d())),
              new SequentialCommandGroup(new WaitCommand(1),
               new WaitCommand(10000).until(()->isJoystickActive()))));
 
@@ -83,28 +85,28 @@ public class RobotContainer {
     m_drive.registerTelemetry(logger::telemeterize);
   }
 
-  public static Command pathFindAndAlignCommand() {
+  public static Command pathFindAndAlignCommand(Pose2d redPose, Pose2d bluePose) {
     return Commands.sequence(
         Commands.either(
                 m_drive
-                    .goToPose(new Pose2d(5, 5, new Rotation2d()))
+                    .goToPose(redPose)
                     .until(
                         () ->
                             m_drive
                                     .getState()
                                     .Pose
                                     .getTranslation()
-                                    .getDistance(new Translation2d(5, 5))
+                                    .getDistance(redPose.getTranslation())
                                 <= 3),
                 m_drive
-                    .goToPose(new Pose2d(5, 5, new Rotation2d()))
+                    .goToPose(bluePose)
                     .until(
                         () ->
                             m_drive
                                     .getState()
                                     .Pose
                                     .getTranslation()
-                                    .getDistance(new Translation2d(5, 5))
+                                    .getDistance(bluePose.getTranslation())
                                 <= 3),
                 Robot::isRedAlliance)
             .andThen(
