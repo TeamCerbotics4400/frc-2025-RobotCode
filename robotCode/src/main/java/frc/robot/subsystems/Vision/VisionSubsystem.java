@@ -1,6 +1,8 @@
 package frc.robot.subsystems.Vision;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -10,7 +12,6 @@ import frc.Util.LimelightHelpers;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants.VisionConstants;
 
-import static frc.robot.Constants.*;
 import frc.robot.subsystems.Swerve.CommandSwerveDrivetrain;
 
 import org.littletonrobotics.junction.Logger;
@@ -22,7 +23,6 @@ public class VisionSubsystem extends SubsystemBase {
   private String limelightNames;
   private double averageTagDistance = 0.0;
   private static LimelightHelpers.PoseEstimate mt2;
-  double test = 0;
 
   public VisionSubsystem(CommandSwerveDrivetrain m_drive, String limelightNames) {
     this.m_drive = m_drive;
@@ -41,17 +41,18 @@ public class VisionSubsystem extends SubsystemBase {
         VisionConstants.xyStdDevCoefficient
             * Math.pow(averageTagDistance, 2)
             / (tagsDetected == 0 ? 100 : tagsDetected);
+
     double thetaStdDev =
         VisionConstants.thetaStdDevCoefficient
             * Math.pow(averageTagDistance, 2)
             / (tagsDetected == 0 ? 100 : tagsDetected);
+
     m_drive.filterOutOfFieldData();
     odometryWithVision(VisionConstants.tagLimelightName, xyStdDev, thetaStdDev);
 
     Logger.recordOutput("Vision/Distance from tag", averageTagDistance);
     Logger.recordOutput("Vision/XY STD", xyStdDev);
     Logger.recordOutput("Vision/Theta STD", thetaStdDev);
-    Logger.recordOutput("Vision/Rejected for distance", test);
     Logger.recordOutput("Vision/Using Vision", useVision);
   }
 
@@ -63,8 +64,7 @@ public class VisionSubsystem extends SubsystemBase {
           limelightName, m_drive.getPigeon2().getYaw().getValueAsDouble(), 0, 0, 0, 0, 0);
       mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
       if (Math.abs(m_drive.getPigeon2().getAngularVelocityZWorld().getValueAsDouble())
-          > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision
-      // updates
+          > 720)
       {
         doRejectUpdate = true;
       }
@@ -84,10 +84,9 @@ public class VisionSubsystem extends SubsystemBase {
         doRejectUpdate = true;
       }
 
-      if (Math.abs(oldMt.pose.getX() - mt2.pose.getX()) > 1
-          || Math.abs(oldMt.pose.getY() - mt2.pose.getY()) > 1) {
+      if (Math.abs(oldMt.pose.getX() - mt2.pose.getX()) > 0.5
+          || Math.abs(oldMt.pose.getY() - mt2.pose.getY()) > 0.5) {
         doRejectUpdate = true;
-        test++;
       }
 
       if (!doRejectUpdate) {

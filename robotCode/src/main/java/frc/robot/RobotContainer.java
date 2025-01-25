@@ -4,9 +4,13 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.pathfinding.Pathfinding;
+import com.pathplanner.lib.util.PathPlannerLogging;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,32 +26,34 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.Util.OverrideSwitches;
+import frc.Util.CustomDashboardUtil;
+import frc.Util.LocalADStarAK;
 import frc.robot.Commands.FieldCentricDrive;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Swerve.TunerConstants;
 
 import java.util.Set;
 
+import org.littletonrobotics.junction.Logger;
+
 public class RobotContainer {
 
   private final CommandXboxController chassisDriver = new CommandXboxController(0);
-  private final OverrideSwitches overrides = new OverrideSwitches(0);
-  private final Trigger robotRelative = overrides.driverSwitch(0);
 
   public static final CommandSwerveDrivetrain m_drive = TunerConstants.createDrivetrain();
 
-  public static Field2d autoFieldPreview = new Field2d();
-  private final Telemetry logger = new Telemetry(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
-
-  /* Path follower */
   private final SendableChooser<AutoCommand> autoChooser = new SendableChooser<>();
 
+  public static Field2d autoFieldPreview = new Field2d();
+  public CustomDashboardUtil m_dashboard = new CustomDashboardUtil();
+  private final Telemetry logger = new Telemetry(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
+
   public RobotContainer() {
+  /* Path follower */
 
     autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
     autoChooser.addOption("Test Auto", new TestAuto());
@@ -55,10 +61,18 @@ public class RobotContainer {
     autoChooser.onChange(auto->{
         autoFieldPreview.getObject("path").setPoses(auto.getAllPathPoses());
     });
-            
+
+    PathPlannerLogging.setLogActivePathCallback(
+            (poses -> Logger.recordOutput("Swerve/ActivePath", poses.toArray(new Pose2d[0]))));
+    PathPlannerLogging.setLogTargetPoseCallback(
+            pose -> Logger.recordOutput("Swerve/TargetPathPose", pose));
+
+    Pathfinding.setPathfinder(new LocalADStarAK());
+    /*This code warms up the library to avoid delay on the path */
+    PathfindingCommand.warmupCommand().schedule();
+  
     SmartDashboard.putData("Auto Mode", autoChooser);
     SmartDashboard.putData("Auto Preview", autoFieldPreview);
-    SmartDashboard.putBoolean("Detected Override", robotRelative.getAsBoolean());
 
     configureBindings();
   }
@@ -74,7 +88,7 @@ public class RobotContainer {
 
     chassisDriver.y().onTrue(
         new ParallelRaceGroup(
-            pathFindAndAlignCommand(),
+            pathFindAndAlignCommand(m_dashboard.getReefSelected()),
              new SequentialCommandGroup(new WaitCommand(1),
               new WaitCommand(10000).until(()->isJoystickActive()))));
 
@@ -83,28 +97,28 @@ public class RobotContainer {
     m_drive.registerTelemetry(logger::telemeterize);
   }
 
-  public static Command pathFindAndAlignCommand() {
+  public static Command pathFindAndAlignCommand(int val) {
     return Commands.sequence(
         Commands.either(
                 m_drive
-                    .goToPose(new Pose2d(5, 5, new Rotation2d()))
+                    .goToPose(FieldConstants.redSidePositions[val])
                     .until(
                         () ->
                             m_drive
                                     .getState()
                                     .Pose
                                     .getTranslation()
-                                    .getDistance(new Translation2d(5, 5))
+                                    .getDistance(FieldConstants.redSidePositions[val].getTranslation())
                                 <= 3),
                 m_drive
-                    .goToPose(new Pose2d(5, 5, new Rotation2d()))
+                    .goToPose(FieldConstants.blueSidePositions[val])
                     .until(
                         () ->
                             m_drive
                                     .getState()
                                     .Pose
                                     .getTranslation()
-                                    .getDistance(new Translation2d(5, 5))
+                                    .getDistance(FieldConstants.blueSidePositions[val].getTranslation())
                                 <= 3),
                 Robot::isRedAlliance)
             .andThen(
@@ -121,8 +135,8 @@ public class RobotContainer {
 
                       Pose2d targetPose =
                           Robot.isRedAlliance()
-                              ? new Pose2d(5, 5, new Rotation2d())
-                              : new Pose2d(5, 5, new Rotation2d());
+                              ? FieldConstants.redSidePositions[val]
+                              : FieldConstants.blueSidePositions[val];
                       var bezierPoints =
                           PathPlannerPath.waypointsFromPoses(
                               new Pose2d(currentPose.getTranslation(), heading), targetPose);

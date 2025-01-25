@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.pathplanner.lib.util.FlippingUtil;
+import com.pathplanner.lib.util.GeometryUtil;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -83,6 +86,36 @@ public class Constants {
     * K: (X = 3.914, Y = 5.377, θ = 300.0°)
     * L: (X = 3.615, Y = 5.202, θ = 300.0°)
     */
+
+    public static final Pose2d[] blueSidePositions = {
+        new Pose2d(3.078, 4.195, new Rotation2d()), // A
+        new Pose2d(3.078, 3.859, new Rotation2d()), // B
+        new Pose2d(3.625, 2.860, new Rotation2d()), // C
+        new Pose2d(3.925, 2.694, new Rotation2d()), // D
+        new Pose2d(5.039, 2.725, new Rotation2d()), // E
+        new Pose2d(5.348, 2.869, new Rotation2d()), // F
+        new Pose2d(5.900, 3.859, new Rotation2d()), // G
+        new Pose2d(5.900, 4.195, new Rotation2d()), // H
+        new Pose2d(5.338, 5.181, new Rotation2d()), // I
+        new Pose2d(5.060, 5.356, new Rotation2d()), // J
+        new Pose2d(3.914, 5.377, new Rotation2d()), // K
+        new Pose2d(3.615, 5.202, new Rotation2d())  // L
+    };
+
+    public static final Pose2d[] redSidePositions = {
+        FlippingUtil.flipFieldPose(new Pose2d(3.078, 4.195, new Rotation2d())), // A
+        FlippingUtil.flipFieldPose(new Pose2d(3.078, 3.859, new Rotation2d())), // B
+        FlippingUtil.flipFieldPose(new Pose2d(3.625, 2.860, new Rotation2d())), // C
+        FlippingUtil.flipFieldPose(new Pose2d(3.925, 2.694, new Rotation2d())), // D
+        FlippingUtil.flipFieldPose(new Pose2d(5.039, 2.725, new Rotation2d())), // E
+        FlippingUtil.flipFieldPose(new Pose2d(5.348, 2.869, new Rotation2d())), // F
+        FlippingUtil.flipFieldPose(new Pose2d(5.900, 3.859, new Rotation2d())), // G
+        FlippingUtil.flipFieldPose(new Pose2d(5.900, 4.195, new Rotation2d())), // H
+        FlippingUtil.flipFieldPose(new Pose2d(5.338, 5.181, new Rotation2d())), // I
+        FlippingUtil.flipFieldPose(new Pose2d(5.060, 5.356, new Rotation2d())), // J
+        FlippingUtil.flipFieldPose(new Pose2d(3.914, 5.377, new Rotation2d())), // K
+        FlippingUtil.flipFieldPose(new Pose2d(3.615, 5.202, new Rotation2d()))  // L
+    };
 
      public static final double fieldLength = 17.29;  //Meters
   public static final double fieldWidth = 7.78;

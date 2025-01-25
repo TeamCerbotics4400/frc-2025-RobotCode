@@ -1,7 +1,7 @@
 import 'package:dashboard24/services/dashboard_state.dart';
 import 'package:flutter/material.dart';
 
-class ScoringMode extends StatefulWidget {
+class ScoringMode extends StatefulWidget { //The level selector
   final DashboardState dashboardState;
   final bool redAlliance;
 
@@ -28,14 +28,14 @@ class _ScoringModeState extends State<ScoringMode> {
     Color activeColor = widget.redAlliance ? Colors.red[700]! : Colors.indigo;
 
     return SizedBox(
-      width: 750,
-      height: 300,
+      width: 500,
+      height: 400,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const Text(
               'Scoring Mode',
@@ -43,54 +43,32 @@ class _ScoringModeState extends State<ScoringMode> {
             ),
             const Divider(),
             Expanded(
-              child: Row(
-                children: [
-                  Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(4, (index) {
+                  int level = 3 - index;
+                  return Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize:
-                            const Size(double.infinity, double.infinity),
+                        minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        backgroundColor: _scoringMode == 0 ? activeColor : null,
+                        backgroundColor: _scoringMode == level ? activeColor : null,
                       ),
-                      child: const Text(
-                        'AMP',
-                        style: TextStyle(fontSize: 48, color: Colors.white),
+                      child: Text(
+                        'L${level + 1}',
+                        style: const TextStyle(fontSize: 36, color: Colors.white),
                       ),
                       onPressed: () {
                         setState(() {
-                           _scoringMode = 0;
-                           widget.dashboardState.setScoringMode(_scoringMode);
-                         });
+                          _scoringMode = level;
+                          widget.dashboardState.setScoringMode(_scoringMode);
+                        });
                       },
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize:
-                            const Size(double.infinity, double.infinity),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        backgroundColor: _scoringMode == 1 ? activeColor : null,
-                      ),
-                      child: const Text(
-                        'Speaker',
-                        style: TextStyle(fontSize: 48, color: Colors.white),
-                      ),
-                      onPressed: () {
-                         setState(() {
-                           _scoringMode = 1;
-                           widget.dashboardState.setScoringMode(_scoringMode);
-                       });
-                      },
-                    ),
-                  ),
-                ],
+                  );
+                }),
               ),
             ),
           ],

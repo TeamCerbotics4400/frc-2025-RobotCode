@@ -1,7 +1,5 @@
 import 'package:dashboard24/services/dashboard_state.dart';
-import 'package:dashboard24/widgets/driver/chute_selector.dart';
 import 'package:dashboard24/widgets/driver/climb_selector.dart';
-import 'package:dashboard24/widgets/driver/match_timer.dart';
 import 'package:dashboard24/widgets/driver/scoring_mode.dart';
 import 'package:flutter/material.dart';
 
@@ -63,20 +61,21 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             Align(
-              alignment: _redAlliance ? Alignment.topLeft : Alignment.topRight,
-              child: ChuteSelector(
-                dashboardState: widget.dashboardState,
-                redAlliance: _redAlliance,
+              alignment: Alignment(
+                _redAlliance ? -0.8 : 0.8,
+                0.0, // Center the climb selector on the Y-axis
               ),
-            ),
-            Align(
-              alignment:
-                  _redAlliance ? Alignment.bottomLeft : Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.only(left: 40),
-                child: ClimbSelector(
-                  dashboardState: widget.dashboardState,
-                  redAlliance: _redAlliance,
+                child: Transform.scale(
+                  scale: 1,
+                  child: Transform.rotate(
+                    angle: 0.52, // Rotate 45 degrees (in radians)
+                    child: ClimbSelector(
+                      dashboardState: widget.dashboardState,
+                      redAlliance: _redAlliance,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -84,14 +83,13 @@ class _DashboardState extends State<Dashboard> {
               alignment: _redAlliance ? Alignment.topRight : Alignment.topLeft,
               child: Column(
                 children: [
-                  ScoringMode(
-                    dashboardState: widget.dashboardState,
-                    redAlliance: _redAlliance,
+                  Expanded(
+                    flex: 1,
+                    child: ScoringMode(
+                      dashboardState: widget.dashboardState,
+                      redAlliance: _redAlliance,
+                    ),
                   ),
-                  MatchTimer(dashboardState: widget.dashboardState),
-                  // PickupMode(
-                  //   dashboardState: widget.dashboardState,
-                  // ),
                 ],
               ),
             ),

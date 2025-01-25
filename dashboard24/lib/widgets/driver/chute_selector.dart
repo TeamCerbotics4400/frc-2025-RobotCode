@@ -28,87 +28,40 @@ class _ChuteSelectorState extends State<ChuteSelector> {
     Color activeColor = widget.redAlliance ? Colors.red[700]! : Colors.indigo;
 
     return SizedBox(
-      width: 250,
-      height: 250,
+      width: 350,
+      height: 400,
       child: Stack(
         children: [
-          Transform.flip(
-            flipX: !widget.redAlliance,
-            child: Image.asset('images/chute.png'),
-          ),
-          Positioned(
-            left: widget.redAlliance ? 205 : null,
-            right: widget.redAlliance ? null : 205,
-            top: 45,
-            child: Transform.scale(
-              scale: 3.5,
-              child: Checkbox(
-                value: _selected == 0,
-                splashRadius: 9,
-                checkColor: Colors.white,
-                activeColor: activeColor,
-                shape: const CircleBorder(),
-                side: const BorderSide(width: 0.5, color: Colors.grey),
-                onChanged: (value) {
-                  setState(() {
-                    if (value ?? false) {
-                       _selected = 0;
-                       widget.dashboardState.setChuteMode(_selected);
-                     }
-                   });
-                },
-              ),
-            ),
-          ),
-          Positioned(
-            left: widget.redAlliance ? 125 : null,
-            right: widget.redAlliance ? null : 125,
-            top: 95,
-            child: Transform.scale(
-              scale: 3.5,
-              child: Checkbox(
-                value: _selected == 1,
-                splashRadius: 9,
-                checkColor: Colors.white,
-                activeColor: activeColor,
-                shape: const CircleBorder(),
-                side: const BorderSide(width: 0.5, color: Colors.grey),
-                onChanged: (value) {
-                  // setState(() {
-                  //   if (value ?? false) {
-                  //     _selected = 1;
-                  //     widget.dashboardState.setChutePos(_selected);
-                  //   }
-                  // });
-                },
-              ),
-            ),
-          ),
-          Positioned(
-            left: widget.redAlliance ? 45 : null,
-            right: widget.redAlliance ? null : 45,
-            top: 145,
-            child: Transform.scale(
-              scale: 3.5,
-              child: Checkbox(
-                value: _selected == 2,
-                splashRadius: 9,
-                checkColor: Colors.white,
-                activeColor: activeColor,
-                shape: const CircleBorder(),
-                side: const BorderSide(width: 0.5, color: Colors.grey),
-                onChanged: (value) {
-                  // setState(() {
-                  //   if (value ?? false) {
-                  //     _selected = 2;
-                  //     widget.dashboardState.setChutePos(_selected);
-                  //   }
-                  // });
-                },
-              ),
-            ),
-          ),
+          _buildButton(120, 170, 0, activeColor),
+          _buildButton(150, 120, 1, activeColor),
+          _buildButton(180, 70, 2, activeColor),
+          _buildButton(210, 20, 3, activeColor),
         ],
+      ),
+    );
+  }
+
+  Widget _buildButton(double leftOffset, double topOffset, int level, Color activeColor) {
+    return Positioned(
+      left: widget.redAlliance ? leftOffset : null,
+      right: widget.redAlliance ? null : leftOffset,
+      top: topOffset,
+      child: Transform.scale(
+        scale: 2.0,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _selected == level ? activeColor : Colors.grey,
+            shape: const CircleBorder(),
+            padding: const EdgeInsets.all(10),
+          ),
+          onPressed: () {
+            setState(() {
+              _selected = level;
+              widget.dashboardState.setChuteMode(_selected);
+            });
+          },
+          child: Text('${level + 1}', style: const TextStyle(color: Colors.white, fontSize: 14)),
+        ),
       ),
     );
   }

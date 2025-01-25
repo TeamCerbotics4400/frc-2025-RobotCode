@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:nt4/nt4.dart';
 
 class DashboardState {
-  static const String _robotAddress = kDebugMode ? '127.0.0.1' : '10.30.15.2';
+  static const String _robotAddress = kDebugMode ? '127.0.0.1' : '10.44.0.2';
 
   late NT4Client _client;
 
@@ -95,21 +95,21 @@ class DashboardState {
   }*/
 
   void setScoringMode(int scoringMode){
-    if (scoringMode <= 1 && scoringMode >= 0){
+    if (scoringMode <= 4 && scoringMode >= 0){
       _scoringMode = scoringMode;
       _client.addSample(_scoringModePub, _scoringMode);
     }
   }
 
   void setChuteMode(int chuteMode){
-    if (chuteMode <= 2 && chuteMode >= 0){
+    if (chuteMode <= 12 && chuteMode >= 0){
       _chutePos = chuteMode;
       _client.addSample(_chutePosPub, _chutePos);
     }
   }
 
   void setClimbPos(int climbPos) {
-    if (climbPos <= 2 && climbPos >= 0) {
+    if (climbPos <= 12 && climbPos >= 0) {
       _climbPos = climbPos;
       _client.addSample(_climbPosPub, _climbPos);
     }

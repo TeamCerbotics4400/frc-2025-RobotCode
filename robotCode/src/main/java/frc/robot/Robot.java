@@ -4,6 +4,8 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -28,8 +30,6 @@ public class Robot extends LoggedRobot {
   NetworkTableInstance inst = NetworkTableInstance.getDefault();
   NetworkTable table = inst.getTable("Dashboard");
   NetworkTableEntry matchTimeEntry = table.getEntry("TargetClimbPos");
-
-
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -87,7 +87,8 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     SmartDashboard.putString("Current Robot mode", Constants.currentMode.toString());
 
-    SmartDashboard.putNumber("TESTVAÑ", matchTimeEntry.getDouble(0));
+    SmartDashboard.putNumber("Dashboard Entry", matchTimeEntry.getDouble(0));
+
   }
 
   @Override
