@@ -13,9 +13,9 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,8 +33,17 @@ import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.subsystems.Swerve.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Swerve.TunerConstants;
+import frc.robot.Subsystems.Climber.ClimberIO;
+import frc.robot.Subsystems.Climber.ClimberIOKraken;
+import frc.robot.Subsystems.Climber.ClimberSubsystem;
+import frc.robot.Subsystems.Elevator.ElevatorIO;
+import frc.robot.Subsystems.Elevator.ElevatorIOKraken;
+import frc.robot.Subsystems.Elevator.ElevatorSubsystem;
+import frc.robot.Subsystems.Intake.IntakeIO;
+import frc.robot.Subsystems.Intake.IntakeIOKraken;
+import frc.robot.Subsystems.Intake.IntakeSubsystem;
+import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
+import frc.robot.Subsystems.Swerve.TunerConstants;
 
 import java.util.Set;
 
@@ -42,19 +51,56 @@ import org.littletonrobotics.junction.Logger;
 
 public class RobotContainer {
 
+  /* Driver controllers*/
   private final CommandXboxController chassisDriver = new CommandXboxController(0);
 
+  /* Subsystems with their respective IO's */
   public static final CommandSwerveDrivetrain m_drive = TunerConstants.createDrivetrain();
 
+  /* Elevator */
+  public static final ElevatorIO elevatorIO = new ElevatorIOKraken();
+  public static ElevatorSubsystem m_elevator;
+
+  /* Intake */
+  public static final IntakeIO intakeIO = new IntakeIOKraken();
+  public static IntakeSubsystem m_intake;
+
+  /* Climber */
+  public static final ClimberIO climberIO = new ClimberIOKraken();
+  public static ClimberSubsystem m_climber;
+
+  /* Chooser for autonomous */
   private final SendableChooser<AutoCommand> autoChooser = new SendableChooser<>();
 
+  /* Set up for utils */
   public static Field2d autoFieldPreview = new Field2d();
   public CustomDashboardUtil m_dashboard = new CustomDashboardUtil();
   private final Telemetry logger = new Telemetry(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
 
   public RobotContainer() {
-  /* Path follower */
 
+    /* IO options for replay */
+    switch (Constants.currentMode) {
+      /* Configs for the REAL robot */
+      case REAL:
+        m_elevator = new ElevatorSubsystem(elevatorIO);
+        m_intake = new IntakeSubsystem(intakeIO);
+        m_climber = new ClimberSubsystem(climberIO);
+        break;
+      /* Configs to replay a log */
+      case REPLAY:
+        m_elevator = new ElevatorSubsystem(new ElevatorIO(){});
+        m_intake = new IntakeSubsystem(new IntakeIO(){});
+        m_climber = new ClimberSubsystem(new ClimberIO(){});
+      break;
+      /* Default to just in case it somehow fails, lol */
+      default:
+      m_elevator = new ElevatorSubsystem(elevatorIO);
+      m_intake = new IntakeSubsystem(intakeIO);
+      m_climber = new ClimberSubsystem(climberIO);
+        break;
+    }
+  /* Path follower */
     autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
     autoChooser.addOption("Test Auto", new TestAuto());
 
@@ -62,6 +108,7 @@ public class RobotContainer {
         autoFieldPreview.getObject("path").setPoses(auto.getAllPathPoses());
     });
 
+    /* Record path poses and targets for logging */
     PathPlannerLogging.setLogActivePathCallback(
             (poses -> Logger.recordOutput("Swerve/ActivePath", poses.toArray(new Pose2d[0]))));
     PathPlannerLogging.setLogTargetPoseCallback(
@@ -71,6 +118,7 @@ public class RobotContainer {
     /*This code warms up the library to avoid delay on the path */
     PathfindingCommand.warmupCommand().schedule();
   
+    /* Shows the preview before match setup */
     SmartDashboard.putData("Auto Mode", autoChooser);
     SmartDashboard.putData("Auto Preview", autoFieldPreview);
 
@@ -109,7 +157,7 @@ public class RobotContainer {
                                     .Pose
                                     .getTranslation()
                                     .getDistance(FieldConstants.redSidePositions[val].getTranslation())
-                                <= 3),
+                                <= 2),
                 m_drive
                     .goToPose(FieldConstants.blueSidePositions[val])
                     .until(
@@ -119,7 +167,7 @@ public class RobotContainer {
                                     .Pose
                                     .getTranslation()
                                     .getDistance(FieldConstants.blueSidePositions[val].getTranslation())
-                                <= 3),
+                                <= 2),
                 Robot::isRedAlliance)
             .andThen(
                 new DeferredCommand(
@@ -155,6 +203,16 @@ public class RobotContainer {
                       return AutoBuilder.followPath(path);
                     },
                     Set.of(m_drive))));
+  }
+
+private Command controllerRumbleCommand() {
+    return Commands.startEnd(
+        () -> {
+          chassisDriver.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+        },
+        () -> {
+          chassisDriver.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+        });
   }
 
   private boolean isJoystickActive() {

@@ -1,5 +1,5 @@
 // Copyright (c) 2025 FRC 4400//
-package frc.robot.subsystems.Swerve;
+package frc.robot.Subsystems.Swerve;
 
 import static edu.wpi.first.units.Units.*;
 

@@ -8,7 +8,7 @@ public class CustomDashboardUtil {
   private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private static NetworkTable table = inst.getTable("Dashboard");
   private static NetworkTableEntry reefEntry = table.getEntry("TargetClimbPos");
-  private static NetworkTableEntry levelEntry = table.getEntry("TargetClimbPos");
+  private static NetworkTableEntry levelEntry = table.getEntry("ScoringMode");
     public CustomDashboardUtil(){}
 
     public int getReefSelected(){

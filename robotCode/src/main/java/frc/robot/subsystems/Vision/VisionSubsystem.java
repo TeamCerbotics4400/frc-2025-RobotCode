@@ -1,18 +1,14 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.Subsystems.Vision;
 
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.Util.LimelightHelpers;
 import frc.robot.Constants;
-import frc.robot.Constants.FieldConstants.VisionConstants;
-
-import frc.robot.subsystems.Swerve.CommandSwerveDrivetrain;
+import frc.robot.Constants.VisionConstants;
+import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -93,7 +89,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         m_drive.setVisionMeasurementStdDevs(VecBuilder.fill(xySTD, xySTD, thetaSTD));
         m_drive.addVisionMeasurement(
-            mt2.pose.div(Constants.DriveConstants.driveOdometryRatio), mt2.timestampSeconds);
+            mt2.pose, mt2.timestampSeconds);
       }
       SmartDashboard.putBoolean("Rejected Update", doRejectUpdate);
     }

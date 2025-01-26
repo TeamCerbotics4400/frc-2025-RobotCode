@@ -10,8 +10,8 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Swerve.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Swerve.TunerConstants;
+import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
+import frc.robot.Subsystems.Swerve.TunerConstants;
 
 public class FieldCentricDrive extends Command {
 

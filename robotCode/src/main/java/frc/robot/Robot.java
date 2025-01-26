@@ -1,18 +1,16 @@
 // Copyright (c) 2025 FRC 4400//
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Threads;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.Util.CustomDashboardUtil;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -21,20 +19,25 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot {
+  /* Class to log the app Network tables data*/
+  private CustomDashboardUtil dashboardCustom = new CustomDashboardUtil();
   private Command m_autonomousCommand;
+
+  /* Declaring PDH to unlock an extra spot and clear faults */
   private PowerDistribution examplePD = new PowerDistribution(1, ModuleType.kRev);
+
+  /*Alerts in case of emergencies that need to be checked */
+  private Alert robotModeAlert = new Alert("The code of the robot mode isn't real", AlertType.kWarning);
 
   private final RobotContainer m_robotContainer;
 
-  //Network tables connection
-  NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  NetworkTable table = inst.getTable("Dashboard");
-  NetworkTableEntry matchTimeEntry = table.getEntry("TargetClimbPos");
-
   public Robot() {
     m_robotContainer = new RobotContainer();
+    /* PDH configs */
     examplePD.setSwitchableChannel(true);
+    examplePD.clearStickyFaults();
 
+    /*Data that records the projects dates and info */
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
@@ -50,6 +53,11 @@ public class Robot extends LoggedRobot {
       default:
         Logger.recordMetadata("GitDirty", "Unknown");
         break;
+    }
+
+    /* Emergency in case code is deployed onto a real robot */
+    if(Robot.isReal()){
+      Constants.currentMode = Constants.Mode.REAL;
     }
 
     // Set up data receivers & replay source
@@ -79,16 +87,21 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotPeriodic() {
+    /* Idk mechanical did this so might as well copy it */
     Threads.setCurrentThreadPriority(true, 99);
 
     CommandScheduler.getInstance().run();
 
     Threads.setCurrentThreadPriority(false, 10);
-    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
-    SmartDashboard.putString("Current Robot mode", Constants.currentMode.toString());
+    
+    /* Alert if the robot mode isn't real */
+    robotModeAlert.set(Constants.currentMode != Constants.Mode.REAL);
 
-    SmartDashboard.putNumber("Dashboard Entry", matchTimeEntry.getDouble(0));
+    Logger.recordOutput("Dashboard/Match Time", DriverStation.getMatchTime());
+    Logger.recordOutput("Dashboard/Current Robot mode", Constants.currentMode.toString());
 
+    Logger.recordOutput("Dashboard/Reef Position", dashboardCustom.getReefSelected());
+    Logger.recordOutput("Dashboard/Level selected", dashboardCustom.getLevelEntry());
   }
 
   @Override
