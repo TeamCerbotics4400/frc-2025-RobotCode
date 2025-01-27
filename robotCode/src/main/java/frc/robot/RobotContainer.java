@@ -46,6 +46,7 @@ import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.Swerve.TunerConstants;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -53,6 +54,7 @@ public class RobotContainer {
 
   /* Driver controllers*/
   private final CommandXboxController chassisDriver = new CommandXboxController(0);
+  private final CommandXboxController subsystemsDriver = new CommandXboxController(1);
 
   /* Subsystems with their respective IO's */
   public static final CommandSwerveDrivetrain m_drive = TunerConstants.createDrivetrain();
@@ -128,7 +130,7 @@ public class RobotContainer {
   private void configureBindings() {
 
     //To leade at level 1   0.35, 0.1 on setvoltageCommadn
-    chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
+    /*chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
 
     chassisDriver.b().onTrue(m_elevator.goToPosition(0.5));
 
@@ -136,8 +138,20 @@ public class RobotContainer {
 
     chassisDriver.y().onTrue(m_elevator.goToPosition(1.67));
 
-    chassisDriver.rightBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));
+    chassisDriver.rightBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));*/
 
+
+
+    chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
+
+    chassisDriver.b().onTrue(m_elevator.goToPosition(0.4));
+
+    chassisDriver.x().onTrue(m_elevator.goToPosition(.91));
+
+    chassisDriver.y().onTrue(m_elevator.goToPosition(1.67));
+
+
+    chassisDriver.rightBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));
 
      m_drive.setDefaultCommand(
         new FieldCentricDrive(
@@ -146,39 +160,39 @@ public class RobotContainer {
              ()-> chassisDriver.getLeftX(), 
              ()-> chassisDriver.getRightX()));
 
-    /*chassisDriver.y().onTrue(
+    /*chassisDriver.leftBumper().onTrue(
         new ParallelRaceGroup(
-            pathFindAndAlignCommand(m_dashboard.getReefSelected()),
+            pathFindAndAlignCommand(()->m_dashboard.getReefSelected()),
              new SequentialCommandGroup(new WaitCommand(1),
               new WaitCommand(10000).until(()->isJoystickActive()))));*/
 
-    chassisDriver.a().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
+    chassisDriver.leftBumper().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
 
     m_drive.registerTelemetry(logger::telemeterize);
   }
 
-  /*public static Command pathFindAndAlignCommand(int val) {
+  public static Command pathFindAndAlignCommand(Supplier<Integer> val) {
     return Commands.sequence(
         Commands.either(
                 m_drive
-                    .goToPose(FieldConstants.redSidePositions[val])
+                    .goToPose(FieldConstants.redSidePositions[val.get()])
                     .until(
                         () ->
                             m_drive
                                     .getState()
                                     .Pose
                                     .getTranslation()
-                                    .getDistance(FieldConstants.redSidePositions[val].getTranslation())
+                                    .getDistance(FieldConstants.redSidePositions[val.get()].getTranslation())
                                 <= 2),
                 m_drive
-                    .goToPose(FieldConstants.blueSidePositions[val])
+                    .goToPose(FieldConstants.blueSidePositions[val.get()])
                     .until(
                         () ->
                             m_drive
                                     .getState()
                                     .Pose
                                     .getTranslation()
-                                    .getDistance(FieldConstants.blueSidePositions[val].getTranslation())
+                                    .getDistance(FieldConstants.blueSidePositions[val.get()].getTranslation())
                                 <= 2),
                 Robot::isRedAlliance)
             .andThen(
@@ -195,8 +209,8 @@ public class RobotContainer {
 
                       Pose2d targetPose =
                           Robot.isRedAlliance()
-                              ? FieldConstants.redSidePositions[val]
-                              : FieldConstants.blueSidePositions[val];
+                              ? FieldConstants.redSidePositions[val.get()]
+                              : FieldConstants.blueSidePositions[val.get()];
                       var bezierPoints =
                           PathPlannerPath.waypointsFromPoses(
                               new Pose2d(currentPose.getTranslation(), heading), targetPose);
@@ -215,7 +229,7 @@ public class RobotContainer {
                       return AutoBuilder.followPath(path);
                     },
                     Set.of(m_drive))));
-  }*/
+  }
 
 private Command controllerRumbleCommand() {
     return Commands.startEnd(
