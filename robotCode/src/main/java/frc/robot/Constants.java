@@ -12,7 +12,7 @@ public class Constants {
   public static final String rioCanbus = "rio";
   public static final String canivoreCanbus = "Swerve_Canivore";
 
-  public static Mode currentMode = Mode.REAL;
+  public static Mode currentMode = Mode.SIM;
   public static final boolean needToLog = true;
 
   public static enum Mode {
@@ -135,17 +135,18 @@ public class Constants {
        *                  B
        */
       public static final class IntakeConstants{
-        public static final int leftIntakeMotorId = 10;
-        public static final int rightIntakeMotorId = 11;
-        public static final int digitalInputId = 0;
+        public static final int leftIntakeMotorId = 18;
+        public static final int rightIntakeMotorId = 41;
+        public static final int digitalInputId = 3;
     }
 
     public static final class ElevatorConstants{
-        public static final int leftElevatorMotorId = 0;
-        public static final int rightElevatorMotorId = 0;
-        public static final int encoderPortId = 1;
+        public static final int leftElevatorMotorId = 55;
+        public static final int rightElevatorMotorId = 52;
+        public static final int encoderPortId1 = 9;  //A
+        public static final int encoderPortId2 = 8;  //B
 
-        public static final double kP = 0,
+        public static final double kP = 2.3,
                                    kD = 0,
                                    kI = 0,
                                    kS = 0,
@@ -158,16 +159,14 @@ public class Constants {
     }
 
     public static final class ClimberConstants{
-        public static final int climberMotorId = 0;
+        public static final int climberMotorId = 17;
     }
-
 
     public static final class VisionConstants {
 
       public static final String neuralLimelight = "limelight-neural";
       public static final String tagLimelightName = "limelight-tags";
 
-      
     public static double xyStdDevCoefficient = 0.2;
     public static double thetaStdDevCoefficient = 0.4;
 

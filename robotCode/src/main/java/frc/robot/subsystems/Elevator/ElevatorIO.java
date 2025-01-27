@@ -9,11 +9,11 @@ public interface ElevatorIO {
     public double elevatorPosition = 0.0;
 
     public double rightElevatorTemp = 0.0;
-    public double rightElevatorSupplyCurrent = 0.0;
+    public double rightElevatorCurrent = 0.0;
     public double rightElevatorVoltage = 0.0;
 
     public double leftElevatorTemp = 0.0;
-    public double leftElevatorSupplyCurrent = 0.0;
+    public double leftElevatorCurrent = 0.0;
     public double leftElevatorVoltage = 0.0;
   }
 

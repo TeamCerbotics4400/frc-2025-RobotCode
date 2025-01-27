@@ -46,15 +46,17 @@ public class IntakeIOKraken implements IntakeIO {
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.rightMotortempCelcius = rightMotor.getDeviceTemp().getValueAsDouble();
     inputs.rightMotorappliedVolts = rightMotor.getMotorVoltage().getValueAsDouble();
+    inputs.rightMotorCurrent = rightMotor.getStatorCurrent().getValueAsDouble();
 
     inputs.leftMotorappliedVolts = leftMotor.getMotorVoltage().getValueAsDouble();
     inputs.leftMotortempCelcius = leftMotor.getDeviceTemp().getValueAsDouble();
+    inputs.leftMotorCurrent = leftMotor.getStatorCurrent().getValueAsDouble();
     inputs.sensor = !intakeSensor.get();
   }
 
   @Override
-  public void setVoltage(double armVolt) {
-    rightMotor.set(-armVolt);
-    leftMotor.set(armVolt);
+  public void setVoltage(double armVolt,double leftVolt) {
+    rightMotor.set(armVolt);
+    leftMotor.set(leftVolt);
   }
 }

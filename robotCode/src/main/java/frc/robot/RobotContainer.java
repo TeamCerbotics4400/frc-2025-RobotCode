@@ -66,8 +66,8 @@ public class RobotContainer {
   public static IntakeSubsystem m_intake;
 
   /* Climber */
-  public static final ClimberIO climberIO = new ClimberIOKraken();
-  public static ClimberSubsystem m_climber;
+  //public static final ClimberIO climberIO = new ClimberIOKraken();
+  //public static ClimberSubsystem m_climber;
 
   /* Chooser for autonomous */
   private final SendableChooser<AutoCommand> autoChooser = new SendableChooser<>();
@@ -85,24 +85,24 @@ public class RobotContainer {
       case REAL:
         m_elevator = new ElevatorSubsystem(elevatorIO);
         m_intake = new IntakeSubsystem(intakeIO);
-        m_climber = new ClimberSubsystem(climberIO);
+    //    m_climber = new ClimberSubsystem(climberIO);
         break;
       /* Configs to replay a log */
       case REPLAY:
         m_elevator = new ElevatorSubsystem(new ElevatorIO(){});
         m_intake = new IntakeSubsystem(new IntakeIO(){});
-        m_climber = new ClimberSubsystem(new ClimberIO(){});
+       // m_climber = new ClimberSubsystem(new ClimberIO(){});
       break;
       /* Default to just in case it somehow fails, lol */
       default:
       m_elevator = new ElevatorSubsystem(elevatorIO);
       m_intake = new IntakeSubsystem(intakeIO);
-      m_climber = new ClimberSubsystem(climberIO);
+     // m_climber = new ClimberSubsystem(climberIO);
         break;
     }
   /* Path follower */
-    autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
-    autoChooser.addOption("Test Auto", new TestAuto());
+    //autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
+    //autoChooser.addOption("Test Auto", new TestAuto());
 
     autoChooser.onChange(auto->{
         autoFieldPreview.getObject("path").setPoses(auto.getAllPathPoses());
@@ -127,25 +127,37 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    m_drive.setDefaultCommand(
+    //To leade at level 1   0.35, 0.1 on setvoltageCommadn
+    chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
+
+    chassisDriver.b().onTrue(m_elevator.goToPosition(0.5));
+
+    chassisDriver.x().onTrue(m_elevator.goToPosition(0.2));
+
+    chassisDriver.y().onTrue(m_elevator.goToPosition(1.67));
+
+    chassisDriver.rightBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));
+
+
+     m_drive.setDefaultCommand(
         new FieldCentricDrive(
             m_drive,
              ()-> chassisDriver.getLeftY(),
              ()-> chassisDriver.getLeftX(), 
              ()-> chassisDriver.getRightX()));
 
-    chassisDriver.y().onTrue(
+    /*chassisDriver.y().onTrue(
         new ParallelRaceGroup(
             pathFindAndAlignCommand(m_dashboard.getReefSelected()),
              new SequentialCommandGroup(new WaitCommand(1),
-              new WaitCommand(10000).until(()->isJoystickActive()))));
+              new WaitCommand(10000).until(()->isJoystickActive()))));*/
 
     chassisDriver.a().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
 
     m_drive.registerTelemetry(logger::telemeterize);
   }
 
-  public static Command pathFindAndAlignCommand(int val) {
+  /*public static Command pathFindAndAlignCommand(int val) {
     return Commands.sequence(
         Commands.either(
                 m_drive
@@ -203,7 +215,7 @@ public class RobotContainer {
                       return AutoBuilder.followPath(path);
                     },
                     Set.of(m_drive))));
-  }
+  }*/
 
 private Command controllerRumbleCommand() {
     return Commands.startEnd(

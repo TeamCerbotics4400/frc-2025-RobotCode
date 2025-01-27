@@ -57,6 +57,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     Logger.processInputs("Elevator", inputs);
     Logger.recordOutput("Elevator/Value Error", m_controller.getPositionError());
     Logger.recordOutput("Elevator/Setpoint", m_controller.getSetpoint().position);
+    Logger.recordOutput("Elevator/PID output", m_controller.calculate(inputs.elevatorPosition));
 
     if(enablePID){
         io.setVoltage(

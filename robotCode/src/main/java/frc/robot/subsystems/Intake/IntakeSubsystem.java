@@ -21,12 +21,12 @@ public class IntakeSubsystem extends SubsystemBase {
     Logger.processInputs("Intake", inputs);
   }
 
-  public void setVoltageVoid(double voltage) {
-    io.setVoltage(voltage);
+  public void setVoltageVoid(double voltage, double leftVolt) {
+    io.setVoltage(voltage,leftVolt);
   }
 
-  public Command setVoltageCommand(double voltage) {
-    return run(() -> io.setVoltage(voltage));
+  public Command setVoltageCommand(double voltage, double leftVolt) {
+    return run(() -> io.setVoltage(voltage, leftVolt));
   }
 
   public boolean hasGamePieceInside() {
