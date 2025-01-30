@@ -22,17 +22,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
 import frc.robot.Commands.FieldCentricDrive;
 import frc.robot.Commands.IntakeCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
-import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
-import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
 import frc.robot.Subsystems.Climber.ClimberIOKraken;
@@ -151,9 +146,9 @@ public class RobotContainer {
 
     chassisDriver.y().onTrue(m_elevator.goToPosition(1.67));
 
-    //chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.05)).whileFalse(m_climber.setClimberVoltage(0));
+    chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
 
-    chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.15)).whileFalse(m_climber.setClimberVoltage(0));
+    chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.5)).whileFalse(m_climber.setClimberVoltage(0));
     //climber power
 
 
@@ -174,7 +169,7 @@ public class RobotContainer {
              new SequentialCommandGroup(new WaitCommand(1),
               new WaitCommand(10000).until(()->isJoystickActive()))));*/
 
-    chassisDriver.leftBumper().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
+    chassisDriver.button(7).onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
 
     m_drive.registerTelemetry(logger::telemeterize);
   }

@@ -36,7 +36,7 @@ public class IntakeCommand extends Command {
       timer.start();
     }
 
-    if(timer.hasElapsed(0.25) && timer.isRunning()){
+    if(timer.hasElapsed(0.15) && timer.isRunning()){
       safePiece = true;
       timer.stop();
     } else {
