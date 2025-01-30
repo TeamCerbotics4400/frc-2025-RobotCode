@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
 import frc.robot.Commands.FieldCentricDrive;
+import frc.robot.Commands.IntakeCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
@@ -68,8 +69,8 @@ public class RobotContainer {
   public static IntakeSubsystem m_intake;
 
   /* Climber */
-  //public static final ClimberIO climberIO = new ClimberIOKraken();
-  //public static ClimberSubsystem m_climber;
+  public static final ClimberIO climberIO = new ClimberIOKraken();
+  public static ClimberSubsystem m_climber;
 
   /* Chooser for autonomous */
   private final SendableChooser<AutoCommand> autoChooser = new SendableChooser<>();
@@ -87,19 +88,19 @@ public class RobotContainer {
       case REAL:
         m_elevator = new ElevatorSubsystem(elevatorIO);
         m_intake = new IntakeSubsystem(intakeIO);
-    //    m_climber = new ClimberSubsystem(climberIO);
+      m_climber = new ClimberSubsystem(climberIO);
         break;
       /* Configs to replay a log */
       case REPLAY:
         m_elevator = new ElevatorSubsystem(new ElevatorIO(){});
         m_intake = new IntakeSubsystem(new IntakeIO(){});
-       // m_climber = new ClimberSubsystem(new ClimberIO(){});
+        m_climber = new ClimberSubsystem(new ClimberIO(){});
       break;
       /* Default to just in case it somehow fails, lol */
       default:
       m_elevator = new ElevatorSubsystem(elevatorIO);
       m_intake = new IntakeSubsystem(intakeIO);
-     // m_climber = new ClimberSubsystem(climberIO);
+      m_climber = new ClimberSubsystem(climberIO);
         break;
     }
   /* Path follower */
@@ -141,7 +142,7 @@ public class RobotContainer {
     chassisDriver.rightBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));*/
 
 
-
+    //elevador pos
     chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
 
     chassisDriver.b().onTrue(m_elevator.goToPosition(0.4));
@@ -150,8 +151,15 @@ public class RobotContainer {
 
     chassisDriver.y().onTrue(m_elevator.goToPosition(1.67));
 
+    //chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.05)).whileFalse(m_climber.setClimberVoltage(0));
 
-    chassisDriver.rightBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));
+    chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.15)).whileFalse(m_climber.setClimberVoltage(0));
+    //climber power
+
+
+
+    chassisDriver.rightBumper().whileTrue(new IntakeCommand(m_intake));
+    chassisDriver.leftBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));
 
      m_drive.setDefaultCommand(
         new FieldCentricDrive(

@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 
@@ -15,7 +16,7 @@ public class IntakeIOKraken implements IntakeIO {
   /* Hardware */
   private final TalonFX leftMotor = new TalonFX(leftIntakeMotorId, Constants.rioCanbus);
   private final TalonFX rightMotor = new TalonFX(rightIntakeMotorId, Constants.rioCanbus);
-  private final DigitalInput intakeSensor = new DigitalInput(digitalInputId);
+  private final LaserCan intakeSensor = new LaserCan(laserCanId);
 
   /* Configurators */
   private TalonFXConfiguration leftConfig;
@@ -51,12 +52,21 @@ public class IntakeIOKraken implements IntakeIO {
     inputs.leftMotorappliedVolts = leftMotor.getMotorVoltage().getValueAsDouble();
     inputs.leftMotortempCelcius = leftMotor.getDeviceTemp().getValueAsDouble();
     inputs.leftMotorCurrent = leftMotor.getStatorCurrent().getValueAsDouble();
-    inputs.sensor = !intakeSensor.get();
+    inputs.sensor = isIntakeFull();
   }
 
   @Override
   public void setVoltage(double armVolt,double leftVolt) {
     rightMotor.set(armVolt);
     leftMotor.set(leftVolt);
+  }
+
+  public boolean isIntakeFull(){
+    LaserCan.Measurement measurement = intakeSensor.getMeasurement();
+    if(measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT && measurement.distance_mm < 20){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

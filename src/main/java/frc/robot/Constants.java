@@ -137,7 +137,7 @@ public class Constants {
       public static final class IntakeConstants{
         public static final int leftIntakeMotorId = 18;
         public static final int rightIntakeMotorId = 41;
-        public static final int digitalInputId = 3;
+        public static final int laserCanId = 35;
     }
 
     public static final class ElevatorConstants{

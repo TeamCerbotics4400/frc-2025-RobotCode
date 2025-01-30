@@ -56,5 +56,10 @@
     "edu.wpi.first.math.proto.*",
     "edu.wpi.first.math.**.proto.*",
     "edu.wpi.first.math.**.struct.*",
+  ],
+  "java.project.sourcePaths": [
+    "vendordeps",
+    "src/main",
+    "src"
   ]
 }
