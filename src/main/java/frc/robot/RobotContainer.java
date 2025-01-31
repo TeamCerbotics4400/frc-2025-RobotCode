@@ -140,21 +140,25 @@ public class RobotContainer {
     //elevador pos
     chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
 
+    chassisDriver.povLeft().onTrue(m_elevator.goToPosition(.15));
+
     chassisDriver.b().onTrue(m_elevator.goToPosition(0.4));
 
     chassisDriver.x().onTrue(m_elevator.goToPosition(.91));
 
     chassisDriver.y().onTrue(m_elevator.goToPosition(1.67));
 
+
     chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
 
     chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.5)).whileFalse(m_climber.setClimberVoltage(0));
+
+
     //climber power
-
-
-
     chassisDriver.rightBumper().whileTrue(new IntakeCommand(m_intake));
     chassisDriver.leftBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));
+
+    chassisDriver.povRight().whileTrue(m_intake.setVoltageCommand(.15,.35)).whileFalse(m_intake.setVoltageCommand(0, 0));
 
      m_drive.setDefaultCommand(
         new FieldCentricDrive(
