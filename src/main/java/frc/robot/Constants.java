@@ -135,7 +135,7 @@ public class Constants {
        *                  B
        */
       public static final class IntakeConstants{
-        public static final int leftIntakeMotorId = 18;
+        public static final int leftIntakeMotorId = 51;
         public static final int rightIntakeMotorId = 41;
         public static final int laserCanId = 35;
     }

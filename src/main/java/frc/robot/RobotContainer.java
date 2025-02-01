@@ -26,8 +26,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
 import frc.robot.Commands.FieldCentricDrive;
-import frc.robot.Commands.IntakeCommand;
+import frc.robot.Commands.IntakeSequenceCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
+import frc.robot.Commands.IntakeCommand.IntakeSequence1;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
 import frc.robot.Subsystems.Climber.ClimberIOKraken;
@@ -155,7 +156,7 @@ public class RobotContainer {
 
 
     //climber power
-    chassisDriver.rightBumper().whileTrue(new IntakeCommand(m_intake));
+    chassisDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
     chassisDriver.leftBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));
 
     chassisDriver.povRight().whileTrue(m_intake.setVoltageCommand(.15,.35)).whileFalse(m_intake.setVoltageCommand(0, 0));
@@ -163,9 +164,9 @@ public class RobotContainer {
      m_drive.setDefaultCommand(
         new FieldCentricDrive(
             m_drive,
-             ()-> chassisDriver.getLeftY(),
-             ()-> chassisDriver.getLeftX(), 
-             ()-> chassisDriver.getRightX()));
+             ()-> -chassisDriver.getLeftY(),
+             ()-> -chassisDriver.getLeftX(), 
+             ()-> -chassisDriver.getRightX()));
 
     /*chassisDriver.leftBumper().onTrue(
         new ParallelRaceGroup(

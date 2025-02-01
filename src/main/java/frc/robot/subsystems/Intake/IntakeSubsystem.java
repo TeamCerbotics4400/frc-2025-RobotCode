@@ -25,6 +25,16 @@ public class IntakeSubsystem extends SubsystemBase {
     io.setVoltage(voltage,leftVolt);
   }
 
+  public void setVelocity(double rightVoltage, double leftVoltage) {
+    double valRight = rightVoltage / 60;
+    double valLeft = leftVoltage / 60;
+    io.setVelocity(valRight,valLeft);
+  }
+
+  public void stopMotors(){
+    io.stopMotors();
+  }
+
   public Command setVoltageCommand(double voltage, double leftVolt) {
     return run(() -> io.setVoltage(voltage, leftVolt));
   }

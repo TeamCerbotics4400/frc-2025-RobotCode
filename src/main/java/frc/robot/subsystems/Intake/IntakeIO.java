@@ -10,10 +10,12 @@ public interface IntakeIO {
     public double leftMotorappliedVolts = 0.0;
     public double leftMotortempCelcius = 0.0;
     public double leftMotorCurrent = 0.0;
+    public double leftCurrentRpms = 0.0;
 
     public double rightMotorappliedVolts = 0.0;
     public double rightMotortempCelcius = 0.0;
     public double rightMotorCurrent = 0.0;
+    public double rightCurrentRpms = 0.0;
 
     public boolean sensor = false;
   }
@@ -23,5 +25,9 @@ public interface IntakeIO {
 
   /** Run the intake open loop at the specified voltage. */
   public default void setVoltage(double armVolt, double leftVolt) {}
+
+  public default void setVelocity(double velocityLeft, double velocityRight){}
+
+  public default void stopMotors(){}
 
 }
