@@ -58,6 +58,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     Logger.recordOutput("Elevator/Value Error", m_controller.getPositionError());
     Logger.recordOutput("Elevator/Setpoint", m_controller.getSetpoint().position);
     Logger.recordOutput("Elevator/PID output", m_controller.calculate(inputs.elevatorPosition));
+    Logger.recordOutput("Elevator/Is within Threshold", isInPosition());
 
     if(enablePID){
         io.setVoltage(
@@ -105,5 +106,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public Command setVoltage(double volts){
     return run (()-> io.setVoltage(volts, 0));
+  }
+
+  public boolean isWithinThreshold(double value, double target, double threshold){
+    return Math.abs(value - target) < threshold;
+  }
+
+  public boolean isInPosition(){
+    return isWithinThreshold(inputs.elevatorPosition, getController().getGoal().position, 0.3);
   }
 }

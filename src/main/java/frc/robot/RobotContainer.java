@@ -4,6 +4,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
@@ -28,6 +29,9 @@ import frc.Util.LocalADStarAK;
 import frc.robot.Commands.FieldCentricDrive;
 import frc.robot.Commands.IntakeSequenceCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
+import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
+import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
+import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequence1;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
@@ -99,9 +103,11 @@ public class RobotContainer {
       m_climber = new ClimberSubsystem(climberIO);
         break;
     }
+    
+    enableNamedCommands();
   /* Path follower */
-    //autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
-    //autoChooser.addOption("Test Auto", new TestAuto());
+    autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
+    autoChooser.addOption("Test Auto", new TestAuto());
 
     autoChooser.onChange(auto->{
         autoFieldPreview.getObject("path").setPoses(auto.getAllPathPoses());
@@ -239,7 +245,12 @@ public class RobotContainer {
                     Set.of(m_drive))));
   }
 
-private Command controllerRumbleCommand() {
+  private void enableNamedCommands(){
+    NamedCommands.registerCommand("ElevatorL4", m_elevator.goToPosition(1.67));
+    NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
+  } 
+
+  private Command controllerRumbleCommand() {
     return Commands.startEnd(
         () -> {
           chassisDriver.getHID().setRumble(RumbleType.kBothRumble, 1.0);

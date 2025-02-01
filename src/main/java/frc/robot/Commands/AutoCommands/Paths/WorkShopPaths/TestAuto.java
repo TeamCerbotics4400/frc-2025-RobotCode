@@ -17,12 +17,12 @@ public class TestAuto extends AutoCommand {
   private final PathPlannerPath first;
 
   public TestAuto() {
-    first = loadPath("SimplePath");
+    first = loadPath("Dontdieplspath");
 
     addCommands(
         Commands.deadline(
             Commands.sequence(
-                new PathPlannerAuto("Starting pose 1"), new PathPlannerAuto("IntakeAssistAuto"))));
+             new PathPlannerAuto("Elevator test"))));
   }
 
   private PathPlannerPath loadPath(String fileName) {
