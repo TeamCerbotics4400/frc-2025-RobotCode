@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
@@ -114,7 +115,7 @@ public class Telemetry {
     /* Also write to log file */
     m_poseArray[0] = state.Pose.getX();
     m_poseArray[1] = state.Pose.getY();
-    m_poseArray[2] = state.Pose.getRotation().getDegrees();
+    m_poseArray[2] = Units.degreesToRadians(state.Pose.getRotation().getDegrees());
     for (int i = 0; i < 4; ++i) {
       m_moduleStatesArray[i * 2 + 0] = state.ModuleStates[i].angle.getRadians();
       m_moduleStatesArray[i * 2 + 1] = state.ModuleStates[i].speedMetersPerSecond;

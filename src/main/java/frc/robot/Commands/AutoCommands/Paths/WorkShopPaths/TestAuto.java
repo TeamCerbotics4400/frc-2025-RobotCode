@@ -15,14 +15,20 @@ import java.util.stream.Stream;
 public class TestAuto extends AutoCommand {
 
   private final PathPlannerPath first;
+  private final PathPlannerPath second;
+  private final PathPlannerPath third;
+  private final PathPlannerPath fourth;
 
   public TestAuto() {
-    first = loadPath("Dontdieplspath");
+    first = loadPath("3Coral1");
+    second = loadPath("3Coral2");
+    third = loadPath("3Coral3");
+    fourth = loadPath("3Coral4");
 
     addCommands(
         Commands.deadline(
             Commands.sequence(
-             new PathPlannerAuto("Elevator test"))));
+             new PathPlannerAuto("3CoralAuto"))));
   }
 
   private PathPlannerPath loadPath(String fileName) {
@@ -37,7 +43,10 @@ public class TestAuto extends AutoCommand {
   @Override
   public List<Pose2d> getAllPathPoses() {
     return Stream.of(
-            safeGetPathPoses(first))
+            safeGetPathPoses(first),
+            safeGetPathPoses(second),
+            safeGetPathPoses(third),
+            safeGetPathPoses(fourth))
         .flatMap(Collection::stream)
         .collect(Collectors.toList());
   }

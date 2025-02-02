@@ -1,0 +1,73 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3Coral1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OutakeReef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3Coral2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3Coral3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OutakeReef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3Coral4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3Coral5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OutakeReef"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "WorkShopAutos",
+  "choreoAuto": false
+}

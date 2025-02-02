@@ -1,7 +1,9 @@
 // Copyright (c) 2025 FRC 4400//
 package frc.robot;
 
+import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;

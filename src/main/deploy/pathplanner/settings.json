@@ -1,9 +1,13 @@
 {
-  "robotWidth": 0.635,
-  "robotLength": 0.826,
+  "robotWidth": 0.775,
+  "robotLength": 0.927,
   "holonomicMode": true,
-  "pathFolders": [],
-  "autoFolders": [],
+  "pathFolders": [
+    "3CoralAutoTest"
+  ],
+  "autoFolders": [
+    "WorkShopAutos"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
@@ -12,7 +16,7 @@
   "robotMass": 56.699,
   "robotMOI": 6.883,
   "robotTrackwidth": 0.5588,
-  "driveWheelRadius": 0.05504,
+  "driveWheelRadius": 0.0508,
   "driveGearing": 7.363636,
   "maxDriveSpeed": 6.9,
   "driveMotorType": "krakenX60",
