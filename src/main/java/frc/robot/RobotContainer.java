@@ -22,7 +22,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.Util.CustomDashboardUtil;
@@ -33,7 +35,9 @@ import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
+import frc.robot.Commands.IntakeCommand.ElevatorCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequence1;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
 import frc.robot.Subsystems.Climber.ClimberIOKraken;
@@ -78,7 +82,7 @@ public class RobotContainer {
 
   /* Set up for utils */
   public static Field2d autoFieldPreview = new Field2d();
-  public CustomDashboardUtil m_dashboard = new CustomDashboardUtil();
+  public static CustomDashboardUtil m_dashboard = new CustomDashboardUtil();
   private final Telemetry logger = new Telemetry(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
 
   public RobotContainer() {
@@ -133,7 +137,7 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-   
+  /* Chassis commands */
     m_drive.setDefaultCommand(
       new FieldCentricDrive(
           m_drive,
@@ -141,38 +145,37 @@ public class RobotContainer {
            ()-> -chassisDriver.getLeftX(), 
            ()-> -chassisDriver.getRightX()));
 
+
   /*chassisDriver.leftBumper().onTrue(
       new ParallelRaceGroup(
           pathFindAndAlignCommand(()->m_dashboard.getReefSelected()),
            new SequentialCommandGroup(new WaitCommand(1),
             new WaitCommand(10000).until(()->isJoystickActive()))));*/
 
-  chassisDriver.button(7).onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
+  chassisDriver.back().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
 
-    //elevador pos
-    chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
+  m_drive.registerTelemetry(logger::telemeterize);
 
-    chassisDriver.povLeft().onTrue(m_elevator.goToPosition(.15));
+    /* Elevator Commands */
+  m_elevator.setDefaultCommand(new ElevatorCommand(m_elevator,m_dashboard));
 
-    chassisDriver.b().onTrue(m_elevator.goToPosition(0.4));
+  chassisDriver.a().onTrue(m_elevator.goToPosition(()-> 0.0));
 
-    chassisDriver.x().onTrue(m_elevator.goToPosition(.91));
+    /* Climber Commands */
+  chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
 
-    chassisDriver.y().onTrue(m_elevator.goToPosition(1.67));
+  chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.5)).whileFalse(m_climber.setClimberVoltage(0));
 
-
-    chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
-
-    chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.5)).whileFalse(m_climber.setClimberVoltage(0));
-
-
-    //climber power
+  /* Intake Commands */
     chassisDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
-    chassisDriver.leftBumper().whileTrue(m_intake.setVoltageCommand(0.3, 0.3)).whileFalse(m_intake.setVoltageCommand(0,0));
 
-    chassisDriver.povRight().whileTrue(m_intake.setVoltageCommand(.15,.35)).whileFalse(m_intake.setVoltageCommand(0, 0));
+    chassisDriver.leftBumper().whileTrue(
+      new ConditionalCommand(
+        m_intake.setVoltageCommand(0.15,0.35),
+        m_intake.setVoltageCommand(0.3, 0.3), 
+      ()-> m_dashboard.getLevelEntry() == 0))
+      .whileFalse(m_intake.setVoltageCommand(0, 0));
 
-    m_drive.registerTelemetry(logger::telemeterize);
   }
 
   public static Command pathFindAndAlignCommand(Supplier<Integer> val) {
@@ -236,8 +239,8 @@ public class RobotContainer {
   }
 
   private void enableNamedCommands(){
-    NamedCommands.registerCommand("ElevatorL4", m_elevator.goToPosition(1.67));
-    NamedCommands.registerCommand("Elevator0", m_elevator.goToPosition(0));
+    NamedCommands.registerCommand("ElevatorL4", m_elevator.goToPosition(()->1.67));
+    NamedCommands.registerCommand("Elevator0", m_elevator.goToPosition(()-> 0.0));
     NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
     NamedCommands.registerCommand("IntakeCoral", new IntakeSequenceCommand(m_intake));
   } 
@@ -261,6 +264,14 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+  }
+
+  public static ElevatorSubsystem getElevatorSubsystem(){
+    return m_elevator;
+  }
+
+  public static CustomDashboardUtil getDashboardUtil(){
+    return m_dashboard;
   }
 
 }

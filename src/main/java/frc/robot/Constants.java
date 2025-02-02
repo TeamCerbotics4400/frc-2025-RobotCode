@@ -138,6 +138,8 @@ public class Constants {
         public static final int leftIntakeMotorId = 51;
         public static final int rightIntakeMotorId = 41;
         public static final int laserCanId = 35;
+
+        
     }
 
     public static final class ElevatorConstants{
@@ -156,6 +158,13 @@ public class Constants {
 
         public static final double maxVelElevator = 1.75,
                                    maxAccElevator = 0.75;
+
+        public static final double [] elevatorPosition = {
+          0.15, //L1
+          0.4,  //L2
+          0.91, //L3
+          1.67  //L4
+        };
     }
 
     public static final class ClimberConstants{
