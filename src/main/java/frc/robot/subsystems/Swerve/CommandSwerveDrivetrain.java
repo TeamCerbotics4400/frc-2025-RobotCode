@@ -282,7 +282,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
               });
     }
-    this.filterOutOfFieldData();
   }
 
   private void startSimThread() {

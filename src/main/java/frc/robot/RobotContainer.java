@@ -114,8 +114,6 @@ public class RobotContainer {
         break;
     }
 
-    
-    
     enableNamedCommands();
   /* Path follower */
     autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
