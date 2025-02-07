@@ -24,20 +24,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
-import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Commands.FieldCentricDrive;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
-import frc.robot.Commands.IntakeCommand.IntakeSequence1;
 import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
@@ -146,8 +141,8 @@ public class RobotContainer {
     m_drive.setDefaultCommand(
       new FieldCentricDrive(
           m_drive,
-           ()-> -chassisDriver.getLeftY(),
-           ()-> -chassisDriver.getLeftX(), 
+           ()-> chassisDriver.getLeftY(),
+           ()-> chassisDriver.getLeftX(), 
            ()-> -chassisDriver.getRightX()));
 
 

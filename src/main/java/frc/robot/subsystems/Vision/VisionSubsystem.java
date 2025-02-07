@@ -8,13 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.Util.LimelightHelpers;
+import frc.Util.LimelightHelpers.PoseEstimate;
 import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 
 import org.littletonrobotics.junction.Logger;
-
-import com.ctre.phoenix6.Utils;
 
 public class VisionSubsystem extends SubsystemBase {
 
@@ -23,18 +22,19 @@ public class VisionSubsystem extends SubsystemBase {
   private String limelightNames;
   private double averageTagDistance = 0.0;
   private static LimelightHelpers.PoseEstimate mt2;
+  private static LimelightHelpers.PoseEstimate oldMt = new PoseEstimate();
 
   public VisionSubsystem(CommandSwerveDrivetrain m_drive, String limelightNames) {
     this.m_drive = m_drive;
     this.limelightNames = limelightNames;
     mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames);
-
-    LimelightHelpers.SetRobotOrientation(
-      limelightNames, m_drive.getPigeon2().getYaw().getValueAsDouble(), 0, 0, 0, 0, 0);
   }
 
   @Override
   public void periodic() {
+
+    LimelightHelpers.SetRobotOrientation(
+      limelightNames, m_drive.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
 
     int tagsDetected = LimelightHelpers.getTargetCount(limelightNames);
 
@@ -61,7 +61,9 @@ public class VisionSubsystem extends SubsystemBase {
 
   public void odometryWithVision(String limelightName, double xySTD, double thetaSTD) {
     if (LimelightHelpers.getTV(limelightName)) {
-      LimelightHelpers.PoseEstimate oldMt = mt2;
+      if(mt2 != null){
+        oldMt = mt2;
+      }
       boolean doRejectUpdate = false;
      
       mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
@@ -86,16 +88,15 @@ public class VisionSubsystem extends SubsystemBase {
         doRejectUpdate = true;
       }
 
-      if (Math.abs(oldMt.pose.getX() - mt2.pose.getX()) > 0.5
-          || Math.abs(oldMt.pose.getY() - mt2.pose.getY()) > 0.5) {
+      if (Math.abs(oldMt.pose.getX() - mt2.pose.getX()) > 0.2
+          || Math.abs(oldMt.pose.getY() - mt2.pose.getY()) > 0.2) {
         doRejectUpdate = true;
       }
 
       if (!doRejectUpdate) {
-        m_drive.setVisionMeasurementStdDevs(VecBuilder.fill(xySTD, xySTD, 100000000));
+        m_drive.setVisionMeasurementStdDevs(VecBuilder.fill(xySTD, xySTD, 9999999));
             m_drive.addVisionMeasurement(
-               new Pose2d(mt2.pose.getX(),mt2.pose.getY()
-               ,new Rotation2d()), Utils.fpgaToCurrentTime(mt2.timestampSeconds));
+               mt2.pose, mt2.timestampSeconds);
       }
       SmartDashboard.putBoolean("Rejected Update", doRejectUpdate);
     }
@@ -110,4 +111,6 @@ public class VisionSubsystem extends SubsystemBase {
             this);
     return ejecutable;
   }
+
+  
 }

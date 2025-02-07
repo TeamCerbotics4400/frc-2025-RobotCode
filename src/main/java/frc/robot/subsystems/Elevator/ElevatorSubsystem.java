@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.ElevatorConstants.*;
 
-import java.util.function.Supplier;
-
 public class ElevatorSubsystem extends SubsystemBase {
 
   private final ElevatorIO io;
