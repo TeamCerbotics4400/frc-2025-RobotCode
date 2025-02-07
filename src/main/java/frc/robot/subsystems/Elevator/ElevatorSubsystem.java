@@ -94,6 +94,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     return m_controller;
   }
 
+  public double getPosition(){
+    return inputs.elevatorPosition;
+  }
+
   public Command goToPosition(Double position) {
     Command ejecutable =
         Commands.runOnce(

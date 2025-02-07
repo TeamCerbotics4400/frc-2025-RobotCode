@@ -39,6 +39,7 @@ import frc.robot.Commands.IntakeCommand.IntakeSequence1;
 import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
 import frc.robot.Subsystems.Climber.ClimberIOKraken;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
@@ -50,6 +51,7 @@ import frc.robot.Subsystems.Intake.IntakeIOKraken;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.Swerve.TunerConstants;
+import frc.robot.Subsystems.Vision.VisionSubsystem;
 
 import java.util.Set;
 import java.util.function.Supplier;
@@ -76,6 +78,9 @@ public class RobotContainer {
   /* Climber */
   public static final ClimberIO climberIO = new ClimberIOKraken();
   public static ClimberSubsystem m_climber;
+
+  /* Vision */
+  public static VisionSubsystem m_vision = new VisionSubsystem(m_drive, VisionConstants.tagLimelightName);
 
   /* Chooser for autonomous */
   private final SendableChooser<AutoCommand> autoChooser = new SendableChooser<>();
@@ -180,7 +185,7 @@ public class RobotContainer {
       new ConditionalCommand(
         m_intake.setVoltageCommand(0.15,0.35),
         m_intake.setVoltageCommand(0.83, 0.83), 
-      ()-> m_dashboard.getLevelEntry() == 0))
+      ()-> m_elevator.getPosition() < 0.3))
       .whileFalse(m_intake.setVoltageCommand(0, 0));
 
   }
