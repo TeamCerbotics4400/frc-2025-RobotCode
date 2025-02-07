@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.Util.CustomDashboardUtil;
-import frc.robot.Constants.ElevatorConstants;
 
 import static frc.robot.Constants.ElevatorConstants.*;
 
@@ -28,7 +26,6 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final ElevatorIO io;
   private final ElevatorInputsAutoLogged inputs = new ElevatorInputsAutoLogged();
   private boolean enablePID = false;
-  private static CustomDashboardUtil util = new CustomDashboardUtil();
 
     /*Set the Maximun velocity and acceleration, needs to be tuned according to your robot*/
     private final TrapezoidProfile.Constraints m_profile = new TrapezoidProfile.Constraints(maxVelElevator, maxAccElevator);
@@ -66,7 +63,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     Logger.recordOutput("Elevator/Is within Threshold", isInPosition());
 
     if(enablePID){
-    
         io.setVoltage(
           m_controller.calculate(inputs.elevatorPosition),
            m_ElevatorFeedforward.calculate(m_controller.getSetpoint().position, m_controller.getSetpoint().velocity));
@@ -98,12 +94,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     return m_controller;
   }
 
-  public Command goToPosition(Supplier<Double> position) {
+  public Command goToPosition(Double position) {
     Command ejecutable =
         Commands.runOnce(
             () -> {
               getController().reset(inputs.elevatorPosition);
-              m_controller.setGoal(position.get());
+              m_controller.setGoal(position);
               enablePID = true;
             },
             this);

@@ -4,7 +4,6 @@
 
 package frc.robot.Commands.IntakeCommand;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
 
@@ -12,7 +11,6 @@ import frc.robot.Subsystems.Intake.IntakeSubsystem;
 public class IntakeSequence1 extends Command {
   /** Creates a new IntakeCommand. */
   IntakeSubsystem m_intake;
-  Timer timer = new Timer();
   boolean safePiece = false;
   public IntakeSequence1(IntakeSubsystem m_intake) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,9 +21,7 @@ public class IntakeSequence1 extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    timer.reset();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -33,12 +29,7 @@ public class IntakeSequence1 extends Command {
     m_intake.setVoltageVoid(0.4, 0.4);
 
     if(m_intake.hasGamePieceInside()){
-      timer.start();
-    }
-
-    if(timer.hasElapsed(0.0) && timer.isRunning()){
       safePiece = true;
-      timer.stop();
     }
     else{
       safePiece = false;

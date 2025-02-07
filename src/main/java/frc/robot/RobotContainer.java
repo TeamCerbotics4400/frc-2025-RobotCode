@@ -29,14 +29,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
+import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Commands.FieldCentricDrive;
-import frc.robot.Commands.IntakeSequenceCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
-import frc.robot.Commands.IntakeCommand.ElevatorCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequence1;
+import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
@@ -108,6 +108,8 @@ public class RobotContainer {
       m_climber = new ClimberSubsystem(climberIO);
         break;
     }
+
+    
     
     enableNamedCommands();
   /* Path follower */
@@ -157,9 +159,14 @@ public class RobotContainer {
   m_drive.registerTelemetry(logger::telemeterize);
 
     /* Elevator Commands */
-  m_elevator.setDefaultCommand(new ElevatorCommand(m_elevator,m_dashboard));
+  
+  subsystemsDriver.a().onTrue(m_elevator.goToPosition(.15));
+  subsystemsDriver.b().onTrue(m_elevator.goToPosition(.4));
+  subsystemsDriver.x().onTrue(m_elevator.goToPosition(.91));
+  subsystemsDriver.y().onTrue(m_elevator.goToPosition(1.67));
+  
+  chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
 
-  chassisDriver.a().onTrue(m_elevator.goToPosition(()-> 0.0));
 
     /* Climber Commands */
   chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
@@ -167,12 +174,12 @@ public class RobotContainer {
   chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.5)).whileFalse(m_climber.setClimberVoltage(0));
 
   /* Intake Commands */
-    chassisDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
+    subsystemsDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
 
     chassisDriver.leftBumper().whileTrue(
       new ConditionalCommand(
         m_intake.setVoltageCommand(0.15,0.35),
-        m_intake.setVoltageCommand(0.3, 0.3), 
+        m_intake.setVoltageCommand(0.83, 0.83), 
       ()-> m_dashboard.getLevelEntry() == 0))
       .whileFalse(m_intake.setVoltageCommand(0, 0));
 
@@ -239,8 +246,8 @@ public class RobotContainer {
   }
 
   private void enableNamedCommands(){
-    NamedCommands.registerCommand("ElevatorL4", m_elevator.goToPosition(()->1.67));
-    NamedCommands.registerCommand("Elevator0", m_elevator.goToPosition(()-> 0.0));
+    NamedCommands.registerCommand("ElevatorL4", m_elevator.goToPosition(1.67));
+    NamedCommands.registerCommand("Elevator0", m_elevator.goToPosition( 0.0));
     NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
     NamedCommands.registerCommand("IntakeCoral", new IntakeSequenceCommand(m_intake));
   } 
@@ -273,5 +280,4 @@ public class RobotContainer {
   public static CustomDashboardUtil getDashboardUtil(){
     return m_dashboard;
   }
-
 }
