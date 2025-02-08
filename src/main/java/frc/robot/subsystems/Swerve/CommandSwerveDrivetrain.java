@@ -32,6 +32,8 @@ import frc.robot.Subsystems.Swerve.TunerConstants.TunerSwerveDrivetrain;
 
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements Subsystem so it can easily
  * be used in command-based projects.
@@ -202,11 +204,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                       .withSpeeds(speeds)
                       .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
                       .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())),
-          new PPHolonomicDriveController(
+          new frc.Util.PPCode.PPHolonomicDriveController(
               // PID constants for translation
-              new PIDConstants(10, 0, 0),
+              new PIDConstants(3.4, 0, 0.0),
               // PID constants for rotation
-              new PIDConstants(7, 0, 0)),
+              new PIDConstants(0.6, 0, 0)),
           config,
           // Assume the path needs to be flipped for Red vs Blue, this is normally the case
           () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
@@ -251,6 +253,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   }
 
   public Command goToPose(Pose2d pose) {
+    Logger.recordOutput("Swerve/Target Position", pose);
     return AutoBuilder.pathfindToPose(pose, constraints, 0.0);
   }
 
@@ -282,6 +285,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
               });
     }
+
+    Logger.recordOutput("Rotation Swerve rad", this.getState().Pose.getRotation().getRadians());
   }
 
   private void startSimThread() {

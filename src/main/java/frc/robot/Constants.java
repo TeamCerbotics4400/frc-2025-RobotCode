@@ -1,11 +1,23 @@
 // Copyright (c) 2025 FRC 4400//
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pathplanner.lib.util.FlippingUtil;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Filesystem;
 
 public class Constants {
 
@@ -78,18 +90,18 @@ public class Constants {
     */
 
     public static final Pose2d[] blueSidePositions = {
-        new Pose2d(3.078, 4.195, new Rotation2d()), // A
-        new Pose2d(3.078, 3.859, new Rotation2d()), // B
-        new Pose2d(3.625, 2.860, new Rotation2d()), // C
-        new Pose2d(3.925, 2.694, new Rotation2d()), // D
-        new Pose2d(5.039, 2.725, new Rotation2d()), // E
-        new Pose2d(5.348, 2.869, new Rotation2d()), // F
-        new Pose2d(5.900, 3.859, new Rotation2d()), // G
-        new Pose2d(5.900, 4.195, new Rotation2d()), // H
-        new Pose2d(5.338, 5.181, new Rotation2d()), // I
-        new Pose2d(5.060, 5.356, new Rotation2d()), // J
-        new Pose2d(3.914, 5.377, new Rotation2d()), // K
-        new Pose2d(3.615, 5.202, new Rotation2d())  // L
+        new Pose2d(3.078, 4.195, new Rotation2d(Units.degreesToRadians(0))), // A
+        new Pose2d(3.078, 3.859, new Rotation2d(Units.degreesToRadians(0))), // B
+        new Pose2d(3.625, 2.860, new Rotation2d(Units.degreesToRadians(-120))), // C
+        new Pose2d(3.925, 2.694, new Rotation2d(Units.degreesToRadians(-120))), // D
+        new Pose2d(5.039, 2.725, new Rotation2d(Units.degreesToRadians(-60))), // E
+        new Pose2d(5.27, 2.99, new Rotation2d(Units.degreesToRadians(-60))), // F   5
+        new Pose2d(5.900, 3.859, new Rotation2d(Units.degreesToRadians(0))), // G
+        new Pose2d(5.900, 4.195, new Rotation2d(Units.degreesToRadians(-0))), // H
+        new Pose2d(5.31, 5.181, new Rotation2d(Units.degreesToRadians(60))), // I  8
+        new Pose2d(5.060, 5.356, new Rotation2d(Units.degreesToRadians(60))), // J
+        new Pose2d(3.914, 5.377, new Rotation2d(Units.degreesToRadians(120))), // K
+        new Pose2d(3.615, 5.202, new Rotation2d(Units.degreesToRadians(120)))  // L
     };
 
     public static final Pose2d[] redSidePositions = {
@@ -112,6 +124,7 @@ public class Constants {
   public static final double startingLineX =
       Units.inchesToMeters(299.438); // Measured from the inside of starting line
   }
+
 
   
       /*
@@ -172,6 +185,7 @@ public class Constants {
     }
 
     public static final class VisionConstants {
+      public static final int aprilTagCount = 22;
 
       public static final String neuralLimelight = "limelight-neural";
       public static final String tagLimelightName = "limelight-tags";
@@ -184,6 +198,16 @@ public class Constants {
           medium_Pipeline = 2,
           lower_Pipeline = 3;
 
+    // Cam mounted facing forward, half a meter forward of center, half a meter up from center,
+    // values are in meters.
+    public static final Pose3d kRobotToCam1 =   //LL that is below the elevator
+        new Pose3d(
+            Units.inchesToMeters(-7.5),0, Units.inchesToMeters(11),
+            new Rotation3d(
+                Units.degreesToRadians(0.0),
+                Units.degreesToRadians(0),
+                Units.degreesToRadians(180)));    
+
       /*   _________
        /   _____/__  __ ____   ____
        \_____  \\  \/ // __ \ /    \
@@ -191,5 +215,16 @@ public class Constants {
               \/  \_/  \___  >___|  /
                            \/     \/
               */
-    }
+  }
+  /*public static  AprilTagFieldLayout aprilTaglayout;
+{
+  try {
+    aprilTaglayout = new AprilTagFieldLayout(
+        Path.of(Filesystem.getDeployDirectory().getPath(), "apriltags", "2025-official" + ".json")
+    );
+} catch (IOException e) {
+    throw new RuntimeException("Failed to load AprilTagFieldLayout", e);
+}
+}
+*/
 }

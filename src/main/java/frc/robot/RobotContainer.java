@@ -24,6 +24,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
@@ -141,16 +144,17 @@ public class RobotContainer {
     m_drive.setDefaultCommand(
       new FieldCentricDrive(
           m_drive,
-           ()-> chassisDriver.getLeftY(),
-           ()-> chassisDriver.getLeftX(), 
-           ()-> -chassisDriver.getRightX()));
+           ()-> -chassisDriver.getLeftY(),
+           ()-> -chassisDriver.getLeftX(), 
+           ()-> chassisDriver.getRightX()));
 
 
-  /*chassisDriver.leftBumper().onTrue(
+  chassisDriver.y().onTrue(
       new ParallelRaceGroup(
           pathFindAndAlignCommand(()->m_dashboard.getReefSelected()),
            new SequentialCommandGroup(new WaitCommand(1),
-            new WaitCommand(10000).until(()->isJoystickActive()))));*/
+            new WaitCommand(10000).until(()->isJoystickActive()))));
+
 
   chassisDriver.back().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
 
@@ -195,7 +199,7 @@ public class RobotContainer {
                                     .Pose
                                     .getTranslation()
                                     .getDistance(FieldConstants.redSidePositions[val.get()].getTranslation())
-                                <= 2),
+                                <= 1),
                 m_drive
                     .goToPose(FieldConstants.blueSidePositions[val.get()])
                     .until(
@@ -205,7 +209,7 @@ public class RobotContainer {
                                     .Pose
                                     .getTranslation()
                                     .getDistance(FieldConstants.blueSidePositions[val.get()].getTranslation())
-                                <= 2),
+                                <= 1),
                 Robot::isRedAlliance)
             .andThen(
                 new DeferredCommand(
@@ -230,8 +234,8 @@ public class RobotContainer {
                           new PathPlannerPath(
                               bezierPoints,
                               new PathConstraints(
-                                  2.0,
-                                  3.0,
+                                      3.0,
+                                    3.0,
                                   Units.degreesToRadians(360),
                                   Units.degreesToRadians(360)),
                               null,
