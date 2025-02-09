@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0433261023226295,
-        "y": 6.490669611164611
+        "x": 2.1378676274909187,
+        "y": 6.482101835634817
       },
       "isLocked": false,
       "linkedName": "3Coral2"
     },
     {
       "anchor": {
-        "x": 3.75375,
-        "y": 5.1267499999999995
+        "x": 3.94,
+        "y": 5.24
       },
       "prevControl": {
-        "x": 3.2015524290165147,
-        "y": 5.563048072236872
+        "x": 3.2585436998057475,
+        "y": 5.670962894684916
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,19 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ElevatorL4",
-      "waypointRelativePos": 0.06848635235732359,
+      "name": "",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeCoral"
+        }
+      }
+    },
+    {
+      "name": "",
+      "waypointRelativePos": 0.18362282878411454,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -54,13 +65,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -58.833642546036984
+    "rotation": 122.834
   },
   "reversed": false,
   "folder": "3CoralAutoTest",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -53.67317404787973
+    "rotation": 124.67300000000002
   },
   "useDefaultConstraints": true
 }

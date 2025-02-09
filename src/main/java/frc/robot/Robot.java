@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.Util.CustomDashboardUtil;
+import frc.robot.Constants.FieldConstants;
 
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -79,7 +80,7 @@ public class Robot extends LoggedRobot {
         setUseTiming(false); // Run as fast as possible
         String logPath = LogFileUtil.findReplayLog();
         Logger.setReplaySource(new WPILOGReader(logPath));
-        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_replay")));
         break;
     }
 
@@ -103,6 +104,14 @@ public class Robot extends LoggedRobot {
 
     Logger.recordOutput("Dashboard/Reef Position", dashboardCustom.getReefSelected());
     Logger.recordOutput("Dashboard/Level selected", dashboardCustom.getLevelEntry());
+
+    Logger.recordOutput("Swerve distance from setpoint", RobotContainer.getSwerve()
+                                    .getState()
+                                    .Pose
+                                    .getTranslation()
+                                    .getDistance(FieldConstants.blueSidePositions[RobotContainer.getDashboardUtil().getReefSelected()].getTranslation()));
+
+    Logger.recordOutput("Swerve Position", RobotContainer.getSwerve().getState().Pose); 
   }
 
   @Override

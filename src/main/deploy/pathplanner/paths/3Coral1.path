@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 4.82625,
-        "y": 5.26325
+        "x": 4.96275,
+        "y": 5.155999999999999
       },
       "prevControl": {
-        "x": 5.564827015642989,
-        "y": 5.209255939820056
+        "x": 5.701327015642989,
+        "y": 5.102005939820055
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0.0724565756823834,
+      "waypointRelativePos": 0.02878411910669669,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -54,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -120.78414652632641
+    "rotation": 60.784
   },
   "reversed": false,
   "folder": "3CoralAutoTest",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

@@ -18,12 +18,19 @@ public class TestAuto extends AutoCommand {
   private final PathPlannerPath second;
   private final PathPlannerPath third;
   private final PathPlannerPath fourth;
+  private final PathPlannerPath five;
+  private final PathPlannerPath six;
+  private final PathPlannerPath seven;
+
 
   public TestAuto() {
     first = loadPath("3Coral1");
     second = loadPath("3Coral2");
     third = loadPath("3Coral3");
     fourth = loadPath("3Coral4");
+    five = loadPath("3Coral5");
+    six = loadPath("3Coral6");
+    seven = loadPath("3Coral7");
 
     addCommands(
         Commands.deadline(
@@ -46,7 +53,10 @@ public class TestAuto extends AutoCommand {
             safeGetPathPoses(first),
             safeGetPathPoses(second),
             safeGetPathPoses(third),
-            safeGetPathPoses(fourth))
+            safeGetPathPoses(fourth),
+            safeGetPathPoses(five),
+            safeGetPathPoses(six),
+            safeGetPathPoses(seven))
         .flatMap(Collection::stream)
         .collect(Collectors.toList());
   }

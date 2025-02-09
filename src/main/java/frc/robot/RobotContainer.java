@@ -35,6 +35,7 @@ import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
+import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
@@ -156,7 +157,7 @@ public class RobotContainer {
             new WaitCommand(10000).until(()->isJoystickActive()))));
 
 
-  chassisDriver.back().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
+  chassisDriver.back().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()).ignoringDisable(true));
 
   m_drive.registerTelemetry(logger::telemeterize);
 
@@ -181,48 +182,44 @@ public class RobotContainer {
     chassisDriver.leftBumper().whileTrue(
       new ConditionalCommand(
         m_intake.setVoltageCommand(0.15,0.35),
-        m_intake.setVoltageCommand(0.83, 0.83), 
+        m_intake.setVoltageCommand(0.6, 0.6), 
       ()-> m_elevator.getPosition() < 0.3))
       .whileFalse(m_intake.setVoltageCommand(0, 0));
 
   }
 
-  public static Command pathFindAndAlignCommand(Supplier<Integer> val) {
-    return Commands.sequence(
-        Commands.either(
-                m_drive
-                    .goToPose(FieldConstants.redSidePositions[val.get()])
-                    .until(
-                        () ->
-                            m_drive
-                                    .getState()
-                                    .Pose
-                                    .getTranslation()
-                                    .getDistance(FieldConstants.redSidePositions[val.get()].getTranslation())
-                                <= 1),
-                m_drive
-                    .goToPose(FieldConstants.blueSidePositions[val.get()])
-                    .until(
-                        () ->
-                            m_drive
-                                    .getState()
-                                    .Pose
-                                    .getTranslation()
-                                    .getDistance(FieldConstants.blueSidePositions[val.get()].getTranslation())
-                                <= 1),
-                Robot::isRedAlliance)
-            .andThen(
-                new DeferredCommand(
-                    () -> {
+    public static Command pathFindAndAlignCommand(Supplier<Integer> val) {
+      return Commands.sequence(
+          new DeferredCommand(
+              () -> Commands.either(
+                  m_drive
+                      .goToPose(() -> FieldConstants.redSidePositions[val.get()])
+                      .until(() -> 
+                          m_drive.getState().Pose.getTranslation()
+                              .getDistance(FieldConstants.redSidePositions[val.get()].getTranslation()) <= 1
+                      ),
+                  m_drive
+                      .goToPose(() -> FieldConstants.blueSidePositions[val.get()])
+                      .until(() -> 
+                          m_drive.getState().Pose.getTranslation()
+                              .getDistance(FieldConstants.blueSidePositions[val.get()].getTranslation()) <= 1
+                      ),
+                  Robot::isRedAlliance
+              ),
+              Set.of(m_drive)
+          )
+          .andThen(
+              new DeferredCommand(
+                  () -> {
                       Pose2d currentPose = m_drive.getState().Pose;
                       ChassisSpeeds currentSpeeds =
                           ChassisSpeeds.fromRobotRelativeSpeeds(
                               m_drive.getCurrentChassisSpeeds(), currentPose.getRotation());
-
+  
                       Rotation2d heading =
                           new Rotation2d(
                               currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
-
+  
                       Pose2d targetPose =
                           Robot.isRedAlliance()
                               ? FieldConstants.redSidePositions[val.get()]
@@ -234,22 +231,26 @@ public class RobotContainer {
                           new PathPlannerPath(
                               bezierPoints,
                               new PathConstraints(
-                                      3.0,
-                                    3.0,
+                                  1.0,
+                                  1.0,
                                   Units.degreesToRadians(360),
                                   Units.degreesToRadians(360)),
                               null,
                               new GoalEndState(0.0, targetPose.getRotation()));
                       path.preventFlipping = true;
-
+  
                       return AutoBuilder.followPath(path);
-                    },
-                    Set.of(m_drive))));
+                  },
+                  Set.of(m_drive)
+              )
+          )
+      );
+    
   }
 
   private void enableNamedCommands(){
-    NamedCommands.registerCommand("ElevatorL4", m_elevator.goToPosition(1.67));
-    NamedCommands.registerCommand("Elevator0", m_elevator.goToPosition( 0.0));
+    NamedCommands.registerCommand("ElevatorL4", new ElevatorAutoCommand(m_elevator, 1.67, m_intake));
+    NamedCommands.registerCommand("ElevatorL0", m_elevator.goToPosition( 0.0));
     NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
     NamedCommands.registerCommand("IntakeCoral", new IntakeSequenceCommand(m_intake));
   } 
@@ -281,5 +282,9 @@ public class RobotContainer {
 
   public static CustomDashboardUtil getDashboardUtil(){
     return m_dashboard;
+  }
+
+  public static CommandSwerveDrivetrain getSwerve(){
+    return m_drive;
   }
 }

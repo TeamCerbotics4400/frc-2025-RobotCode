@@ -7,6 +7,8 @@ import org.littletonrobotics.junction.Logger;
 
 public class IntakeSubsystem extends SubsystemBase {
 
+  public boolean finishedIntakeSequence = true;
+
   /*Io and inputs */
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
@@ -19,6 +21,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
+    Logger.recordOutput("Intake/Finished sequence", finishedIntakeSequence);
   }
 
   public void setVoltageVoid(double voltage, double leftVolt) {

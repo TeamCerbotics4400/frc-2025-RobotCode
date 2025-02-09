@@ -90,18 +90,18 @@ public class Constants {
     */
 
     public static final Pose2d[] blueSidePositions = {
-        new Pose2d(3.078, 4.195, new Rotation2d(Units.degreesToRadians(0))), // A
-        new Pose2d(3.078, 3.859, new Rotation2d(Units.degreesToRadians(0))), // B
+        new Pose2d(3.23, 4.18, new Rotation2d(Units.degreesToRadians(180))), // A                    Correct
+        new Pose2d(3.23, 3.82, new Rotation2d(Units.degreesToRadians(180))), // B                    Correct
         new Pose2d(3.625, 2.860, new Rotation2d(Units.degreesToRadians(-120))), // C
         new Pose2d(3.925, 2.694, new Rotation2d(Units.degreesToRadians(-120))), // D
         new Pose2d(5.039, 2.725, new Rotation2d(Units.degreesToRadians(-60))), // E
         new Pose2d(5.27, 2.99, new Rotation2d(Units.degreesToRadians(-60))), // F   5
-        new Pose2d(5.900, 3.859, new Rotation2d(Units.degreesToRadians(0))), // G
-        new Pose2d(5.900, 4.195, new Rotation2d(Units.degreesToRadians(-0))), // H
+        new Pose2d(5.900, 3.859, new Rotation2d(Units.degreesToRadians(0.1))), // G
+        new Pose2d(5.900, 4.195, new Rotation2d(Units.degreesToRadians(-0.1))), // H
         new Pose2d(5.31, 5.181, new Rotation2d(Units.degreesToRadians(60))), // I  8
         new Pose2d(5.060, 5.356, new Rotation2d(Units.degreesToRadians(60))), // J
-        new Pose2d(3.914, 5.377, new Rotation2d(Units.degreesToRadians(120))), // K
-        new Pose2d(3.615, 5.202, new Rotation2d(Units.degreesToRadians(120)))  // L
+        new Pose2d(4.09, 5.24, new Rotation2d(Units.degreesToRadians(120))), // K                    Correct 
+        new Pose2d(3.78, 5.01, new Rotation2d(Units.degreesToRadians(120)))  // L         Last one / Correct
     };
 
     public static final Pose2d[] redSidePositions = {

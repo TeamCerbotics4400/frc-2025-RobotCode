@@ -36,7 +36,7 @@ public class LeaveReefCommand extends Command {
       timer.start();
     }
 
-    if(timer.hasElapsed(0.7) && timer.isRunning()){
+    if(timer.hasElapsed(0.6) && timer.isRunning()){
       m_intake.setVoltageVoid(0.3, 0.3);
       timer.stop();
     }

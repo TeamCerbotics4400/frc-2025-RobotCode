@@ -206,9 +206,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                       .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())),
           new frc.Util.PPCode.PPHolonomicDriveController(
               // PID constants for translation
-              new PIDConstants(3.4, 0, 0.0),
+              new PIDConstants(3.7, 0, 0.0),
               // PID constants for rotation
-              new PIDConstants(0.6, 0, 0)),
+              new PIDConstants(1, 0, 0)),
           config,
           // Assume the path needs to be flipped for Red vs Blue, this is normally the case
           () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
@@ -252,9 +252,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return m_sysIdRoutineToApply.dynamic(direction);
   }
 
-  public Command goToPose(Pose2d pose) {
-    Logger.recordOutput("Swerve/Target Position", pose);
-    return AutoBuilder.pathfindToPose(pose, constraints, 0.0);
+  public Command goToPose(Supplier<Pose2d> pose) {
+    Logger.recordOutput("Swerve/Target Position", pose.get());
+    return AutoBuilder.pathfindToPose(pose.get(), constraints, 0.0);
   }
 
   public ChassisSpeeds getCurrentChassisSpeeds() {
@@ -287,6 +287,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     Logger.recordOutput("Rotation Swerve rad", this.getState().Pose.getRotation().getRadians());
+
   }
 
   private void startSimThread() {

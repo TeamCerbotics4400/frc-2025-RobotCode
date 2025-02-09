@@ -126,6 +126,6 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public boolean isInPosition(){
-    return isWithinThreshold(inputs.elevatorPosition, getController().getGoal().position, 0.3);
+    return isWithinThreshold(inputs.elevatorPosition, getController().getGoal().position, 0.27);
   }
 }
