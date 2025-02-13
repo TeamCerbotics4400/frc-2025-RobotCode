@@ -184,6 +184,12 @@ public class Constants {
         public static final int climberMotorId = 17;
     }
 
+    public static final class IntakeAlgaeConstants {
+      public static final int pivotAlgaeMotorId = 57;
+      public static final int rollerAlgaeMotorId = 59;
+    }
+
+
     public static final class VisionConstants {
       public static final int aprilTagCount = 22;
 

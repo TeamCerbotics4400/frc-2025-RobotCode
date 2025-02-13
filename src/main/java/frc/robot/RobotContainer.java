@@ -48,6 +48,9 @@ import frc.robot.Subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.Subsystems.Intake.IntakeIO;
 import frc.robot.Subsystems.Intake.IntakeIOKraken;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
+import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeIO;
+import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeIOKraken;
+import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem;
 import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.Swerve.TunerConstants;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
@@ -77,6 +80,10 @@ public class RobotContainer {
   /* Climber */
   public static final ClimberIO climberIO = new ClimberIOKraken();
   public static ClimberSubsystem m_climber;
+
+  /*IntakeAlgae */
+  public static final IntakeAlgaeIO intakeAlgaeIO = new IntakeAlgaeIOKraken();
+  public static IntakeAlgaeSubsystem m_algae;
 
   /* Vision */
   public static VisionSubsystem m_vision = new VisionSubsystem(m_drive, VisionConstants.tagLimelightName);
@@ -178,6 +185,14 @@ public class RobotContainer {
 
   /* Intake Commands */
     subsystemsDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
+
+    /*IntakeAlgae Commands */
+    subsystemsDriver.povUp().onTrue(m_algae.setVoltageCommandPiv(.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
+    subsystemsDriver.povDown().onTrue(m_algae.setVoltageCommandPiv(-0.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
+
+    subsystemsDriver.povLeft().onTrue(m_algae.setVoltageCommandRoll(.3)).whileFalse(m_algae.setVoltageCommandRoll(0));
+
+    
 
     chassisDriver.leftBumper().whileTrue(
       new ConditionalCommand(
