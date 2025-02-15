@@ -46,4 +46,5 @@ public class ClimberIOKraken implements ClimberIO {
     inputs.tempCelcius = climberMotor.getDeviceTemp().getValueAsDouble();
     inputs.position = climberMotor.getPosition().getValueAsDouble();
   }
+    
 }

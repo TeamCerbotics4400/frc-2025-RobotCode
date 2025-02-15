@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.IntakeAlgae;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -9,6 +10,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import au.grapplerobotics.LaserCan;
 import edu.wpi.first.units.measure.Velocity;
 import frc.robot.Constants;
+import frc.robot.Subsystems.Climber.ClimberIO.ClimberIOInputs;
 
 import static frc.robot.Constants.IntakeAlgaeConstants.*;
 
@@ -20,8 +22,8 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     private TalonFXConfiguration pivotConfig;
     private TalonFXConfiguration rollerConfig;
 
-    private final VelocityVoltage pivotVelocity = new VelocityVoltage(0);
-    private final VelocityVoltage rollerVelocity = new VelocityVoltage(0);
+
+    private final PositionVoltage m_positionVoltage = new PositionVoltage(0);
 
     public IntakeAlgaeIOKraken(){ 
 
@@ -54,6 +56,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     inputs.pivotMotorappliedVolts = pivotMotor.getMotorVoltage().getValueAsDouble();
     inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
     inputs.pivotCurrentRpms = pivotMotor.getVelocity().getValueAsDouble() * 60;
+    inputs.positionPiv = pivotMotor.getPosition().getValueAsDouble();
 
     inputs.rollerMotorappliedVolts = rollerMotor.getMotorVoltage().getValueAsDouble();
     inputs.rollerMotortempCelcius = rollerMotor.getDeviceTemp().getValueAsDouble();
@@ -70,14 +73,21 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
   }
     @Override
   public void setVelocityPiv(double pivotVell) {
-    pivotMotor.setControl(pivotVelocity.withVelocity(pivotVell));
+    pivotMotor.setControl(m_positionVoltage.withVelocity(pivotVell));
   }
-
+  /*Positions
+   *@Override
+  public void setPosition(double position) {
+    pivotMotor.setControl(m_positionVoltage.withPosition(position));
+  }
+   * }
+   */
   @Override
   public void stopMotors() {
     pivotMotor.stopMotor();
     rollerMotor.stopMotor();
   }
+ 
 
     
 }

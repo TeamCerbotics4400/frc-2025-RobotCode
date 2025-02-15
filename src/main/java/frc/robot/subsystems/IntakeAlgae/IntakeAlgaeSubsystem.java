@@ -38,6 +38,9 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
       public Command setVoltageCommandRoll(double rollerVolt) {
         return run(() -> io.setVoltagePiv(rollerVolt));
       }
+      public Command setPosition(double position){
+        return run(()-> io.setPositionPiv(position));
+      }
     
     
 }
