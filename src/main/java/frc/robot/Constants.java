@@ -4,18 +4,15 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pathplanner.lib.util.FlippingUtil;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 
@@ -24,7 +21,7 @@ public class Constants {
   public static final String rioCanbus = "rio";
   public static final String canivoreCanbus = "Swerve_Canivore";
 
-  public static Mode currentMode = Mode.SIM;
+  public static Mode currentMode = Mode.REAL;
   public static final boolean needToLog = true;
 
   public static enum Mode {
@@ -192,6 +189,7 @@ public class Constants {
 
     public static final class VisionConstants {
       public static final int aprilTagCount = 22;
+      public static final double targetLogTimeSecs = 0.1;
 
       public static final String neuralLimelight = "limelight-neural";
       public static final String tagLimelightName = "limelight-tags";
@@ -222,15 +220,12 @@ public class Constants {
                            \/     \/
               */
   }
-  /*public static  AprilTagFieldLayout aprilTaglayout;
-{
-  try {
-    aprilTaglayout = new AprilTagFieldLayout(
-        Path.of(Filesystem.getDeployDirectory().getPath(), "apriltags", "2025-official" + ".json")
-    );
-} catch (IOException e) {
-    throw new RuntimeException("Failed to load AprilTagFieldLayout", e);
-}
-}
-*/
+
+
+  public static AprilTagFields tagLayout = AprilTagFields.k2025ReefscapeWelded;
+  
+  public static  AprilTagFieldLayout aprilTaglayout  =  AprilTagFieldLayout.loadField(tagLayout);
+
+
+
 }

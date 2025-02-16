@@ -1,6 +1,8 @@
 package frc.robot.Subsystems.Vision;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -11,12 +13,18 @@ import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase {
     
     // Vision settings
     public boolean useVision = true;
+    private final Map<Integer, Double> lastTagDetectionTimes = new HashMap<>();
 
     // Subsystem & Limelight
     private final CommandSwerveDrivetrain m_drive;
@@ -55,6 +63,8 @@ public class VisionSubsystem extends SubsystemBase {
                            * Math.pow(averageTagDistance, 2) 
                            / ((tagsDetected == 0) ? 100 : tagsDetected);
 
+        lastTagDetectionTimes.put((int)LimelightHelpers.getFiducialID(limelightNames), Timer.getTimestamp());
+
         // Apply measurement standard deviations
         m_drive.setVisionMeasurementStdDevs(VecBuilder.fill(xyStdDev, xyStdDev, 9999999));
 
@@ -62,10 +72,21 @@ public class VisionSubsystem extends SubsystemBase {
         m_drive.filterOutOfFieldData();
         odometryWithVision(limelightNames, xyStdDev, thetaStdDev);
 
+    // Log target positions
+      List<Pose3d> allTagPoses = new ArrayList<>();
+      for (Map.Entry<Integer, Double> detectionEntry : lastTagDetectionTimes.entrySet()) {
+        if (Timer.getTimestamp() - detectionEntry.getValue() < VisionConstants.targetLogTimeSecs) {
+          Constants.aprilTaglayout
+              .getTagPose(detectionEntry.getKey())
+              .ifPresent(allTagPoses::add);
+        }
+      }
+
         Logger.recordOutput("Vision/Distance from tag", averageTagDistance);
         Logger.recordOutput("Vision/XY STD", xyStdDev);
         Logger.recordOutput("Vision/Theta STD", thetaStdDev);
         Logger.recordOutput("Vision/Using Vision", useVision);
+        Logger.recordOutput("Vision/TagPoses", allTagPoses.toArray(Pose3d[]::new));
     }
 
     public void odometryWithVision(String limelightName, double xySTD, double thetaSTD) {

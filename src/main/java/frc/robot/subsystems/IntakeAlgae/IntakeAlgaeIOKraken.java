@@ -2,16 +2,11 @@ package frc.robot.Subsystems.IntakeAlgae;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import au.grapplerobotics.LaserCan;
-import edu.wpi.first.units.measure.Velocity;
 import frc.robot.Constants;
-import frc.robot.Subsystems.Climber.ClimberIO.ClimberIOInputs;
-
 import static frc.robot.Constants.IntakeAlgaeConstants.*;
 
 public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {

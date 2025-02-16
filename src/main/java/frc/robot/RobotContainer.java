@@ -104,19 +104,22 @@ public class RobotContainer {
       case REAL:
         m_elevator = new ElevatorSubsystem(elevatorIO);
         m_intake = new IntakeSubsystem(intakeIO);
-      m_climber = new ClimberSubsystem(climberIO);
+        m_climber = new ClimberSubsystem(climberIO);
+        m_algae = new IntakeAlgaeSubsystem(intakeAlgaeIO);
         break;
       /* Configs to replay a log */
       case REPLAY:
         m_elevator = new ElevatorSubsystem(new ElevatorIO(){});
         m_intake = new IntakeSubsystem(new IntakeIO(){});
         m_climber = new ClimberSubsystem(new ClimberIO(){});
+        m_algae = new IntakeAlgaeSubsystem(new IntakeAlgaeIO(){});
       break;
       /* Default to just in case it somehow fails, lol */
       default:
-      m_elevator = new ElevatorSubsystem(elevatorIO);
-      m_intake = new IntakeSubsystem(intakeIO);
-      m_climber = new ClimberSubsystem(climberIO);
+        m_elevator = new ElevatorSubsystem(elevatorIO);
+        m_intake = new IntakeSubsystem(intakeIO);
+        m_climber = new ClimberSubsystem(climberIO);       
+        m_algae = new IntakeAlgaeSubsystem(intakeAlgaeIO);
         break;
     }
 
