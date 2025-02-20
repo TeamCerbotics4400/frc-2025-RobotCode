@@ -41,6 +41,7 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
 import frc.robot.Subsystems.Climber.ClimberIOKraken;
+import frc.robot.Subsystems.Climber.ClimberIOSparkMax;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOKraken;
@@ -78,7 +79,7 @@ public class RobotContainer {
   public static IntakeSubsystem m_intake;
 
   /* Climber */
-  public static final ClimberIO climberIO = new ClimberIOKraken();
+  public static final ClimberIO climberIO = new ClimberIOSparkMax();
   public static ClimberSubsystem m_climber;
 
   /*IntakeAlgae */
@@ -160,7 +161,7 @@ public class RobotContainer {
            ()-> chassisDriver.getRightX()));
 
 
-  chassisDriver.y().onTrue(
+  chassisDriver.start().onTrue(
       new ParallelRaceGroup(
           pathFindAndAlignCommand(()->m_dashboard.getReefSelected()),
            new SequentialCommandGroup(new WaitCommand(1),
@@ -173,34 +174,39 @@ public class RobotContainer {
 
     /* Elevator Commands */
   
-  subsystemsDriver.a().onTrue(m_elevator.goToPosition(.15));
-  subsystemsDriver.b().onTrue(m_elevator.goToPosition(.4));
-  subsystemsDriver.x().onTrue(m_elevator.goToPosition(.91));
-  subsystemsDriver.y().onTrue(m_elevator.goToPosition(1.67));
+  //subsystemsDriver.a().onTrue(m_elevator.goToPosition(.15));
+  chassisDriver.b().onTrue(m_elevator.goToPosition(.4));
+  chassisDriver.x().onTrue(m_elevator.goToPosition(.91));
+  chassisDriver.y().onTrue(m_elevator.goToPosition(1.74));
   
   chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
 
 
     /* Climber Commands */
-  chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
+   chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
 
   chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.5)).whileFalse(m_climber.setClimberVoltage(0));
 
   /* Intake Commands */
-    subsystemsDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
+  chassisDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
 
     /*IntakeAlgae Commands */
-    subsystemsDriver.povUp().onTrue(m_algae.setVoltageCommandPiv(.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
-    subsystemsDriver.povDown().onTrue(m_algae.setVoltageCommandPiv(-0.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
+    //va asia abajo
+  /*   chassisDriver.povUp().onTrue(m_algae.setVoltageCommandPiv(.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
 
-    subsystemsDriver.povLeft().onTrue(m_algae.setVoltageCommandRoll(.3)).whileFalse(m_algae.setVoltageCommandRoll(0));
+    //va acia el escalador
+    chassisDriver.povDown().onTrue(m_algae.setVoltageCommandPiv(-0.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
 
-    
+    //mete
+    chassisDriver.povLeft().onTrue(m_algae.setVoltageCommandRoll(.3)).whileFalse(m_algae.setVoltageCommandRoll(0));
+    //saca
+    chassisDriver.povRight().onTrue(m_algae.setVoltageCommandRoll(-.3)).whileFalse(m_algae.setVoltageCommandRoll(0));
 
+*/
     chassisDriver.leftBumper().whileTrue(
       new ConditionalCommand(
         m_intake.setVoltageCommand(0.15,0.35),
-        m_intake.setVoltageCommand(0.6, 0.6), 
+        m_intake.setVoltageCommand(0.3, 0.3), 
       ()-> m_elevator.getPosition() < 0.3))
       .whileFalse(m_intake.setVoltageCommand(0, 0));
 
@@ -211,16 +217,16 @@ public class RobotContainer {
           new DeferredCommand(
               () -> Commands.either(
                   m_drive
-                      .goToPose(() -> FieldConstants.redSidePositions[val.get()])
+                      .goToPose(() -> FieldConstants.blueCenterPosition[val.get()])   // RED VAL
                       .until(() -> 
                           m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.redSidePositions[val.get()].getTranslation()) <= 1
+                              .getDistance(FieldConstants.redSidePositions[val.get()].getTranslation()) <= 0.05
                       ),
                   m_drive
-                      .goToPose(() -> FieldConstants.blueSidePositions[val.get()])
+                      .goToPose(() -> FieldConstants.blueCenterPosition[val.get()])
                       .until(() -> 
                           m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.blueSidePositions[val.get()].getTranslation()) <= 1
+                              .getDistance(FieldConstants.blueSidePositions[val.get()].getTranslation()) <= 0.05
                       ),
                   Robot::isRedAlliance
               ),
@@ -249,8 +255,8 @@ public class RobotContainer {
                           new PathPlannerPath(
                               bezierPoints,
                               new PathConstraints(
-                                  1.0,
-                                  1.0,
+                                  2.0,
+                                  2.0,
                                   Units.degreesToRadians(360),
                                   Units.degreesToRadians(360)),
                               null,

@@ -12,7 +12,7 @@ import static frc.robot.Constants.ClimberConstants.*;
 
 public class ClimberIOKraken implements ClimberIO {
 
-  private final TalonFX climberMotor = new TalonFX(climberMotorId, Constants.rioCanbus);
+  private final TalonFX climberMotor = new TalonFX(CLIMBERKRAKENID, Constants.rioCanbus);
   private final TalonFXConfiguration climberConfig = new TalonFXConfiguration();
 
   private final PositionVoltage m_positionVoltage = new PositionVoltage(0);

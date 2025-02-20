@@ -36,7 +36,7 @@ public class IntakeSequence3 extends Command {
       timer.start();
     }
 
-    if(timer.hasElapsed(0.3) && timer.isRunning()){
+    if(timer.hasElapsed(0.4) && timer.isRunning()){
       safePiece = true;
       timer.stop();
     }

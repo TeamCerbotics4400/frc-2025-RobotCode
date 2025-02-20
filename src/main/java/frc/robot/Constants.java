@@ -84,11 +84,32 @@ public class Constants {
     * J: (X = 5.060, Y = 5.356, θ = 240.0°)
     * K: (X = 3.914, Y = 5.377, θ = 300.0°)
     * L: (X = 3.615, Y = 5.202, θ = 300.0°)
+
+
+    Middle AB = 3.10, 4.01
+    Middle CD = 3.64, 2.56
     */
+    
+    public static final Pose2d[] blueCenterPosition = {
+      new Pose2d(2.8, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(2.8, 4.01, new Rotation2d(Units.degreesToRadians(180))),   //FINISHED CENTER LINE
+      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),    //FINISHED CENTER LINE
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),  
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),                            
+          };
 
     public static final Pose2d[] blueSidePositions = {
-        new Pose2d(3.23, 4.18, new Rotation2d(Units.degreesToRadians(180))), // A                    Correct
-        new Pose2d(3.23, 3.82, new Rotation2d(Units.degreesToRadians(180))), // B                    Correct
+        new Pose2d(3.17, 4.17, new Rotation2d(Units.degreesToRadians(180))), // A                    Correct
+        new Pose2d(3.19, 3.82, new Rotation2d(Units.degreesToRadians(180))), // B                    Correct
         new Pose2d(3.625, 2.860, new Rotation2d(Units.degreesToRadians(-120))), // C
         new Pose2d(3.925, 2.694, new Rotation2d(Units.degreesToRadians(-120))), // D
         new Pose2d(5.039, 2.725, new Rotation2d(Units.degreesToRadians(-60))), // E
@@ -127,7 +148,7 @@ public class Constants {
       /*
        *                   F
        *   ┌───────┬─────────────────┬───────┐
-       *   │       │       intake    │       │
+       *   │       │ elevator/intake │       │
        *   │ Mod 0 │                 │ Mod 1 │
        *   │       │                 │       │
        *   ├───────┘                 └───────┤
@@ -140,7 +161,7 @@ public class Constants {
        *   ├───────┐                 ┌───────┤
        *   │       │                 │       │
        *   │ Mod 3 │                 │ Mod 2 │
-       *   │       │      arm        │       │
+       *   │       │enter coral      │       │
        *   └───────┴─────────────────┴───────┘
        *                  B
        */
@@ -158,7 +179,7 @@ public class Constants {
         public static final int encoderPortId1 = 9;  //A
         public static final int encoderPortId2 = 8;  //B
 
-        public static final double kP = 2.3,
+        public static final double kP = 2.5,
                                    kD = 0,
                                    kI = 0,
                                    kS = 0,
@@ -178,12 +199,14 @@ public class Constants {
     }
 
     public static final class ClimberConstants{
-        public static final int climberMotorId = 17;
+        public static final int CLIMBERKRAKENID = 53;
+        public static final int CLIMBERSPARKMAXID = 40;
+
     }
 
     public static final class IntakeAlgaeConstants {
-      public static final int pivotAlgaeMotorId = 57;
-      public static final int rollerAlgaeMotorId = 59;
+      public static final int pivotAlgaeMotorId = 17;
+      public static final int rollerAlgaeMotorId = 50;
     }
 
 
@@ -192,7 +215,7 @@ public class Constants {
       public static final double targetLogTimeSecs = 0.1;
 
       public static final String neuralLimelight = "limelight-neural";
-      public static final String tagLimelightName = "limelight-tags";
+      public static final String tagLimelightName = "limelight-lowtag";
 
     public static double xyStdDevCoefficient = 0.2;
     public static double thetaStdDevCoefficient = 0.4;

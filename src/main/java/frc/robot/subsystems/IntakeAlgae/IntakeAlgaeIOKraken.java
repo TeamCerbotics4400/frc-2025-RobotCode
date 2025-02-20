@@ -25,6 +25,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     pivotConfig = new TalonFXConfiguration();
     rollerConfig = new TalonFXConfiguration();
 
+    pivotConfig.Feedback.FeedbackRemoteSensorID = 12;
     pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     pivotConfig.CurrentLimits.StatorCurrentLimit = 60;
     pivotConfig.MotorOutput.withInverted(InvertedValue.Clockwise_Positive);
