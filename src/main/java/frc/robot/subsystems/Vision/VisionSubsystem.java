@@ -85,7 +85,7 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput("Vision/Distance from tag", averageTagDistance);
         Logger.recordOutput("Vision/XY STD", xyStdDev);
         Logger.recordOutput("Vision/Theta STD", thetaStdDev);
-        Logger.recordOutput("Vision/Using Vision", useVision);
+        Logger.recordOutput("Vision/Tag detected", LimelightHelpers.getFiducialID(limelightNames));
         Logger.recordOutput("Vision/TagPoses", allTagPoses.toArray(Pose3d[]::new));
     }
 

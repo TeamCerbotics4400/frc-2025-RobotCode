@@ -6,6 +6,8 @@ package frc.robot.Subsystems.Elevator;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.SignalLogger;
+
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -16,7 +18,9 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
+import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.Constants.ElevatorConstants.*;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -57,13 +61,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     Logger.processInputs("Elevator", inputs);
     Logger.recordOutput("Elevator/Value Error", m_controller.getPositionError());
     Logger.recordOutput("Elevator/Setpoint", m_controller.getSetpoint().position);
-    Logger.recordOutput("Elevator/PID output", m_controller.calculate(inputs.elevatorPosition));
+    Logger.recordOutput("Elevator/PID output", m_controller.calculate(inputs.elevatorPosition) +
+               m_ElevatorFeedforward.calculate(m_controller.getSetpoint().position, m_controller.getSetpoint().velocity));
     Logger.recordOutput("Elevator/Is within Threshold", isInPosition());
 
     if(enablePID){
         io.setVoltage(
           m_controller.calculate(inputs.elevatorPosition),
-           m_ElevatorFeedforward.calculate(m_controller.getSetpoint().position, m_controller.getSetpoint().velocity));
+           m_ElevatorFeedforward.calculate(m_controller.getSetpoint().velocity));
     }
 
     if(DriverStation.isDisabled()){
@@ -121,11 +126,34 @@ public class ElevatorSubsystem extends SubsystemBase {
     return run (()-> io.setVoltage(volts, 0));
   }
 
+  public void setVoltageVoid(double volts){
+    io.setVoltage(volts, 0);
+  }
+
   public boolean isWithinThreshold(double value, double target, double threshold){
     return Math.abs(value - target) < threshold;
   }
 
   public boolean isInPosition(){
     return isWithinThreshold(inputs.elevatorPosition, getController().getGoal().position, 0.27);
+  }
+
+  private final SysIdRoutine m_sysIdRoutinrElevator =
+      new SysIdRoutine(
+          new SysIdRoutine.Config(
+              null, // Use default ramp rate (1 V/s)
+              Volts.of(4), // Use dynamic voltage of 7 V
+              null, // Use default timeout (10 s)
+              // Log state with SignalLogger class
+              state -> SignalLogger.writeString("SysIdElevator_State", state.toString())),
+          new SysIdRoutine.Mechanism(
+              (voltage) -> setVoltageVoid(voltage.in(Volts)), null, this));
+  
+  public Command sysIdQuasistaticElevator(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutinrElevator.quasistatic(direction);
+  }
+
+  public Command sysIdDynamicElevator(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutinrElevator.dynamic(direction);
   }
 }

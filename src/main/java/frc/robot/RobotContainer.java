@@ -175,8 +175,8 @@ public class RobotContainer {
     /* Elevator Commands */
   
   //subsystemsDriver.a().onTrue(m_elevator.goToPosition(.15));
-  chassisDriver.b().onTrue(m_elevator.goToPosition(.4));
-  chassisDriver.x().onTrue(m_elevator.goToPosition(.91));
+  chassisDriver.b().onTrue(m_elevator.goToPosition(.44));
+  chassisDriver.x().onTrue(m_elevator.goToPosition(.94));
   chassisDriver.y().onTrue(m_elevator.goToPosition(1.74));
   
   chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
@@ -211,6 +211,8 @@ public class RobotContainer {
       .whileFalse(m_intake.setVoltageCommand(0, 0));
 
   }
+
+  
 
     public static Command pathFindAndAlignCommand(Supplier<Integer> val) {
       return Commands.sequence(
@@ -255,8 +257,8 @@ public class RobotContainer {
                           new PathPlannerPath(
                               bezierPoints,
                               new PathConstraints(
-                                  2.0,
-                                  2.0,
+                                  3.0,
+                                  3.0,
                                   Units.degreesToRadians(360),
                                   Units.degreesToRadians(360)),
                               null,

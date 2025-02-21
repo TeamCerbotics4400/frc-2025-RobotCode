@@ -91,10 +91,10 @@ public class Constants {
     */
     
     public static final Pose2d[] blueCenterPosition = {
-      new Pose2d(2.8, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(2.8, 4.01, new Rotation2d(Units.degreesToRadians(180))),   //FINISHED CENTER LINE
+      new Pose2d(2.95, 4.28, new Rotation2d(Units.degreesToRadians(180))),
+      new Pose2d(2.95, 3.79, new Rotation2d(Units.degreesToRadians(180))),   
       new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),    //FINISHED CENTER LINE
+      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),   
       new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
       new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),  
       new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
@@ -108,18 +108,18 @@ public class Constants {
           };
 
     public static final Pose2d[] blueSidePositions = {
-        new Pose2d(3.17, 4.17, new Rotation2d(Units.degreesToRadians(180))), // A                    Correct
-        new Pose2d(3.19, 3.82, new Rotation2d(Units.degreesToRadians(180))), // B                    Correct
-        new Pose2d(3.625, 2.860, new Rotation2d(Units.degreesToRadians(-120))), // C
-        new Pose2d(3.925, 2.694, new Rotation2d(Units.degreesToRadians(-120))), // D
+        new Pose2d(3.30, 4.15, new Rotation2d(Units.degreesToRadians(180))), // A                    Correct real
+        new Pose2d(3.30, 3.79, new Rotation2d(Units.degreesToRadians(180))), // B                    Correct real
+        new Pose2d(3.69, 2.89, new Rotation2d(Units.degreesToRadians(-120))), // C                           Correct Real
+        new Pose2d(4.00, 2.75, new Rotation2d(Units.degreesToRadians(-120))), // D                           Correct real
         new Pose2d(5.039, 2.725, new Rotation2d(Units.degreesToRadians(-60))), // E
         new Pose2d(5.27, 2.99, new Rotation2d(Units.degreesToRadians(-60))), // F   5
         new Pose2d(5.900, 3.859, new Rotation2d(Units.degreesToRadians(0.1))), // G
         new Pose2d(5.900, 4.195, new Rotation2d(Units.degreesToRadians(-0.1))), // H
         new Pose2d(5.31, 5.181, new Rotation2d(Units.degreesToRadians(60))), // I  8
         new Pose2d(5.060, 5.356, new Rotation2d(Units.degreesToRadians(60))), // J
-        new Pose2d(4.09, 5.24, new Rotation2d(Units.degreesToRadians(120))), // K                    Correct 
-        new Pose2d(3.78, 5.01, new Rotation2d(Units.degreesToRadians(120)))  // L         Last one / Correct
+        new Pose2d(3.94, 5.28, new Rotation2d(Units.degreesToRadians(120))), // K                    Correct 
+        new Pose2d(3.68, 5.09, new Rotation2d(Units.degreesToRadians(120)))  // L         Last one / Correct
     };
 
     public static final Pose2d[] redSidePositions = {
@@ -179,16 +179,16 @@ public class Constants {
         public static final int encoderPortId1 = 9;  //A
         public static final int encoderPortId2 = 8;  //B
 
-        public static final double kP = 2.5,
+        public static final double kP = 4,
                                    kD = 0,
                                    kI = 0,
-                                   kS = 0,
-                                   kV = 0,
-                                   kG = 0,
-                                   kA = 0; 
+                                   kS = 0.0,
+                                   kV = 0.0,
+                                   kG = 0.0,
+                                   kA = 0.0; 
 
-        public static final double maxVelElevator = 1.75,
-                                   maxAccElevator = 0.75;
+        public static final double maxVelElevator = 0.8,
+                                   maxAccElevator = 0.85;
 
         public static final double [] elevatorPosition = {
           0.15, //L1
