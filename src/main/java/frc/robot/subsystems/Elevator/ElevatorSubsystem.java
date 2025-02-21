@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.Util.LoggedTunableNumber;
 
 import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.Constants.ElevatorConstants.*;
@@ -30,13 +31,13 @@ public class ElevatorSubsystem extends SubsystemBase {
   private boolean enablePID = false;
 
     /*Set the Maximun velocity and acceleration, needs to be tuned according to your robot*/
-    private final TrapezoidProfile.Constraints m_profile = new TrapezoidProfile.Constraints(maxVelElevator, maxAccElevator);
+    private TrapezoidProfile.Constraints m_profile = new TrapezoidProfile.Constraints(maxVelElevator, maxAccElevator);
 
     /*Main PID Controller using the constrains as reference */
-    private final ProfiledPIDController m_controller = new ProfiledPIDController(kP, kI, kD, m_profile);
+    private ProfiledPIDController m_controller = new ProfiledPIDController(kP, kI, kD, m_profile);
 
     /*FeedForward Model for extra presicion */
-    private final ElevatorFeedforward m_ElevatorFeedforward = new ElevatorFeedforward(kS, kG, kV,kA);
+    private ElevatorFeedforward m_ElevatorFeedforward = new ElevatorFeedforward(kS, kG, kV,kA);
 
     /* Tools to visualize the elevator position and setpoint on Advantage scope */
     private final ElevatorVisualizer m_visualizerPosition = new ElevatorVisualizer("Elevator Position",Color.kBlack);
@@ -44,6 +45,18 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     /* Selector to change elevator to break/coast mode */
     private SendableChooser<String> elevatorModeChooser = new SendableChooser<>();
+
+    /* Tunable numbers */
+    LoggedTunableNumber logkS = new LoggedTunableNumber("ElevatorTunable/kS",kS);
+    LoggedTunableNumber logkG = new LoggedTunableNumber("ElevatorTunable/kG",kG);
+    LoggedTunableNumber logkA = new LoggedTunableNumber("ElevatorTunable/kA",kA);
+    LoggedTunableNumber logkV = new LoggedTunableNumber("ElevatorTunable/kV",kV);
+    LoggedTunableNumber logkP = new LoggedTunableNumber("ElevatorTunable/kP",kP);
+    LoggedTunableNumber logkI = new LoggedTunableNumber("ElevatorTunable/kI",kI);
+    LoggedTunableNumber logkD = new LoggedTunableNumber("ElevatorTunable/kD",kD);
+    LoggedTunableNumber logMaxVel = new LoggedTunableNumber("ElevatorTunable/MAXVEL",maxVelElevator);
+    LoggedTunableNumber logMaxAcc = new LoggedTunableNumber("ElevatorTunable/MAXACC",maxAccElevator);
+
     
   public ElevatorSubsystem(ElevatorIO io) {
     this.io = io;
@@ -58,11 +71,12 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
+    updatePID();
     Logger.processInputs("Elevator", inputs);
     Logger.recordOutput("Elevator/Value Error", m_controller.getPositionError());
     Logger.recordOutput("Elevator/Setpoint", m_controller.getSetpoint().position);
-    Logger.recordOutput("Elevator/PID output", m_controller.calculate(inputs.elevatorPosition) +
-               m_ElevatorFeedforward.calculate(m_controller.getSetpoint().position, m_controller.getSetpoint().velocity));
+    Logger.recordOutput("Elevator/PID output", m_controller.calculate(inputs.elevatorPosition)
+            + m_ElevatorFeedforward.calculate(m_controller.getSetpoint().velocity));
     Logger.recordOutput("Elevator/Is within Threshold", isInPosition());
 
     if(enablePID){
@@ -155,5 +169,22 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public Command sysIdDynamicElevator(SysIdRoutine.Direction direction) {
     return m_sysIdRoutinrElevator.dynamic(direction);
+  }
+
+  public void updatePID(){
+    if(logMaxAcc.hasChanged(0)
+    || logMaxVel.hasChanged(0)
+    || logkA.hasChanged(0)
+    || logkD.hasChanged(0)
+    || logkG.hasChanged(0)
+    || logkI.hasChanged(0)
+    || logkP.hasChanged(0)
+    || logkS.hasChanged(0)
+    || logkV.hasChanged(0)
+    ){
+      m_profile = new TrapezoidProfile.Constraints(logMaxVel.get(), logMaxAcc.get());
+      m_controller = new ProfiledPIDController(logkP.get(), logkI.get(), logkD.get(), m_profile);
+      m_ElevatorFeedforward = new ElevatorFeedforward(logkS.get(), logkG.get(), logkV.get() ,logkA.get());
+    }
   }
 }

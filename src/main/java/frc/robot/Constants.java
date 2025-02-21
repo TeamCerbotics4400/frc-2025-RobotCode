@@ -20,6 +20,7 @@ public class Constants {
 
   public static final String rioCanbus = "rio";
   public static final String canivoreCanbus = "Swerve_Canivore";
+  public static final boolean tuningMode = true;
 
   public static Mode currentMode = Mode.REAL;
   public static final boolean needToLog = true;
@@ -179,16 +180,16 @@ public class Constants {
         public static final int encoderPortId1 = 9;  //A
         public static final int encoderPortId2 = 8;  //B
 
-        public static final double kP = 4,
-                                   kD = 0,
+        public static  double kP = 3.4,
+                                   kD = 0.01,
                                    kI = 0,
-                                   kS = 0.0,
-                                   kV = 0.0,
-                                   kG = 0.0,
-                                   kA = 0.0; 
+                                   kS = 0.015,//10206
+                                   kV = 0.68,//11818
+                                   kG = 0.021,
+                                   kA = 0.2; //0018792
 
-        public static final double maxVelElevator = 0.8,
-                                   maxAccElevator = 0.85;
+        public static  double maxVelElevator = 1.75,
+                                   maxAccElevator = 1.0;
 
         public static final double [] elevatorPosition = {
           0.15, //L1
