@@ -38,6 +38,6 @@ public class ElevatorVisualizer {
   public Pose3d getElevatorDistalPose(Pose3d armProximalPose, double position) {
     double armExtensionLength = position;
     return armProximalPose.transformBy(
-        new Transform3d(new Translation3d(0.0, 0.0, armExtensionLength), new Rotation3d()));
+        new Transform3d(new Translation3d(0.0, 0.0, armExtensionLength*0.512), new Rotation3d()));
   }
 }

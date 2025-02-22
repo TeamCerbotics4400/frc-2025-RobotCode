@@ -206,7 +206,7 @@ public class RobotContainer {
     chassisDriver.leftBumper().whileTrue(
       new ConditionalCommand(
         m_intake.setVoltageCommand(0.15,0.35),
-        m_intake.setVoltageCommand(0.3, 0.3), 
+        m_intake.setVoltageCommand(0.5, 0.5), 
       ()-> m_elevator.getPosition() < 0.3))
       .whileFalse(m_intake.setVoltageCommand(0, 0));
 
@@ -275,7 +275,7 @@ public class RobotContainer {
   }
 
   private void enableNamedCommands(){
-    NamedCommands.registerCommand("ElevatorL4", new ElevatorAutoCommand(m_elevator, 1.67, m_intake));
+    NamedCommands.registerCommand("ElevatorL4", new ElevatorAutoCommand(m_elevator, 1.74, m_intake));
     NamedCommands.registerCommand("ElevatorL0", m_elevator.goToPosition( 0.0));
     NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
     NamedCommands.registerCommand("IntakeCoral", new IntakeSequenceCommand(m_intake));
