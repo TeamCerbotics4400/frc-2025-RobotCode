@@ -87,7 +87,7 @@ public class IntakeIOKraken implements IntakeIO {
 
   public boolean isIntakeFull(){
     LaserCan.Measurement measurement = intakeSensor.getMeasurement();
-    if(measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT && measurement.distance_mm < 20){
+    if(measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT && measurement.distance_mm < 100){
       return true;
     } else {
       return false;

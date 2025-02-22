@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -35,6 +36,9 @@ public class VisionSubsystem extends SubsystemBase {
     private static PoseEstimate mt2;
     private static PoseEstimate oldMt = new PoseEstimate();
 
+    //Logging
+    List<Pose3d> allTagPoses = new ArrayList<>();
+
     public VisionSubsystem(CommandSwerveDrivetrain m_drive, String limelightNames) {
         this.m_drive = m_drive;
         this.limelightNames = limelightNames;
@@ -50,18 +54,12 @@ public class VisionSubsystem extends SubsystemBase {
             0, 0, 0, 0, 0
         );
 
-        // Count detected tags
-        int tagsDetected = LimelightHelpers.getTargetCount(limelightNames);
         averageTagDistance = (mt2 == null) ? 0 : mt2.avgTagDist;
 
         // Calculate standard deviations
         double xyStdDev = VisionConstants.xyStdDevCoefficient 
                         * Math.pow(averageTagDistance, 2) 
-                        / ((tagsDetected == 0) ? 100 : tagsDetected);
-
-        double thetaStdDev = VisionConstants.thetaStdDevCoefficient 
-                           * Math.pow(averageTagDistance, 2) 
-                           / ((tagsDetected == 0) ? 100 : tagsDetected);
+        / ((LimelightHelpers.getTargetCount(limelightNames) == 0) ? 100 : LimelightHelpers.getTargetCount(limelightNames));
 
         lastTagDetectionTimes.put((int)LimelightHelpers.getFiducialID(limelightNames), Timer.getTimestamp());
 
@@ -70,23 +68,30 @@ public class VisionSubsystem extends SubsystemBase {
 
         // Process odometry and log vision data
         m_drive.filterOutOfFieldData();
-        odometryWithVision(limelightNames, xyStdDev, thetaStdDev);
+        odometryWithVision(limelightNames, xyStdDev,0);
 
     // Log target positions
-      List<Pose3d> allTagPoses = new ArrayList<>();
-      for (Map.Entry<Integer, Double> detectionEntry : lastTagDetectionTimes.entrySet()) {
+      /*for (Map.Entry<Integer, Double> detectionEntry : lastTagDetectionTimes.entrySet()) {
         if (Timer.getTimestamp() - detectionEntry.getValue() < VisionConstants.targetLogTimeSecs) {
           Constants.aprilTaglayout
               .getTagPose(detectionEntry.getKey())
               .ifPresent(allTagPoses::add);
-        }
-      }
+             // allTagPoses.add(new Pose3d(m_drive.getCurrentPosition()));
 
-        Logger.recordOutput("Vision/Distance from tag", averageTagDistance);
-        Logger.recordOutput("Vision/XY STD", xyStdDev);
-        Logger.recordOutput("Vision/Theta STD", thetaStdDev);
-        Logger.recordOutput("Vision/Tag detected", LimelightHelpers.getFiducialID(limelightNames));
-        Logger.recordOutput("Vision/TagPoses", allTagPoses.toArray(Pose3d[]::new));
+        }
+
+      }*/
+
+      /*Optional<Pose3d> latestTagPose = lastTagDetectionTimes.entrySet().stream()
+    .filter(entry -> Timer.getTimestamp() - entry.getValue() < VisionConstants.targetLogTimeSecs)
+    .map(entry -> Constants.aprilTaglayout.getTagPose(entry.getKey()))
+    .filter(Optional::isPresent)
+    .map(Optional::get)
+    .findFirst(); 
+    latestTagPose.ifPresent(allTagPoses::add);
+    allTagPoses.add(new Pose3d(m_drive.getCurrentPosition()));
+
+        Logger.recordOutput("Vision/TagPoses", allTagPoses.toArray(Pose3d[]::new));*/
     }
 
     public void odometryWithVision(String limelightName, double xySTD, double thetaSTD) {
@@ -129,12 +134,6 @@ public class VisionSubsystem extends SubsystemBase {
             if (!doRejectUpdate) {
                 m_drive.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
             }
-
-            SmartDashboard.putBoolean("Rejected Update", doRejectUpdate);
         }
-    }
-
-    public Command shouldUseVision(boolean vision) {
-        return Commands.runOnce(() -> useVision = vision, this);
     }
   }

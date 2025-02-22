@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.95,
-        "y": 4.97
+        "x": 3.7399999999999998,
+        "y": 5.07
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5922500000000004,
-        "y": 5.28175
+        "x": 3.38225,
+        "y": 5.38175
       },
       "isLocked": false,
       "linkedName": "3Coral5"
@@ -60,7 +60,7 @@
   "folder": "3CoralAutoTest",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 122.834
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

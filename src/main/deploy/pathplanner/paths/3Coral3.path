@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.94,
-        "y": 5.24
+        "x": 4.00725,
+        "y": 5.24375
       },
       "prevControl": {
-        "x": 3.2585436998057475,
-        "y": 5.670962894684916
+        "x": 3.3257936998057476,
+        "y": 5.674712894684916
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,20 +29,23 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.5985111662531042,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [
-    {
-      "name": "",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeCoral"
-        }
-      }
-    },
     {
       "name": "",
       "waypointRelativePos": 0.18362282878411454,
@@ -65,7 +68,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 122.834
+    "rotation": 119.99999999999999
   },
   "reversed": false,
   "folder": "3CoralAutoTest",

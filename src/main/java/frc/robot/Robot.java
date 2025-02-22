@@ -32,10 +32,17 @@ public class Robot extends LoggedRobot {
   /*Alerts in case of emergencies that need to be checked */
   private Alert robotModeAlert = new Alert("The code of the robot mode isn't real", AlertType.kWarning);
 
+
   private final RobotContainer m_robotContainer;
 
-
+    
   public Robot() {
+
+    /* Emergency in case code is deployed onto a real robot */
+          if(Robot.isReal()){
+            Constants.currentMode = Constants.Mode.REAL;
+          }
+    
     m_robotContainer = new RobotContainer();
     /* PDH configs */
     examplePD.setSwitchableChannel(true);
@@ -60,10 +67,7 @@ public class Robot extends LoggedRobot {
         break;
     }
 
-    /* Emergency in case code is deployed onto a real robot */
-    if(Robot.isReal()){
-      Constants.currentMode = Constants.Mode.REAL;
-    }
+
 
     // Set up data receivers & replay source
     switch (Constants.currentMode) {
@@ -108,12 +112,12 @@ public class Robot extends LoggedRobot {
     Logger.recordOutput("Dashboard/Reef Position", dashboardCustom.getReefSelected());
     Logger.recordOutput("Dashboard/Level selected", dashboardCustom.getLevelEntry());
 
-    Logger.recordOutput("Swerve distance from setpoint", RobotContainer.getSwerve()
+    /*Logger.recordOutput("Swerve distance from setpoint", RobotContainer.getSwerve()
                                     .getState()
                                     .Pose
                                     .getTranslation()
                                     .getDistance(FieldConstants.blueSidePositions[RobotContainer.getDashboardUtil().getReefSelected()].getTranslation()));
-
+*/
     Logger.recordOutput("Swerve Position", RobotContainer.getSwerve().getState().Pose); 
   }
 
