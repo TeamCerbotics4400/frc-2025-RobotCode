@@ -63,87 +63,97 @@ public class Constants {
 
   public class FieldConstants {
 
-    public static final double fieldBorderMargin = 0.01;
-
-    /* Reef pipes aligntment location
-    * (Might need revision later to accomodate robot dimensions)
-   
-    Middle AB = 3.10, 4.01
-    Middle CD = 3.64, 2.56
-    */
-    
+    /* PID OUTPUT 1 WITH OBJECT AVOIDING ------------------------------------------------------------- */
     public static final Pose2d[] alignBluePose = {
-      new Pose2d(2.95, 4.28, new Rotation2d(Units.degreesToRadians(180))),//A
-      new Pose2d(2.95, 3.79, new Rotation2d(Units.degreesToRadians(180))),//B
-      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),//C
-      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),//D   
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),//E
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),  
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),                            
+      new Pose2d(2.950, 4.280, new Rotation2d(Units.degreesToRadians(180))),//A
+      new Pose2d(2.950, 3.860, new Rotation2d(Units.degreesToRadians(180))),//B
+
+      new Pose2d(3.549, 2.709, new Rotation2d(Units.degreesToRadians(-120))),//C
+      new Pose2d(3.871, 2.553, new Rotation2d(Units.degreesToRadians(-120))),//D   
+      
+      new Pose2d(5.109, 2.650, new Rotation2d(Units.degreesToRadians(-60))),//E
+      new Pose2d(5.382, 2.787, new Rotation2d(Units.degreesToRadians(-60))),//F  
+
+      new Pose2d(6.320, 3.860, new Rotation2d(Units.degreesToRadians(0))),//G
+      new Pose2d(6.320, 4.150, new Rotation2d(Units.degreesToRadians(0))),//H
+
+      new Pose2d(5.490, 5.450, new Rotation2d(Units.degreesToRadians(60))),//I
+      new Pose2d(5.128, 5.478, new Rotation2d(Units.degreesToRadians(60))),//J
+      
+      new Pose2d(3.920, 5.430, new Rotation2d(Units.degreesToRadians(120))),//K
+      new Pose2d(3.520, 5.270, new Rotation2d(Units.degreesToRadians(120))) //L                           
           };
 
-          public static final Pose2d[] alignRedPose = {//Needs correction
-            new Pose2d(2.95, 4.28, new Rotation2d(Units.degreesToRadians(180))),//A
-            new Pose2d(2.95, 3.79, new Rotation2d(Units.degreesToRadians(180))),//B
-            new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),//C
-            new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),//D   
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),//E
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),  
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
-            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),                            
-                };
+    public static final Pose2d[] alignRedPose = {
+      FlippingUtil.flipFieldPose(new Pose2d(2.950, 4.280, new Rotation2d(Units.degreesToRadians(180)))), // A
+      FlippingUtil.flipFieldPose(new Pose2d(2.950, 3.860, new Rotation2d(Units.degreesToRadians(180)))), // B
+        
+      FlippingUtil.flipFieldPose(new Pose2d(3.549, 2.709, new Rotation2d(Units.degreesToRadians(-120)))), // C
+      FlippingUtil.flipFieldPose(new Pose2d(3.871, 2.553, new Rotation2d(Units.degreesToRadians(-120)))), // D   
+        
+      FlippingUtil.flipFieldPose(new Pose2d(5.109, 2.650, new Rotation2d(Units.degreesToRadians(-60)))), // E
+      FlippingUtil.flipFieldPose(new Pose2d(5.382, 2.787, new Rotation2d(Units.degreesToRadians(-60)))), // F  
+        
+      FlippingUtil.flipFieldPose(new Pose2d(6.320, 3.860, new Rotation2d(Units.degreesToRadians(0)))), // G
+      FlippingUtil.flipFieldPose(new Pose2d(6.320, 4.150, new Rotation2d(Units.degreesToRadians(0)))), // H
+        
+      FlippingUtil.flipFieldPose(new Pose2d(5.490, 5.450, new Rotation2d(Units.degreesToRadians(60)))), // I
+      FlippingUtil.flipFieldPose(new Pose2d(5.128, 5.478, new Rotation2d(Units.degreesToRadians(60)))), // J
+        
+      FlippingUtil.flipFieldPose(new Pose2d(3.920, 5.430, new Rotation2d(Units.degreesToRadians(120)))), // K
+      FlippingUtil.flipFieldPose(new Pose2d(3.520, 5.270, new Rotation2d(Units.degreesToRadians(120))))  // L                            
+        };
+        
 
+
+    /* SECOND PID OUTPUT ------------------------------------------------------------------------------------  */
     public static final Pose2d[] blueSidePositions = {
-        new Pose2d(3.30, 4.15, new Rotation2d(Units.degreesToRadians(180))), // A                    Correct real
-        new Pose2d(3.30, 3.79, new Rotation2d(Units.degreesToRadians(180))), // B                    Correct real
-        new Pose2d(3.69, 2.89, new Rotation2d(Units.degreesToRadians(-120))), // C                           Correct Real
-        new Pose2d(4.00, 2.75, new Rotation2d(Units.degreesToRadians(-120))), // D                           Correct real
-        new Pose2d(5.039, 2.725, new Rotation2d(Units.degreesToRadians(-60))), // E
-        new Pose2d(5.27, 2.99, new Rotation2d(Units.degreesToRadians(-60))), // F   5
-        new Pose2d(5.900, 3.859, new Rotation2d(Units.degreesToRadians(0.1))), // G
-        new Pose2d(5.900, 4.195, new Rotation2d(Units.degreesToRadians(-0.1))), // H
-        new Pose2d(5.31, 5.181, new Rotation2d(Units.degreesToRadians(60))), // I  8
-        new Pose2d(5.060, 5.356, new Rotation2d(Units.degreesToRadians(60))), // J
-        new Pose2d(3.94, 5.28, new Rotation2d(Units.degreesToRadians(120))), // K                    Correct 
-        new Pose2d(3.68, 5.09, new Rotation2d(Units.degreesToRadians(120)))  // L         Last one / Correct
+        new Pose2d(3.300, 4.150, new Rotation2d(Units.degreesToRadians(180))), // A                    
+        new Pose2d(3.300, 3.860, new Rotation2d(Units.degreesToRadians(180))), // B                    
+
+        new Pose2d(3.700, 3.010, new Rotation2d(Units.degreesToRadians(-120))), // C                            
+        new Pose2d(3.990, 2.870, new Rotation2d(Units.degreesToRadians(-120))), // D                            
+
+        new Pose2d(4.963, 2.835, new Rotation2d(Units.degreesToRadians(-60))), // E
+        new Pose2d(5.250, 3.030, new Rotation2d(Units.degreesToRadians(-60))), // F   
+
+        new Pose2d(5.750, 3.860, new Rotation2d(Units.degreesToRadians(0))), // G
+        new Pose2d(5.750, 4.150, new Rotation2d(Units.degreesToRadians(0))), // H
+
+        new Pose2d(5.255, 5.039, new Rotation2d(Units.degreesToRadians(60))), // I  
+        new Pose2d(4.963, 5.205, new Rotation2d(Units.degreesToRadians(60))), // J
+        
+        new Pose2d(4.017, 5.205, new Rotation2d(Units.degreesToRadians(120))), // K            
+        new Pose2d(3.750, 5.100, new Rotation2d(Units.degreesToRadians(120)))  // L         
     };
 
-    public static final Pose2d[] redSidePositions = {   //Needs correction
-        FlippingUtil.flipFieldPose(new Pose2d(3.078, 4.195, new Rotation2d())), // A
-        FlippingUtil.flipFieldPose(new Pose2d(3.078, 3.859, new Rotation2d())), // B
-        FlippingUtil.flipFieldPose(new Pose2d(3.625, 2.860, new Rotation2d())), // C
-        FlippingUtil.flipFieldPose(new Pose2d(3.925, 2.694, new Rotation2d())), // D
-        FlippingUtil.flipFieldPose(new Pose2d(5.039, 2.725, new Rotation2d())), // E
-        FlippingUtil.flipFieldPose(new Pose2d(5.348, 2.869, new Rotation2d())), // F
-        FlippingUtil.flipFieldPose(new Pose2d(5.900, 3.859, new Rotation2d())), // G
-        FlippingUtil.flipFieldPose(new Pose2d(5.900, 4.195, new Rotation2d())), // H
-        FlippingUtil.flipFieldPose(new Pose2d(5.338, 5.181, new Rotation2d())), // I
-        FlippingUtil.flipFieldPose(new Pose2d(5.060, 5.356, new Rotation2d())), // J
-        FlippingUtil.flipFieldPose(new Pose2d(3.914, 5.377, new Rotation2d())), // K
-        FlippingUtil.flipFieldPose(new Pose2d(3.615, 5.202, new Rotation2d()))  // L
-    };
+    public static final Pose2d[] redSidePositions = {
+      FlippingUtil.flipFieldPose(new Pose2d(3.300, 4.150, new Rotation2d(Units.degreesToRadians(180)))), // A                    
+      FlippingUtil.flipFieldPose(new Pose2d(3.300, 3.860, new Rotation2d(Units.degreesToRadians(180)))), // B                    
+  
+      FlippingUtil.flipFieldPose(new Pose2d(3.700, 3.010, new Rotation2d(Units.degreesToRadians(-120)))), // C                            
+      FlippingUtil.flipFieldPose(new Pose2d(3.990, 2.870, new Rotation2d(Units.degreesToRadians(-120)))), // D                            
+  
+      FlippingUtil.flipFieldPose(new Pose2d(4.963, 2.835, new Rotation2d(Units.degreesToRadians(-60)))), // E
+      FlippingUtil.flipFieldPose(new Pose2d(5.250, 3.030, new Rotation2d(Units.degreesToRadians(-60)))), // F   
+  
+      FlippingUtil.flipFieldPose(new Pose2d(5.750, 3.860, new Rotation2d(Units.degreesToRadians(0)))), // G
+      FlippingUtil.flipFieldPose(new Pose2d(5.750, 4.150, new Rotation2d(Units.degreesToRadians(0)))), // H
+  
+      FlippingUtil.flipFieldPose(new Pose2d(5.255, 5.039, new Rotation2d(Units.degreesToRadians(60)))), // I  
+      FlippingUtil.flipFieldPose(new Pose2d(4.963, 5.205, new Rotation2d(Units.degreesToRadians(60)))), // J
+  
+      FlippingUtil.flipFieldPose(new Pose2d(4.017, 5.205, new Rotation2d(Units.degreesToRadians(120)))), // K            
+      FlippingUtil.flipFieldPose(new Pose2d(3.750, 5.100, new Rotation2d(Units.degreesToRadians(120))))  // L         
+  };
+  
 
-     public static final double fieldLength = 17.29;  //Meters
+  public static final double fieldBorderMargin = 0.01;
+  public static final double fieldLength = 17.29;  //Meters
   public static final double fieldWidth = 7.78;
   public static final double startingLineX =
       Units.inchesToMeters(299.438); // Measured from the inside of starting line
   }
-
-
-  
       /*
        *                   F
        *   ┌───────┬─────────────────┬───────┐

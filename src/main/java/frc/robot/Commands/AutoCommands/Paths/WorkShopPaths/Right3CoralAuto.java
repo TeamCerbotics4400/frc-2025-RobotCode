@@ -32,7 +32,7 @@ public class Right3CoralAuto extends AutoCommand {
     addCommands(
         Commands.deadline(
             Commands.sequence(
-             new PathPlannerAuto("3RightCoral6"))));
+             new PathPlannerAuto("3RightCoralAuto"))));
   }
 
   private PathPlannerPath loadPath(String fileName) {

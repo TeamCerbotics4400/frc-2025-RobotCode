@@ -26,21 +26,25 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
     public void setVelocityPiv(double pivotVolt) {
         double valPivot = pivotVolt / 60;
         io.setVelocityPiv(valPivot);
-      }
+    }
     
-      public void stopMotors(){
-        io.stopMotors();
-      }
+    public void stopMotors(){
+      io.stopMotors();
+    }
     
-      public Command setVoltageCommandPiv(double pivotVolt) {
-        return run(() -> io.setVoltagePiv(pivotVolt));
-      }
-      public Command setVoltageCommandRoll(double rollerVolt) {
+    public Command setVoltageCommandPiv(double pivotVolt) {
+      return run(() -> io.setVoltagePiv(pivotVolt));
+    }
+
+    public Command setVoltageCommandRoll(double rollerVolt) {
         return run(() -> io.setVoltageRoll(rollerVolt));
-      }
-      public Command setPosition(double position){
+    }
+
+    public Command setPositionCommand(double position){
         return run(()-> io.setPositionPiv(position));
-      }
-    
-    
+    }
+
+    public void setVoltageRollerVoid(double voltage){
+      io.setVoltageRoll(voltage);
+    }
 }

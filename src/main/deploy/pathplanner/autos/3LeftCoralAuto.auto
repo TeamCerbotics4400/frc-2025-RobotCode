@@ -29,7 +29,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 4.0
+                  "waitTime": 5.0
                 }
               },
               {
@@ -49,13 +49,19 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.0
+                              "waitTime": 0.5
                             }
                           },
                           {
                             "type": "path",
                             "data": {
                               "pathName": "3LeftCoral3"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "SafeFailElevator"
                             }
                           }
                         ]
@@ -74,9 +80,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "3LeftCoral4"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3LeftCoral4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              }
+            ]
           }
         },
         {
@@ -106,13 +125,19 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.0
+                              "waitTime": 0.5
                             }
                           },
                           {
                             "type": "path",
                             "data": {
                               "pathName": "3LeftCoral5"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "SafeFailElevator"
                             }
                           }
                         ]

@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
+import frc.robot.Commands.AlgaeIntakeCommand.AlgaeIntakeIntakeCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left1CoralAuto;
@@ -179,8 +180,8 @@ public class RobotContainer {
 
     /* Elevator Commands */
   
-  //subsystemsDriver.a().onTrue(m_elevator.goToPosition(.15));
-  chassisDriver.b().onTrue(m_elevator.goToPosition(.44));
+  //subsystemsDriver.a().onTrue(m_elevator.goToPosition(.3)); for level 1    44 is for level 2
+  chassisDriver.b().onTrue(m_elevator.goToPosition(.3)); //44
   chassisDriver.x().onTrue(m_elevator.goToPosition(.94));
   chassisDriver.y().onTrue(m_elevator.goToPosition(1.74));
   
@@ -188,31 +189,36 @@ public class RobotContainer {
 
 
     /* Climber Commands */
-   chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
+   /*chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
 
   chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.5)).whileFalse(m_climber.setClimberVoltage(0));
 
   /* Intake Commands */
   chassisDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
 
+  chassisDriver
+  .rightBumper()
+  .and(() -> m_intake.hasGamePieceInside())
+  .onTrue(controllerRumbleCommand().withTimeout(1));
+
     /*IntakeAlgae Commands */
     //va asia abajo
-  /*   chassisDriver.povUp().onTrue(m_algae.setVoltageCommandPiv(.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
+     chassisDriver.povUp().onTrue(m_algae.setVoltageCommandPiv(.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
 
     //va acia el escalador
     chassisDriver.povDown().onTrue(m_algae.setVoltageCommandPiv(-0.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
 
     //mete
-    chassisDriver.povLeft().onTrue(m_algae.setVoltageCommandRoll(.3)).whileFalse(m_algae.setVoltageCommandRoll(0));
+    chassisDriver.povLeft().whileTrue(new AlgaeIntakeIntakeCommand(m_algae));
     //saca
-    chassisDriver.povRight().onTrue(m_algae.setVoltageCommandRoll(-.3)).whileFalse(m_algae.setVoltageCommandRoll(0));
+    chassisDriver.povRight().whileTrue(m_algae.setVoltageCommandRoll(1)).whileFalse(m_algae.setVoltageCommandRoll(0));
 
-*/
+
     chassisDriver.leftBumper().whileTrue(
       new ConditionalCommand(
         m_intake.setVoltageCommand(0.15,0.35),
         m_intake.setVoltageCommand(0.5, 0.5), 
-      ()-> m_elevator.getPosition() < 0.3))
+      ()-> m_elevator.getPosition() < 0.36))
       .whileFalse(m_intake.setVoltageCommand(0, 0));
 
   }
@@ -284,6 +290,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("ElevatorL0", m_elevator.goToPosition( 0.0));
     NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
     NamedCommands.registerCommand("IntakeCoral", new IntakeSequenceCommand(m_intake));
+    NamedCommands.registerCommand("SafeFailElevator",
+     new SequentialCommandGroup(
+      new ElevatorAutoCommand(m_elevator, 1.74, m_intake)
+    ).onlyIf(()-> !m_intake.finishedIntakeSequence));
   } 
 
   private Command controllerRumbleCommand() {
