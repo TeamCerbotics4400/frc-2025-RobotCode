@@ -51,6 +51,6 @@ public class LeaveReefCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !m_intake.hasGamePieceInside();
+    return !m_intake.hasGamePieceInside() || m_elevator.getPosition() < 0.1;
   }
 }

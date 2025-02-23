@@ -3,36 +3,36 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.00725,
-        "y": 5.24375
+        "x": 1.3064999999999998,
+        "y": 7.028
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.3892500000000005,
-        "y": 5.617999999999999
+        "x": 2.1378676274909187,
+        "y": 6.482101835634817
       },
       "isLocked": false,
-      "linkedName": "3Coral3"
+      "linkedName": "3Coral2"
     },
     {
       "anchor": {
-        "x": 1.306,
-        "y": 7.096
+        "x": 4.00725,
+        "y": 5.24375
       },
       "prevControl": {
-        "x": 1.9575599958498073,
-        "y": 6.626728924462193
+        "x": 3.3257936998057476,
+        "y": 5.674712894684916
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "3Coral4"
+      "linkedName": "3Coral3"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.8565756823821341,
+      "minWaypointRelativePos": 0.8645161290322553,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 2.0,
@@ -48,19 +48,19 @@
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0.20744416873448052,
+      "waypointRelativePos": 0.18362282878411454,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "ElevatorL0"
+          "name": "ElevatorL4"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -68,13 +68,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 124.67300000000002
-  },
-  "reversed": false,
-  "folder": "3CoralAutoTest",
-  "idealStartingState": {
-    "velocity": 0,
     "rotation": 119.99999999999999
   },
-  "useDefaultConstraints": false
+  "reversed": false,
+  "folder": "3LeftCoralAuto",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 124.67300000000002
+  },
+  "useDefaultConstraints": true
 }

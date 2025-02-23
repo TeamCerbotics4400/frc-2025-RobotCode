@@ -1,12 +1,8 @@
 // Copyright (c) 2025 FRC 4400//
 package frc.robot;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 import com.pathplanner.lib.util.FlippingUtil;
 
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -14,7 +10,6 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Filesystem;
 
 public class Constants {
 
@@ -72,31 +67,17 @@ public class Constants {
 
     /* Reef pipes aligntment location
     * (Might need revision later to accomodate robot dimensions)
-    * (Blue side)
-    * A: (X = 3.078, Y = 4.195, θ = 0.0°)
-    * B: (X = 3.078, Y = 3.859, θ = 0.0°)
-    * C: (X = 3.625, Y = 2.860, θ = 60.0°)
-    * D: (X = 3.925, Y = 2.694, θ = 60.0°)
-    * E: (X = 5.039, Y = 2.725, θ = 120.0°)
-    * F: (X = 5.348, Y = 2.869, θ = 120.0°)
-    * G: (X = 5.900, Y = 3.859, θ = 180.0°)
-    * H: (X = 5.900, Y = 4.195, θ = 180.0°)
-    * I: (X = 5.338, Y = 5.181, θ = 240.0°)
-    * J: (X = 5.060, Y = 5.356, θ = 240.0°)
-    * K: (X = 3.914, Y = 5.377, θ = 300.0°)
-    * L: (X = 3.615, Y = 5.202, θ = 300.0°)
-
-
+   
     Middle AB = 3.10, 4.01
     Middle CD = 3.64, 2.56
     */
     
-    public static final Pose2d[] blueCenterPosition = {
-      new Pose2d(2.95, 4.28, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(2.95, 3.79, new Rotation2d(Units.degreesToRadians(180))),   
-      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),
-      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),   
-      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+    public static final Pose2d[] alignBluePose = {
+      new Pose2d(2.95, 4.28, new Rotation2d(Units.degreesToRadians(180))),//A
+      new Pose2d(2.95, 3.79, new Rotation2d(Units.degreesToRadians(180))),//B
+      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),//C
+      new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),//D   
+      new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),//E
       new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),  
       new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
       new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
@@ -107,6 +88,23 @@ public class Constants {
       new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
       new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),                            
           };
+
+          public static final Pose2d[] alignRedPose = {//Needs correction
+            new Pose2d(2.95, 4.28, new Rotation2d(Units.degreesToRadians(180))),//A
+            new Pose2d(2.95, 3.79, new Rotation2d(Units.degreesToRadians(180))),//B
+            new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),//C
+            new Pose2d(3.64, 2.56, new Rotation2d(Units.degreesToRadians(180))),//D   
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),//E
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),  
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),
+            new Pose2d(3.10, 4.01, new Rotation2d(Units.degreesToRadians(180))),                            
+                };
 
     public static final Pose2d[] blueSidePositions = {
         new Pose2d(3.30, 4.15, new Rotation2d(Units.degreesToRadians(180))), // A                    Correct real
@@ -123,7 +121,7 @@ public class Constants {
         new Pose2d(3.68, 5.09, new Rotation2d(Units.degreesToRadians(120)))  // L         Last one / Correct
     };
 
-    public static final Pose2d[] redSidePositions = {
+    public static final Pose2d[] redSidePositions = {   //Needs correction
         FlippingUtil.flipFieldPose(new Pose2d(3.078, 4.195, new Rotation2d())), // A
         FlippingUtil.flipFieldPose(new Pose2d(3.078, 3.859, new Rotation2d())), // B
         FlippingUtil.flipFieldPose(new Pose2d(3.625, 2.860, new Rotation2d())), // C

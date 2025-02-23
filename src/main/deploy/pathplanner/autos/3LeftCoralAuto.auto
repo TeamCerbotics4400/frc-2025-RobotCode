@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3Coral1"
+            "pathName": "3LeftCoral1"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3Coral2"
+            "pathName": "3LeftCoral2"
           }
         },
         {
@@ -55,7 +55,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "3Coral3"
+                              "pathName": "3LeftCoral3"
                             }
                           }
                         ]
@@ -76,7 +76,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3Coral4"
+            "pathName": "3LeftCoral4"
           }
         },
         {
@@ -112,7 +112,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "3Coral5"
+                              "pathName": "3LeftCoral5"
                             }
                           }
                         ]
@@ -133,7 +133,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3Coral6"
+            "pathName": "3LeftCoral6"
           }
         },
         {
@@ -146,6 +146,6 @@
     }
   },
   "resetOdom": false,
-  "folder": "WorkShopAutos",
+  "folder": "AutoRoutines",
   "choreoAuto": false
 }

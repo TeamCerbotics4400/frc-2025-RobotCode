@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.306,
+        "y": 0.93875
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.7230719443875024,
+        "y": 1.3066189418545964
+      },
+      "isLocked": false,
+      "linkedName": "3RightCoral4"
+    },
+    {
+      "anchor": {
+        "x": 3.7399999999999998,
+        "y": 2.965
+      },
+      "prevControl": {
+        "x": 3.1430132048782484,
+        "y": 2.482311549412611
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "3RightCoral5"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "",
+      "waypointRelativePos": 0.11073598919648757,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorL4"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -119.99999999999999
+  },
+  "reversed": false,
+  "folder": "3RightCoralAuto",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -124.0
+  },
+  "useDefaultConstraints": true
+}

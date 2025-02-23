@@ -3,10 +3,13 @@
   "robotLength": 0.927,
   "holonomicMode": true,
   "pathFolders": [
-    "3CoralAutoTest"
+    "1LeftCoralAuto",
+    "1RightCoralAuto",
+    "3LeftCoralAuto",
+    "3RightCoralAuto"
   ],
   "autoFolders": [
-    "WorkShopAutos"
+    "AutoRoutines"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

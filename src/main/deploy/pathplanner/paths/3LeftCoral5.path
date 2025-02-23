@@ -4,37 +4,51 @@
     {
       "anchor": {
         "x": 1.306,
-        "y": 7.096
+        "y": 7.09625
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6964370587218573,
-        "y": 6.58334664422362
+        "x": 1.5766454282436775,
+        "y": 6.84199474715392
       },
       "isLocked": false,
-      "linkedName": "3Coral6"
+      "linkedName": "3Coral4"
     },
     {
       "anchor": {
-        "x": 3.179,
-        "y": 4.3
+        "x": 3.73,
+        "y": 5.07
       },
       "prevControl": {
-        "x": 2.9546526085701093,
-        "y": 4.410309781790208
+        "x": 3.1141578988136227,
+        "y": 5.6149541956469875
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "3Coral5"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.8466501240694722,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0.058560794044663925,
+      "waypointRelativePos": 0.13399503722083653,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -54,13 +68,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "3CoralAutoTest",
+  "folder": "3LeftCoralAuto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 124.0
+    "rotation": 124.67300000000002
   },
   "useDefaultConstraints": true
 }

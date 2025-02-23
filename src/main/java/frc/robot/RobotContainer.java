@@ -32,7 +32,10 @@ import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
-import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
+import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left1CoralAuto;
+import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left3CoralAuto;
+import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
+import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
 import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
@@ -40,7 +43,6 @@ import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
-import frc.robot.Subsystems.Climber.ClimberIOKraken;
 import frc.robot.Subsystems.Climber.ClimberIOSparkMax;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
@@ -127,7 +129,10 @@ public class RobotContainer {
     enableNamedCommands();
   /* Path follower */
     autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
-    autoChooser.addOption("Test Auto", new TestAuto());
+    autoChooser.addOption("Left Side 3 Coral", new Left3CoralAuto());
+    autoChooser.addOption("Left Side 1 Coral", new Left1CoralAuto());
+    autoChooser.addOption("Right Side 3 Coral", new Right3CoralAuto());
+    autoChooser.addOption("Right Side 1 Coral", new Right1CoralAuto());
 
     autoChooser.onChange(auto->{
         autoFieldPreview.getObject("path").setPoses(auto.getAllPathPoses());
@@ -219,16 +224,16 @@ public class RobotContainer {
           new DeferredCommand(
               () -> Commands.either(
                   m_drive
-                      .goToPose(() -> FieldConstants.blueCenterPosition[val.get()])   // RED VAL
+                      .goToPose(() -> FieldConstants.alignRedPose[val.get()])   // RED VAL
                       .until(() -> 
                           m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.redSidePositions[val.get()].getTranslation()) <= 0.05
+                              .getDistance(FieldConstants.alignRedPose[val.get()].getTranslation()) <= 0.05
                       ),
                   m_drive
-                      .goToPose(() -> FieldConstants.blueCenterPosition[val.get()])
+                      .goToPose(() -> FieldConstants.alignBluePose[val.get()])
                       .until(() -> 
                           m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.blueSidePositions[val.get()].getTranslation()) <= 0.05
+                              .getDistance(FieldConstants.alignBluePose[val.get()].getTranslation()) <= 0.05
                       ),
                   Robot::isRedAlliance
               ),

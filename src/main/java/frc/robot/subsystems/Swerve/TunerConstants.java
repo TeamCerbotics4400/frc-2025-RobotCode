@@ -98,9 +98,6 @@ public class TunerConstants {
   private static final Voltage kSteerFrictionVoltage = Volts.of(0.2);
   private static final Voltage kDriveFrictionVoltage = Volts.of(0.2);
 
-  private static final boolean kInvertLeftSide = false;
-  private static final boolean kInvertRightSide = true;
-
   public static final SwerveDrivetrainConstants DrivetrainConstants =
       new SwerveDrivetrainConstants()
           .withCANBusName(kCANBus.getName())

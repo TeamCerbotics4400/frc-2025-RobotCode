@@ -3,9 +3,6 @@ package frc.robot.Subsystems.Vision;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.Util.LimelightHelpers;
 import frc.Util.LimelightHelpers.PoseEstimate;
@@ -17,9 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase {
     

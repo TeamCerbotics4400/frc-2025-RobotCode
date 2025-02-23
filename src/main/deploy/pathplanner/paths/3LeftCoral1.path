@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.0115,
-        "y": 5.302249999999999
+        "x": 5.01,
+        "y": 5.3
       },
       "prevControl": {
-        "x": 5.557499999999999,
-        "y": 5.555749999999998
+        "x": 5.555999999999999,
+        "y": 5.553499999999999
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,8 +35,8 @@
       "minWaypointRelativePos": 0.09429280397022333,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 2.0,
-        "maxAcceleration": 2.0,
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -70,8 +70,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -82,10 +82,10 @@
     "rotation": 60.784
   },
   "reversed": false,
-  "folder": "3CoralAutoTest",
+  "folder": "3LeftCoralAuto",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

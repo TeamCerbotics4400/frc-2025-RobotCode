@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class TestAuto extends AutoCommand {
+public class Left3CoralAuto extends AutoCommand {
 
   private final PathPlannerPath first;
   private final PathPlannerPath second;
@@ -20,22 +20,19 @@ public class TestAuto extends AutoCommand {
   private final PathPlannerPath fourth;
   private final PathPlannerPath five;
   private final PathPlannerPath six;
-  private final PathPlannerPath seven;
 
-
-  public TestAuto() {
-    first = loadPath("3Coral1");
-    second = loadPath("3Coral2");
-    third = loadPath("3Coral3");
-    fourth = loadPath("3Coral4");
-    five = loadPath("3Coral5");
-    six = loadPath("3Coral6");
-    seven = loadPath("3Coral7");
+  public Left3CoralAuto() {
+    first = loadPath("3LeftCoral1");
+    second = loadPath("3LeftCoral2");
+    third = loadPath("3LeftCoral3");
+    fourth = loadPath("3LeftCoral4");
+    five = loadPath("3LeftCoral5");
+    six = loadPath("3LeftCoral6");
 
     addCommands(
         Commands.deadline(
             Commands.sequence(
-             new PathPlannerAuto("3CoralAuto"))));
+             new PathPlannerAuto("3LeftCoralAuto"))));
   }
 
   private PathPlannerPath loadPath(String fileName) {
@@ -55,8 +52,7 @@ public class TestAuto extends AutoCommand {
             safeGetPathPoses(third),
             safeGetPathPoses(fourth),
             safeGetPathPoses(five),
-            safeGetPathPoses(six),
-            safeGetPathPoses(seven))
+            safeGetPathPoses(six))
         .flatMap(Collection::stream)
         .collect(Collectors.toList());
   }
