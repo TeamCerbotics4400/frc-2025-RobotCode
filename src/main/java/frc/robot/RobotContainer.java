@@ -24,13 +24,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
-import frc.robot.Commands.AlgaeIntakeCommand.AlgaeIntakeIntakeCommand;
+import frc.robot.Commands.DoNothingCommandCommand;
+import frc.robot.Commands.AlgaeIntakeCommand.IntakeAlgaeCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left1CoralAuto;
@@ -38,6 +41,7 @@ import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left3CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
+import frc.robot.Commands.ClimberCommand.ClimberSequenceCommand;
 import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
@@ -158,72 +162,89 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-  /* Chassis commands */
+  /*__________________ Chassis commands __________________*/
+
+  /* Drive Swerve Command */
     m_drive.setDefaultCommand(
       new FieldCentricDrive(
           m_drive,
            ()-> -chassisDriver.getLeftY(),
            ()-> -chassisDriver.getLeftX(), 
            ()-> chassisDriver.getRightX()));
-
-
+  /* Auto Align Command */
   chassisDriver.start().onTrue(
       new ParallelRaceGroup(
           pathFindAndAlignCommand(()->m_dashboard.getReefSelected()),
            new SequentialCommandGroup(new WaitCommand(1),
             new WaitCommand(10000).until(()->isJoystickActive()))));
 
-
+  /* Reset Field centric command that can be run while in disable */
   chassisDriver.back().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()).ignoringDisable(true));
 
+  /* Logging telemetry */
   m_drive.registerTelemetry(logger::telemeterize);
 
-    /* Elevator Commands */
+ /*__________________ Elevator Commands __________________*/
   
-  //subsystemsDriver.a().onTrue(m_elevator.goToPosition(.3)); for level 1    44 is for level 2
-  chassisDriver.b().onTrue(m_elevator.goToPosition(.3)); //44
-  chassisDriver.x().onTrue(m_elevator.goToPosition(.94));
-  chassisDriver.y().onTrue(m_elevator.goToPosition(1.74));
-  
+  chassisDriver.povRight().onTrue(m_elevator.goToPosition(0.3)); //L1
+  chassisDriver.b().onTrue(m_elevator.goToPosition(0.44)); //L2
+  chassisDriver.x().onTrue(m_elevator.goToPosition(0.94)); //L3
+  chassisDriver.y().onTrue(m_elevator.goToPosition(1.74)); //L4
+
   chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
 
+ /*__________________ Climber Commands __________________*/
+  chassisDriver.povUp().onTrue(m_climber.setNeoPosition(-188));
 
-    /* Climber Commands */
-   /*chassisDriver.povUp().whileTrue(m_climber.setClimberVoltage(0.3)).whileFalse(m_climber.setClimberVoltage(0));
+  chassisDriver.povDown().onTrue(
+    new ClimberSequenceCommand(m_climber).onlyIf(()->m_climber.getSparkMaxPosition() < -110))
+    .onFalse(m_climber.setNeoVoltage(0));
 
-  chassisDriver.povDown().whileTrue(m_climber.setClimberVoltage(-0.5)).whileFalse(m_climber.setClimberVoltage(0));
+ /*__________________ Intake Commands __________________*/
 
-  /* Intake Commands */
+  /* Intake in and out sequence */
   chassisDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
 
-  chassisDriver
-  .rightBumper()
-  .and(() -> m_intake.hasGamePieceInside())
-  .onTrue(controllerRumbleCommand().withTimeout(1));
+  /* Outake coral depending on the level */
+  chassisDriver.leftBumper().whileTrue(
+    new ConditionalCommand(
+      m_intake.setVoltageCommand(0.15,0.35),
+      m_intake.setVoltageCommand(0.5, 0.5), 
+    ()-> m_elevator.getPosition() < 0.36))
+    .whileFalse(m_intake.setVoltageCommand(0, 0));
 
-    /*IntakeAlgae Commands */
-    //va asia abajo
-     chassisDriver.povUp().onTrue(m_algae.setVoltageCommandPiv(.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
+ /*__________________ IntakeAlgae Commands __________________*/
 
-    //va acia el escalador
-    chassisDriver.povDown().onTrue(m_algae.setVoltageCommandPiv(-0.1)).whileFalse(m_algae.setVoltageCommandPiv(0));
-
-    //mete
-    chassisDriver.povLeft().whileTrue(new AlgaeIntakeIntakeCommand(m_algae));
-    //saca
-    chassisDriver.povRight().whileTrue(m_algae.setVoltageCommandRoll(1)).whileFalse(m_algae.setVoltageCommandRoll(0));
-
-
-    chassisDriver.leftBumper().whileTrue(
-      new ConditionalCommand(
-        m_intake.setVoltageCommand(0.15,0.35),
-        m_intake.setVoltageCommand(0.5, 0.5), 
-      ()-> m_elevator.getPosition() < 0.36))
-      .whileFalse(m_intake.setVoltageCommand(0, 0));
+    m_algae.setDefaultCommand(algaeIpadCommand(()->m_dashboard.getLevelEntry()));
 
   }
 
-  
+public static Command algaeIpadCommand(Supplier<Integer> val) {
+    return new InstantCommand(() -> {
+        Command selectedCommand;
+        
+        switch (val.get()) {
+            case 3:
+                selectedCommand = m_algae.goToPosition(198)
+                   .andThen(m_algae.setVoltageCommandRoll(-.5)).until(()->3 != val.get());
+                break;
+            case 2:
+                selectedCommand = m_algae.setVoltageCommandRoll(.5).until(()->2 != val.get());
+                break;
+            case 1:
+                selectedCommand = m_algae.goToPosition(0)
+                    .andThen(m_algae.setVoltageCommandRoll(0)).until(()->1 != val.get());
+                break;
+            case 0:
+            default:
+                selectedCommand = new DoNothingCommandCommand().until(()->0 != val.get());
+                break;
+        }
+        
+        selectedCommand.schedule();
+    }, m_algae);
+}
+
 
     public static Command pathFindAndAlignCommand(Supplier<Integer> val) {
       return Commands.sequence(

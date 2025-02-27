@@ -65,28 +65,6 @@ public class VisionSubsystem extends SubsystemBase {
         m_drive.filterOutOfFieldData();
         odometryWithVision(limelightNames, xyStdDev,0);
 
-    // Log target positions
-      /*for (Map.Entry<Integer, Double> detectionEntry : lastTagDetectionTimes.entrySet()) {
-        if (Timer.getTimestamp() - detectionEntry.getValue() < VisionConstants.targetLogTimeSecs) {
-          Constants.aprilTaglayout
-              .getTagPose(detectionEntry.getKey())
-              .ifPresent(allTagPoses::add);
-             // allTagPoses.add(new Pose3d(m_drive.getCurrentPosition()));
-
-        }
-
-      }*/
-
-      /*Optional<Pose3d> latestTagPose = lastTagDetectionTimes.entrySet().stream()
-    .filter(entry -> Timer.getTimestamp() - entry.getValue() < VisionConstants.targetLogTimeSecs)
-    .map(entry -> Constants.aprilTaglayout.getTagPose(entry.getKey()))
-    .filter(Optional::isPresent)
-    .map(Optional::get)
-    .findFirst(); 
-    latestTagPose.ifPresent(allTagPoses::add);
-    allTagPoses.add(new Pose3d(m_drive.getCurrentPosition()));
-
-        Logger.recordOutput("Vision/TagPoses", allTagPoses.toArray(Pose3d[]::new));*/
     }
 
     public void odometryWithVision(String limelightName, double xySTD, double thetaSTD) {

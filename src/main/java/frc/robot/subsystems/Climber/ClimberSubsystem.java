@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -20,11 +21,28 @@ public class ClimberSubsystem extends SubsystemBase {
     Logger.processInputs("Climber", inputs);
   }
 
-  public Command setClimberVoltage(double voltage) {
-    return run(() -> io.setVoltage(voltage));
+  public Command setKrakenVoltage(double voltage) {
+    return run(() -> io.setTalonFXVoltage(voltage));
   }
 
-  public Command setPosition(double position) {
-    return run(() -> io.setPosition(position));
+  public Command setNeoVoltage(double voltage) {
+    return run(() -> io.setSparkMaxVoltage(voltage));
+  }  
+
+  public Command setNeoPosition(double position) {
+    return run(() -> io.setSparkPosition(position));
+  }  
+  
+  public Command setKrakenPosition(double position) {
+    return   
+           Commands.runOnce(
+            () -> {
+              io.setTalonFXPosition(position);
+            },
+            this);
+  }  
+
+  public double getSparkMaxPosition(){
+    return inputs.sparkPosition;
   }
 }

@@ -1,11 +1,11 @@
 package frc.robot.Subsystems.IntakeAlgae;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 import static frc.robot.Constants.IntakeAlgaeConstants.*;
 
@@ -17,10 +17,13 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     private TalonFXConfiguration pivotConfig;
     private TalonFXConfiguration rollerConfig;
 
-
-    private final PositionVoltage m_positionVoltage = new PositionVoltage(0);
+      private final Encoder m_encoder;
 
     public IntakeAlgaeIOKraken(){ 
+
+      m_encoder = new Encoder(7,6);
+      m_encoder.reset();
+      m_encoder.setDistancePerPulse(1);
 
     pivotConfig = new TalonFXConfiguration();
     rollerConfig = new TalonFXConfiguration();
@@ -52,12 +55,13 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     inputs.pivotMotorappliedVolts = pivotMotor.getMotorVoltage().getValueAsDouble();
     inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
     inputs.pivotCurrentRpms = pivotMotor.getVelocity().getValueAsDouble() * 60;
-    inputs.positionPiv = pivotMotor.getPosition().getValueAsDouble();
+    inputs.positionPiv = getCurrentPosition();
 
     inputs.rollerMotorappliedVolts = rollerMotor.getMotorVoltage().getValueAsDouble();
     inputs.rollerMotortempCelcius = rollerMotor.getDeviceTemp().getValueAsDouble();
     inputs.rollerMotorCurrent = rollerMotor.getStatorCurrent().getValueAsDouble();
     inputs.rollerCurrentRpms = rollerMotor.getVelocity().getValueAsDouble() * 60;
+    
     }
     @Override
     public void setVoltagePiv(double pivotVolt){
@@ -67,23 +71,27 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     public void setVoltageRoll(double rollerVolt){
       rollerMotor.set(rollerVolt);
   }
-    @Override
-  public void setVelocityPiv(double pivotVell) {
-    pivotMotor.setControl(m_positionVoltage.withVelocity(pivotVell));
-  }
-  /*Positions
-   *@Override
-  public void setPosition(double position) {
-    pivotMotor.setControl(m_positionVoltage.withPosition(position));
-  }
-   * }
-   */
+
   @Override
   public void stopMotors() {
     pivotMotor.stopMotor();
     rollerMotor.stopMotor();
   }
- 
 
+  @Override
+  public void enableBreak(boolean enable) {
+    pivotConfig.MotorOutput.NeutralMode = enable ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+    if (pivotConfig.MotorOutput.NeutralMode == pivotConfig.MotorOutput.NeutralMode) {
+
+    } else {
+      pivotConfig.MotorOutput.NeutralMode = enable ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+
+      pivotMotor.getConfigurator().apply(pivotConfig);
+    }
+  }
+ 
+  public double getCurrentPosition() {
+    return m_encoder.getDistance()*0.2737;
+  }
     
 }
