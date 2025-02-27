@@ -67,6 +67,10 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
       return inputs.rollerMotorCurrent;
     }
 
+    public double getPivotPosition(){
+      return inputs.positionPiv;
+    }
+
     public void resetController(){
       m_controller.reset();
     }

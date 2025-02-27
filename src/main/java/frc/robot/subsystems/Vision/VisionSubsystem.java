@@ -1,7 +1,10 @@
 package frc.robot.Subsystems.Vision;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.Util.LimelightHelpers;
@@ -14,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.littletonrobotics.junction.Logger;
 
 
 public class VisionSubsystem extends SubsystemBase {
@@ -64,6 +69,10 @@ public class VisionSubsystem extends SubsystemBase {
         // Process odometry and log vision data
         m_drive.filterOutOfFieldData();
         odometryWithVision(limelightNames, xyStdDev,0);
+
+        Logger.recordOutput("AutoPoses/pose1", new Pose2d(5.010,5.300, new Rotation2d(Units.degreesToRadians(60))));
+        Logger.recordOutput("AutoPoses/pose2", new Pose2d(4.007,5.244, new Rotation2d(Units.degreesToRadians(120))));
+        Logger.recordOutput("AutoPoses/pose3", new Pose2d(3.730,5.070, new Rotation2d(Units.degreesToRadians(120))));
 
     }
 

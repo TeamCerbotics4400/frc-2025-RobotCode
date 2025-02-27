@@ -30,8 +30,12 @@ public class ClimberSubsystem extends SubsystemBase {
   }  
 
   public Command setNeoPosition(double position) {
-    return run(() -> io.setSparkPosition(position));
-  }  
+    return   
+           Commands.runOnce(
+            () -> {
+              io.setSparkPosition(position);
+            },
+            this);  }  
   
   public Command setKrakenPosition(double position) {
     return   

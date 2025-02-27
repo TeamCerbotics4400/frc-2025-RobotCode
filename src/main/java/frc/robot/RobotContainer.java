@@ -179,14 +179,14 @@ public class RobotContainer {
             new WaitCommand(10000).until(()->isJoystickActive()))));
 
   /* Reset Field centric command that can be run while in disable */
-  chassisDriver.back().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()).ignoringDisable(true));
+  chassisDriver.back().onTrue(m_drive.runOnce(() -> m_drive.resetRotation(new Rotation2d(Robot.isRedAlliance()? Math.PI : 0))).ignoringDisable(true));
 
   /* Logging telemetry */
   m_drive.registerTelemetry(logger::telemeterize);
 
  /*__________________ Elevator Commands __________________*/
   
-  chassisDriver.povRight().onTrue(m_elevator.goToPosition(0.3)); //L1
+  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.3)); //L1
   chassisDriver.b().onTrue(m_elevator.goToPosition(0.44)); //L2
   chassisDriver.x().onTrue(m_elevator.goToPosition(0.94)); //L3
   chassisDriver.y().onTrue(m_elevator.goToPosition(1.74)); //L4
@@ -194,12 +194,7 @@ public class RobotContainer {
   chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
 
  /*__________________ Climber Commands __________________*/
-  chassisDriver.povUp().onTrue(m_climber.setNeoPosition(-188));
-
-  chassisDriver.povDown().onTrue(
-    new ClimberSequenceCommand(m_climber).onlyIf(()->m_climber.getSparkMaxPosition() < -110))
-    .onFalse(m_climber.setNeoVoltage(0));
-
+   m_climber.setDefaultCommand(climberIpadCommand(()->m_dashboard.getLevelEntry()));
  /*__________________ Intake Commands __________________*/
 
   /* Intake in and out sequence */
@@ -215,34 +210,40 @@ public class RobotContainer {
 
  /*__________________ IntakeAlgae Commands __________________*/
 
-    m_algae.setDefaultCommand(algaeIpadCommand(()->m_dashboard.getLevelEntry()));
-
+    chassisDriver.povUp().whileTrue(
+      m_algae.goToPosition(198)
+          .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
+          .andThen(m_algae.setVoltageCommandRoll(-0.5))
+  );
+  
+    chassisDriver.leftBumper().whileTrue(
+      m_algae.setVoltageCommandRoll(.1).onlyIf(()-> m_algae.getPivotPosition() > 20))
+        .whileFalse(m_algae.goToPosition(0)
+        .andThen(m_algae.setVoltageCommandRoll(0)));
   }
 
-public static Command algaeIpadCommand(Supplier<Integer> val) {
+public static Command climberIpadCommand(Supplier<Integer> val) {
     return new InstantCommand(() -> {
         Command selectedCommand;
         
         switch (val.get()) {
             case 3:
-                selectedCommand = m_algae.goToPosition(198)
-                   .andThen(m_algae.setVoltageCommandRoll(-.5)).until(()->3 != val.get());
+                selectedCommand = m_climber.setNeoPosition(-188).until(()->3 != val.get()); //Step 1
                 break;
             case 2:
-                selectedCommand = m_algae.setVoltageCommandRoll(.5).until(()->2 != val.get());
+                selectedCommand = m_climber.setKrakenPosition(-3.67).until(()->2 != val.get()); //Step 2
                 break;
             case 1:
-                selectedCommand = m_algae.goToPosition(0)
-                    .andThen(m_algae.setVoltageCommandRoll(0)).until(()->1 != val.get());
+                selectedCommand = m_climber.setNeoVoltage(1).until(()->1 != val.get()); //Step 3
                 break;
             case 0:
             default:
-                selectedCommand = new DoNothingCommandCommand().until(()->0 != val.get());
+                selectedCommand = m_climber.setNeoVoltage(0.0).until(()->0 != val.get()); //End
                 break;
         }
         
         selectedCommand.schedule();
-    }, m_algae);
+    }, m_climber);
 }
 
 
