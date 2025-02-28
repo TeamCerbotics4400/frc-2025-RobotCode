@@ -351,6 +351,10 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
     return m_elevator;
   }
 
+  public static IntakeAlgaeSubsystem getAlgaeSubsystem(){
+    return m_algae;
+  }
+
   public static CustomDashboardUtil getDashboardUtil(){
     return m_dashboard;
   }
