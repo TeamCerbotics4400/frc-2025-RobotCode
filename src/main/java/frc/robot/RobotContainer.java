@@ -211,18 +211,18 @@ public class RobotContainer {
  /*__________________ IntakeAlgae Commands __________________*/
 
     chassisDriver.povRight().whileTrue(
-      m_algae.goToPosition(198)
+      m_algae.goToPosition(226)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
           .andThen(m_algae.setVoltageCommandRoll(-0.5).alongWith(m_elevator.goToPosition(1.20)))
   );
 
-  chassisDriver.povUp().whileTrue(
+  /*chassisDriver.povUp().whileTrue(
     m_algae.setVoltageCommandPiv(0.2)).whileFalse(
     m_algae.setVoltageCommandPiv(0.0));
 
     chassisDriver.povLeft().whileTrue(
       m_algae.setVoltageCommandPiv(-0.2)).whileFalse(
-      m_algae.setVoltageCommandPiv(0.0));
+      m_algae.setVoltageCommandPiv(0.0));*/
   
   
     chassisDriver.leftBumper().whileTrue(
