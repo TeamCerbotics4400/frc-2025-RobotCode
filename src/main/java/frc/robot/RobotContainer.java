@@ -220,10 +220,10 @@ public class RobotContainer {
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
           .andThen(m_algae.setVoltageCommandRoll(-0.5)));
 
-  /*chassisDriver.povUp().whileTrue(
-    m_algae.setVoltageCommandPiv(0.2)).whileFalse(
-    m_algae.setVoltageCommandPiv(0.0));
-
+  chassisDriver.povUp().whileTrue(
+    m_climber.setNeoVoltage(1)).whileFalse(m_climber.setNeoVoltage(0));
+    
+    /* 
     chassisDriver.povLeft().whileTrue(
       m_algae.setVoltageCommandPiv(-0.2)).whileFalse(
       m_algae.setVoltageCommandPiv(0.0));*/
@@ -245,9 +245,6 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
                 break;
             case 2:
                 selectedCommand = m_climber.setKrakenPosition(-3.67).until(()->2 != val.get()); //Step 2
-                break;
-            case 1:
-                selectedCommand = m_climber.setNeoVoltage(1).until(()->1 != val.get()); //Step 3
                 break;
             case 0:
             default:
