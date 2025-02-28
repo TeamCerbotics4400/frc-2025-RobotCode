@@ -18,6 +18,12 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
     private boolean enablePID = false;
     private SendableChooser<String> pivotChooser = new SendableChooser<>();
 
+    public static enum AlgaeState{
+      ACTIVEPOSITION,
+      BACKPOSITION
+    }
+    private AlgaeState systemStates = AlgaeState.BACKPOSITION;
+
     public IntakeAlgaeSubsystem(IntakeAlgaeIO io){
         this.io = io;
 
@@ -90,13 +96,23 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
         return run(() -> io.setVoltageRoll(rollerVolt));
     }
 
-      public Command goToPosition(double position) {
+    public AlgaeState getState() {
+      return systemStates;
+    }
+  
+    public AlgaeState changeState(AlgaeState state) {
+      systemStates = state;
+      return systemStates;
+    }
+
+      public Command goToPosition(double position, AlgaeState state) {
     Command ejecutable =
         Commands.runOnce(
             () -> {
               m_controller.reset();
               m_controller.setSetpoint(position);
               enablePID = true;
+              systemStates = state;
             },
             this);
     return ejecutable;

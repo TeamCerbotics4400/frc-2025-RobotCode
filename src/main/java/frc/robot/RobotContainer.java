@@ -59,6 +59,7 @@ import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeIO;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeIOKraken;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem;
+import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem.AlgaeState;
 import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.Swerve.TunerConstants;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
@@ -188,7 +189,11 @@ public class RobotContainer {
   
   chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.3)); //L1
   chassisDriver.b().onTrue(m_elevator.goToPosition(0.46)); //L2
-  chassisDriver.x().onTrue(m_elevator.goToPosition(0.94)); //L3
+  chassisDriver.x().onTrue(
+    new ConditionalCommand(
+      m_elevator.goToPosition(0.94),
+      m_elevator.goToPosition(1.20),
+      ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION)); //L3
   chassisDriver.y().onTrue(m_elevator.goToPosition(1.74)); //L4
 
   chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
@@ -211,10 +216,9 @@ public class RobotContainer {
  /*__________________ IntakeAlgae Commands __________________*/
 
     chassisDriver.povRight().whileTrue(
-      m_algae.goToPosition(226)
+      m_algae.goToPosition(226, AlgaeState.ACTIVEPOSITION)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
-          .andThen(m_algae.setVoltageCommandRoll(-0.5).alongWith(m_elevator.goToPosition(1.20)))
-  );
+          .andThen(m_algae.setVoltageCommandRoll(-0.5)));
 
   /*chassisDriver.povUp().whileTrue(
     m_algae.setVoltageCommandPiv(0.2)).whileFalse(
@@ -227,7 +231,7 @@ public class RobotContainer {
   
     chassisDriver.leftBumper().whileTrue(
       m_algae.setVoltageCommandRoll(.1).onlyIf(()-> m_algae.getPivotPosition() > 20))
-        .whileFalse(m_algae.goToPosition(0)
+        .whileFalse(m_algae.goToPosition(0,AlgaeState.BACKPOSITION)
         .andThen(m_algae.setVoltageCommandRoll(0)));
   }
 
