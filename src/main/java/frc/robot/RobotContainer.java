@@ -213,13 +213,17 @@ public class RobotContainer {
     chassisDriver.povRight().whileTrue(
       m_algae.goToPosition(198)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
-          .andThen(m_algae.setVoltageCommandRoll(-0.5))
+          .andThen(m_algae.setVoltageCommandRoll(-0.5).alongWith(m_elevator.goToPosition(1.20)))
   );
 
   chassisDriver.povUp().whileTrue(
-    m_algae.setVoltageCommandPiv(0.2));
+    m_algae.setVoltageCommandPiv(0.2)).whileFalse(
+    m_algae.setVoltageCommandPiv(0.0));
 
-
+    chassisDriver.povLeft().whileTrue(
+      m_algae.setVoltageCommandPiv(-0.2)).whileFalse(
+      m_algae.setVoltageCommandPiv(0.0));
+  
   
     chassisDriver.leftBumper().whileTrue(
       m_algae.setVoltageCommandRoll(.1).onlyIf(()-> m_algae.getPivotPosition() > 20))
