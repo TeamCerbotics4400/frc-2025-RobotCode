@@ -187,7 +187,7 @@ public class RobotContainer {
  /*__________________ Elevator Commands __________________*/
   
   chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.3)); //L1
-  chassisDriver.b().onTrue(m_elevator.goToPosition(0.44)); //L2
+  chassisDriver.b().onTrue(m_elevator.goToPosition(0.46)); //L2
   chassisDriver.x().onTrue(m_elevator.goToPosition(0.94)); //L3
   chassisDriver.y().onTrue(m_elevator.goToPosition(1.74)); //L4
 
@@ -210,7 +210,7 @@ public class RobotContainer {
 
  /*__________________ IntakeAlgae Commands __________________*/
 
-    chassisDriver.povUp().whileTrue(
+    chassisDriver.povRight().whileTrue(
       m_algae.goToPosition(198)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
           .andThen(m_algae.setVoltageCommandRoll(-0.5))
