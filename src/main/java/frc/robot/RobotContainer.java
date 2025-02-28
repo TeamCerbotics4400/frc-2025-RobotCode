@@ -215,6 +215,11 @@ public class RobotContainer {
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
           .andThen(m_algae.setVoltageCommandRoll(-0.5))
   );
+
+  chassisDriver.povUp().whileTrue(
+    m_algae.setVoltageCommandPiv(0.2);
+);
+
   
     chassisDriver.leftBumper().whileTrue(
       m_algae.setVoltageCommandRoll(.1).onlyIf(()-> m_algae.getPivotPosition() > 20))
