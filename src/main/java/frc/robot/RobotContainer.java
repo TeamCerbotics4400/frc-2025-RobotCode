@@ -244,7 +244,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
                 selectedCommand = m_climber.setNeoPosition(-188).until(()->3 != val.get()); //Step 1
                 break;
             case 2:
-                selectedCommand = m_climber.setKrakenPosition(-3.67).until(()->2 != val.get()); //Step 2
+                selectedCommand = m_climber.setKrakenPosition(-3.77).until(()->2 != val.get()); //Step 2
                 break;
             case 0:
             default:
