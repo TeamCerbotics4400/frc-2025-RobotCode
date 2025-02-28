@@ -223,10 +223,8 @@ public class RobotContainer {
   chassisDriver.povUp().whileTrue(
     m_climber.setNeoVoltage(1)).whileFalse(m_climber.setNeoVoltage(0));
     
-    /* 
-    chassisDriver.povLeft().whileTrue(
-      m_algae.setVoltageCommandPiv(-0.2)).whileFalse(
-      m_algae.setVoltageCommandPiv(0.0));*/
+     
+    chassisDriver.povLeft().whileTrue(m_climber.setKrakenPosition(-3.77));
   
   
     chassisDriver.leftBumper().whileTrue(
