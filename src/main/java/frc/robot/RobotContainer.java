@@ -217,8 +217,8 @@ public class RobotContainer {
   );
 
   chassisDriver.povUp().whileTrue(
-    m_algae.setVoltageCommandPiv(0.2);
-);
+    m_algae.setVoltageCommandPiv(0.2));
+
 
   
     chassisDriver.leftBumper().whileTrue(
