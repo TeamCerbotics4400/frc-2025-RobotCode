@@ -88,12 +88,6 @@
                 "data": {
                   "pathName": "3LeftCoral4"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeCoral"
-                }
               }
             ]
           }
@@ -105,7 +99,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 4.0
+                  "waitTime": 5.0
                 }
               },
               {

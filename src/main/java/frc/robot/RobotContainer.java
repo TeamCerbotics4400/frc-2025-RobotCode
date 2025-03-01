@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
 import frc.robot.Commands.DoNothingCommandCommand;
@@ -74,6 +75,9 @@ public class RobotContainer {
   /* Driver controllers*/
   private final CommandXboxController chassisDriver = new CommandXboxController(0);
   private final CommandXboxController subsystemsDriver = new CommandXboxController(1);
+
+  private final Trigger leftTrigger = chassisDriver.leftTrigger();
+  private final Trigger rightTrigger = chassisDriver.leftTrigger();
 
   /* Subsystems with their respective IO's */
   public static final CommandSwerveDrivetrain m_drive = TunerConstants.createDrivetrain();
@@ -215,7 +219,7 @@ public class RobotContainer {
 
  /*__________________ IntakeAlgae Commands __________________*/
 
-    chassisDriver.povRight().whileTrue(
+    chassisDriver.rightTrigger().whileTrue(
       m_algae.goToPosition(226, AlgaeState.ACTIVEPOSITION)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
           .andThen(m_algae.setVoltageCommandRoll(-0.5)));
@@ -312,7 +316,6 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
               )
           )
       );
-    
   }
 
   private void enableNamedCommands(){
@@ -345,6 +348,10 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+  }
+
+  public static IntakeSubsystem getIntakeSubsystem(){
+    return m_intake;
   }
 
   public static ElevatorSubsystem getElevatorSubsystem(){

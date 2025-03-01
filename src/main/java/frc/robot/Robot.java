@@ -118,6 +118,8 @@ public class Robot extends LoggedRobot {
                                     .getDistance(FieldConstants.blueSidePositions[RobotContainer.getDashboardUtil().getReefSelected()].getTranslation()));
 */
     Logger.recordOutput("Swerve Position", RobotContainer.getSwerve().getState().Pose); 
+
+
   }
 
   @Override
@@ -139,7 +141,14 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    if (!RobotContainer.getIntakeSubsystem().finishedIntakeSequence 
+    && RobotContainer.getElevatorSubsystem().getPosition() > 0.05) {
+            
+    // Force elevator to return to 0
+    RobotContainer.getElevatorSubsystem().goToPosition(0.0).schedule();
+    }
+  }
 
   @Override
   public void autonomousExit() {}
@@ -155,6 +164,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopPeriodic() {
+
   }
 
   @Override
