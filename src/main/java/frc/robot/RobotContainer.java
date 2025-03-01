@@ -233,7 +233,7 @@ public class RobotContainer {
   
     chassisDriver.leftBumper().whileTrue(
       m_algae.setVoltageCommandRoll(1).onlyIf(()-> m_algae.getPivotPosition() > 20))
-        .whileFalse(m_algae.goToPosition(0,AlgaeState.BACKPOSITION)
+        .whileFalse(m_algae.goToPosition(10,AlgaeState.BACKPOSITION)
         .andThen(m_algae.setVoltageCommandRoll(0)));
   }
 
