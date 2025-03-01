@@ -138,6 +138,7 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    RobotContainer.getAlgaeSubsystem().goToPosition(20,AlgaeState.BACKPOSITION).schedule();
   }
 
   @Override
