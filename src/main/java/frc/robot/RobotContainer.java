@@ -253,8 +253,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
                 selectedCommand = m_climber.setNeoVoltage(0.0).until(()->0 != val.get()); //End
                 break;
         }
-        Logger.recordOutput("Climber/Selected Command", selectedCommand.getName());
-
+        
         selectedCommand.schedule();
     }, m_climber);
 }
