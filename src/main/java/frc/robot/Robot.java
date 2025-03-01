@@ -138,7 +138,7 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    RobotContainer.getAlgaeSubsystem().goToPosition(20,AlgaeState.BACKPOSITION).schedule();
+    RobotContainer.getAlgaeSubsystem().goToPosition(10,AlgaeState.BACKPOSITION).schedule();
   }
 
   @Override
@@ -160,7 +160,7 @@ public class Robot extends LoggedRobot {
       m_autonomousCommand.cancel();
     }
 
-    RobotContainer.getAlgaeSubsystem().goToPosition(20,AlgaeState.BACKPOSITION).schedule();
+    RobotContainer.getAlgaeSubsystem().goToPosition(10,AlgaeState.BACKPOSITION).schedule();
   }
 
   @Override
