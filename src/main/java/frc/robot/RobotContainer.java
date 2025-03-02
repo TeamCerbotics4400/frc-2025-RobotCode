@@ -192,7 +192,10 @@ public class RobotContainer {
  /*__________________ Elevator Commands __________________*/
   
   chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.3)); //L1
-  chassisDriver.b().onTrue(m_elevator.goToPosition(0.46)); //L2
+  chassisDriver.b().onTrue(new ConditionalCommand(
+    m_elevator.goToPosition(0.46),
+    m_elevator.goToPosition(0.60),
+    ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION));  //L2
   chassisDriver.x().onTrue(
     new ConditionalCommand(
       m_elevator.goToPosition(0.94),
