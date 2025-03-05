@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
 import frc.robot.Commands.DoNothingCommandCommand;
@@ -59,6 +60,7 @@ import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeIO;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeIOKraken;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem;
+import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem.AlgaeState;
 import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.Swerve.TunerConstants;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
@@ -73,6 +75,9 @@ public class RobotContainer {
   /* Driver controllers*/
   private final CommandXboxController chassisDriver = new CommandXboxController(0);
   private final CommandXboxController subsystemsDriver = new CommandXboxController(1);
+
+  private final Trigger leftTrigger = chassisDriver.leftTrigger();
+  private final Trigger rightTrigger = chassisDriver.leftTrigger();
 
   /* Subsystems with their respective IO's */
   public static final CommandSwerveDrivetrain m_drive = TunerConstants.createDrivetrain();
@@ -187,8 +192,15 @@ public class RobotContainer {
  /*__________________ Elevator Commands __________________*/
   
   chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.3)); //L1
-  chassisDriver.b().onTrue(m_elevator.goToPosition(0.44)); //L2
-  chassisDriver.x().onTrue(m_elevator.goToPosition(0.94)); //L3
+  chassisDriver.b().onTrue(new ConditionalCommand(
+    m_elevator.goToPosition(0.46),
+    m_elevator.goToPosition(0.76),
+    ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION));  //L2
+  chassisDriver.x().onTrue(
+    new ConditionalCommand(
+      m_elevator.goToPosition(0.94),
+      m_elevator.goToPosition(1.20),
+      ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION)); //L3
   chassisDriver.y().onTrue(m_elevator.goToPosition(1.74)); //L4
 
   chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
@@ -210,15 +222,21 @@ public class RobotContainer {
 
  /*__________________ IntakeAlgae Commands __________________*/
 
-    chassisDriver.povUp().whileTrue(
-      m_algae.goToPosition(198)
+    chassisDriver.rightTrigger().whileTrue(
+      m_algae.goToPosition(226, AlgaeState.ACTIVEPOSITION)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
-          .andThen(m_algae.setVoltageCommandRoll(-0.5))
-  );
+          .andThen(m_algae.setVoltageCommandRoll(-0.5)));
+
+  chassisDriver.povUp().whileTrue(
+    m_climber.setNeoVoltage(1)).whileFalse(m_climber.setNeoVoltage(0));
+    
+     
+    chassisDriver.povLeft().whileTrue(m_climber.setKrakenPosition(-3.77));
+  
   
     chassisDriver.leftBumper().whileTrue(
-      m_algae.setVoltageCommandRoll(.1).onlyIf(()-> m_algae.getPivotPosition() > 20))
-        .whileFalse(m_algae.goToPosition(0)
+      m_algae.setVoltageCommandRoll(1).onlyIf(()-> m_algae.getPivotPosition() > 20))
+        .whileFalse(m_algae.goToPosition(10,AlgaeState.BACKPOSITION)
         .andThen(m_algae.setVoltageCommandRoll(0)));
   }
 
@@ -228,13 +246,10 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         
         switch (val.get()) {
             case 3:
-                selectedCommand = m_climber.setNeoPosition(-188).until(()->3 != val.get()); //Step 1
+                selectedCommand = m_climber.setNeoPosition(-168).until(()->3 != val.get()); //Step 1
                 break;
             case 2:
-                selectedCommand = m_climber.setKrakenPosition(-3.67).until(()->2 != val.get()); //Step 2
-                break;
-            case 1:
-                selectedCommand = m_climber.setNeoVoltage(1).until(()->1 != val.get()); //Step 3
+                selectedCommand = m_climber.setKrakenPosition(-3.77).until(()->2 != val.get()); //Step 2
                 break;
             case 0:
             default:
@@ -304,7 +319,6 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
               )
           )
       );
-    
   }
 
   private void enableNamedCommands(){
@@ -339,8 +353,16 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
     return autoChooser.getSelected();
   }
 
+  public static IntakeSubsystem getIntakeSubsystem(){
+    return m_intake;
+  }
+
   public static ElevatorSubsystem getElevatorSubsystem(){
     return m_elevator;
+  }
+
+  public static IntakeAlgaeSubsystem getAlgaeSubsystem(){
+    return m_algae;
   }
 
   public static CustomDashboardUtil getDashboardUtil(){

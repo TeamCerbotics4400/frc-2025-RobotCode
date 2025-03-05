@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.Util.CustomDashboardUtil;
+import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem.AlgaeState;
 
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -117,6 +118,8 @@ public class Robot extends LoggedRobot {
                                     .getDistance(FieldConstants.blueSidePositions[RobotContainer.getDashboardUtil().getReefSelected()].getTranslation()));
 */
     Logger.recordOutput("Swerve Position", RobotContainer.getSwerve().getState().Pose); 
+
+
   }
 
   @Override
@@ -135,10 +138,18 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    RobotContainer.getAlgaeSubsystem().goToPosition(10,AlgaeState.BACKPOSITION).schedule();
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    if (!RobotContainer.getIntakeSubsystem().finishedIntakeSequence 
+    && RobotContainer.getElevatorSubsystem().getPosition() > 0.05) {
+            
+    // Force elevator to return to 0
+    RobotContainer.getElevatorSubsystem().goToPosition(0.0).schedule();
+    }
+  }
 
   @Override
   public void autonomousExit() {}
@@ -148,10 +159,13 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    RobotContainer.getAlgaeSubsystem().goToPosition(10,AlgaeState.BACKPOSITION).schedule();
   }
 
   @Override
   public void teleopPeriodic() {
+
   }
 
   @Override

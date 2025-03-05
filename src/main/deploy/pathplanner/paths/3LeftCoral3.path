@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.287,
-        "y": 7.07675
+        "x": 1.14075,
+        "y": 7.25225
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.118367627490919,
-        "y": 6.530851835634817
+        "x": 1.972117627490919,
+        "y": 6.706351835634817
       },
       "isLocked": false,
       "linkedName": "3Coral2"
     },
     {
       "anchor": {
-        "x": 4.00725,
-        "y": 5.24375
+        "x": 4.02,
+        "y": 5.26
       },
       "prevControl": {
-        "x": 3.3257936998057476,
-        "y": 5.674712894684916
+        "x": 3.3385436998057565,
+        "y": 5.690962894684915
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.8645161290322553,
+      "minWaypointRelativePos": 0.5846153846153901,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 2.0,
