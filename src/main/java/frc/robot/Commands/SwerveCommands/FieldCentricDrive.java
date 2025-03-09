@@ -22,7 +22,7 @@ public class FieldCentricDrive extends Command {
     private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); 
   private double MaxAngularRate =
-      RotationsPerSecond.of(0.75)
+      RotationsPerSecond.of(1)
           .in(RadiansPerSecond); 
 
   private final SwerveRequest.FieldCentric fieldCentricdrive =

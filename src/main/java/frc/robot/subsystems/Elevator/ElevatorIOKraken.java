@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
 
@@ -18,6 +19,8 @@ public class ElevatorIOKraken implements ElevatorIO {
   private final TalonFXConfiguration rightConfig;
 
   private final Encoder m_encoder;
+
+  private final DutyCycleOut m_setterControl = new DutyCycleOut(0);
 
   public ElevatorIOKraken() {
 
@@ -72,8 +75,8 @@ public class ElevatorIOKraken implements ElevatorIO {
    */
   @Override
   public void setVoltage(double volts, double feedforward) {
-    leftMotor.set(volts + feedforward);
-    rightMotor.set(volts + feedforward);
+    leftMotor.setControl(m_setterControl.withOutput(volts + feedforward).withEnableFOC(true));
+    rightMotor.setControl(m_setterControl.withOutput(volts + feedforward).withEnableFOC(true));
   }
 
     /**

@@ -24,6 +24,7 @@ public class IntakeSequence3 extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_intake.finishedIntakeSequence = false;
     timer.reset();
   }
 

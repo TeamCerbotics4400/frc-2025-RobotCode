@@ -65,7 +65,7 @@ public class Constants {
 
     /* PID OUTPUT 1 WITH OBJECT AVOIDING ------------------------------------------------------------- */
     public static final Pose2d[] alignBluePose = {
-      new Pose2d(2.950, 4.280, new Rotation2d(Units.degreesToRadians(180))),//A
+      new Pose2d(2.950, 4.1, new Rotation2d(Units.degreesToRadians(180))),//A
       new Pose2d(2.950, 3.860, new Rotation2d(Units.degreesToRadians(180))),//B
 
       new Pose2d(3.549, 2.709, new Rotation2d(Units.degreesToRadians(-120))),//C
@@ -85,7 +85,7 @@ public class Constants {
           };
 
     public static final Pose2d[] alignRedPose = {
-      FlippingUtil.flipFieldPose(new Pose2d(2.950, 4.280, new Rotation2d(Units.degreesToRadians(180)))), // A
+      FlippingUtil.flipFieldPose(new Pose2d(2.950, 4.1, new Rotation2d(Units.degreesToRadians(180)))), // A
       FlippingUtil.flipFieldPose(new Pose2d(2.950, 3.860, new Rotation2d(Units.degreesToRadians(180)))), // B
         
       FlippingUtil.flipFieldPose(new Pose2d(3.549, 2.709, new Rotation2d(Units.degreesToRadians(-120)))), // C
@@ -192,12 +192,12 @@ public class Constants {
                                    kD = 0.01,
                                    kI = 0,
                                    kS = 0.015,//10206
-                                   kV = 0.68,//11818
+                                   kV = 0.35,//11818
                                    kG = 0.021,
                                    kA = 0.2; //0018792
 
-        public static  double maxVelElevator = 1.75,
-                                   maxAccElevator = 1.0;
+        public static  double maxVelElevator = 2.6,
+                                   maxAccElevator = 2.6;
 
         public static final double [] elevatorPosition = {
           0.15, //L1

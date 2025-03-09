@@ -10,10 +10,7 @@ public interface ClimberIO {
     public double sparkAppliedVolts = 0.0;
     public double sparkTempCelcius = 0.0;
     public double sparkPosition = 0.0;
-
-    public double talonAppliedVolts = 0.0;
-    public double talonTempCelcius = 0.0;
-    public double talonPosition = 0.0;
+    public double pidOutput = 0.0;
 
   }
 

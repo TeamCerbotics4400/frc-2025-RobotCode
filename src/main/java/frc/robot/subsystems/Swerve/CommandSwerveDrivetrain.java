@@ -39,7 +39,7 @@ import org.littletonrobotics.junction.Logger;
  */
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
   private static final PathConstraints constraints =
-      new PathConstraints(2.0, 2.0, Units.degreesToRadians(360.0), Units.degreesToRadians(360.0));
+      new PathConstraints(5.0, 5.0, Units.degreesToRadians(540.0), Units.degreesToRadians(540.0));
   private static final double kSimLoopPeriod = 0.005; // 5 ms
   private Pose2d placeHolderPose = new Pose2d();
   private Notifier m_simNotifier = null;
@@ -207,7 +207,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
               // PID constants for translation
               new PIDConstants(2.2, 0, 0.0),
               // PID constants for rotation
-              new PIDConstants(1.5, 0, 0)),
+              new PIDConstants(1.7, 0, 0)),
           config,
           // Assume the path needs to be flipped for Red vs Blue, this is normally the case
           () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,

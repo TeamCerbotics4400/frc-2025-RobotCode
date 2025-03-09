@@ -44,6 +44,7 @@ import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
 import frc.robot.Commands.ClimberCommand.ClimberSequenceCommand;
 import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
+import frc.robot.Commands.IntakeCommand.IntakeSequence3;
 import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
 import frc.robot.Constants.FieldConstants;
@@ -210,7 +211,7 @@ public class RobotContainer {
  /*__________________ Intake Commands __________________*/
 
   /* Intake in and out sequence */
-  chassisDriver.rightBumper().onTrue(new IntakeSequenceCommand(m_intake));
+  chassisDriver.rightBumper().onTrue(new IntakeSequence3(m_intake));
 
   /* Outake coral depending on the level */
   chassisDriver.leftBumper().whileTrue(
@@ -231,9 +232,11 @@ public class RobotContainer {
     m_climber.setNeoVoltage(1)).whileFalse(m_climber.setNeoVoltage(0));
     
      
-    chassisDriver.povLeft().whileTrue(m_climber.setKrakenPosition(-3.77));
+    chassisDriver.povLeft().whileTrue(
+      m_climber.setNeoVoltage(-1)).whileFalse(m_climber.setNeoVoltage(0));
   
-  
+      chassisDriver.povRight().onTrue(m_climber.setNeoPosition(-150));
+
     chassisDriver.leftBumper().whileTrue(
       m_algae.setVoltageCommandRoll(1).onlyIf(()-> m_algae.getPivotPosition() > 20))
         .whileFalse(m_algae.goToPosition(10,AlgaeState.BACKPOSITION)
@@ -246,7 +249,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         
         switch (val.get()) {
             case 3:
-                selectedCommand = m_climber.setNeoPosition(-168).until(()->3 != val.get()); //Step 1
+                selectedCommand = m_climber.setNeoPosition(-150).until(()->3 != val.get()); //Step 1
                 break;
             case 2:
                 selectedCommand = m_climber.setKrakenPosition(-3.77).until(()->2 != val.get()); //Step 2
@@ -270,13 +273,13 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
                       .goToPose(() -> FieldConstants.alignRedPose[val.get()])   // RED VAL
                       .until(() -> 
                           m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.alignRedPose[val.get()].getTranslation()) <= 0.05
+                              .getDistance(FieldConstants.alignRedPose[val.get()].getTranslation()) <= 0.1
                       ),
                   m_drive
                       .goToPose(() -> FieldConstants.alignBluePose[val.get()])
                       .until(() -> 
                           m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.alignBluePose[val.get()].getTranslation()) <= 0.05
+                              .getDistance(FieldConstants.alignBluePose[val.get()].getTranslation()) <= 0.1
                       ),
                   Robot::isRedAlliance
               ),
@@ -325,7 +328,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
     NamedCommands.registerCommand("ElevatorL4", new ElevatorAutoCommand(m_elevator, 1.74, m_intake));
     NamedCommands.registerCommand("ElevatorL0", m_elevator.goToPosition( 0.0));
     NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
-    NamedCommands.registerCommand("IntakeCoral", new IntakeSequenceCommand(m_intake));
+    NamedCommands.registerCommand("IntakeCoral", new IntakeSequence3(m_intake));
     NamedCommands.registerCommand("SafeFailElevator",
      new SequentialCommandGroup(
       new ElevatorAutoCommand(m_elevator, 1.74, m_intake)
