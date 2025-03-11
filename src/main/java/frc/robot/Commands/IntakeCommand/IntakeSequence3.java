@@ -50,7 +50,9 @@ public class IntakeSequence3 extends Command {
   @Override
   public void end(boolean interrupted) {
     m_intake.setVoltageVoid(0,0);
+    if(m_intake.hasGamePieceInside()){
     m_intake.finishedIntakeSequence = true;
+    }
   }
 
   // Returns true when the command should end.

@@ -144,7 +144,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousPeriodic() {
     if (!RobotContainer.getIntakeSubsystem().finishedIntakeSequence 
-    && RobotContainer.getElevatorSubsystem().getPosition() > 0.05) {
+    && RobotContainer.getElevatorSubsystem().getPosition() > 0.05 && !RobotContainer.getIntakeSubsystem().hasGamePieceInside()) {
             
     // Force elevator to return to 0
     RobotContainer.getElevatorSubsystem().goToPosition(0.0).schedule();
