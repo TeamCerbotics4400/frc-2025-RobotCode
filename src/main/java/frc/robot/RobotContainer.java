@@ -249,7 +249,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         
         switch (val.get()) {
             case 3:
-                selectedCommand = m_climber.setNeoPosition(-150).until(()->3 != val.get()); //Step 1
+                selectedCommand = m_climber.setNeoPosition(-160).until(()->3 != val.get()); //Step 1
                 break;
             case 2:
                 selectedCommand = m_climber.setKrakenPosition(-3.77).until(()->2 != val.get()); //Step 2
@@ -330,10 +330,8 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
     NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
     NamedCommands.registerCommand("IntakeCoral", new IntakeSequence3(m_intake));
     NamedCommands.registerCommand("SafeFailElevator",
-     new SequentialCommandGroup(
-      new ElevatorAutoCommand(m_elevator, 1.74, m_intake)
-    ).onlyIf(()-> !m_intake.finishedIntakeSequence));
-  } 
+      new ElevatorAutoCommand(m_elevator, 1.74, m_intake)); 
+     } 
 
   private Command controllerRumbleCommand() {
     return Commands.startEnd(
