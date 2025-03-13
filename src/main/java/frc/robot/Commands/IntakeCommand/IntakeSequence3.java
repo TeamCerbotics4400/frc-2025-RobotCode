@@ -31,13 +31,13 @@ public class IntakeSequence3 extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { //1100
-    m_intake.setVoltageVoid(0.2, 0.2);
+    m_intake.setVoltageVoid(0.1, 0.1);
 
     if(m_intake.hasGamePieceInside()){
       timer.start();
     }
 
-    if(timer.hasElapsed(0.16) && timer.isRunning()){
+    if(timer.hasElapsed(0.45) && timer.isRunning()){
       safePiece = true;
       timer.stop();
     }
