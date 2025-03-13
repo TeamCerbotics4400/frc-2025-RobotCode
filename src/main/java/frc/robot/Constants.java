@@ -117,8 +117,8 @@ public class Constants {
         new Pose2d(4.963, 2.835, new Rotation2d(Units.degreesToRadians(-60))), // E
         new Pose2d(5.250, 3.030, new Rotation2d(Units.degreesToRadians(-60))), // F   
 
-        new Pose2d(5.750, 3.860, new Rotation2d(Units.degreesToRadians(0))), // G
-        new Pose2d(5.750, 4.150, new Rotation2d(Units.degreesToRadians(0))), // H
+        new Pose2d(5.650, 3.860, new Rotation2d(Units.degreesToRadians(0))), // G
+        new Pose2d(5.650, 4.150, new Rotation2d(Units.degreesToRadians(0))), // H
 
         new Pose2d(5.255, 5.039, new Rotation2d(Units.degreesToRadians(60))), // I  
         new Pose2d(4.963, 5.205, new Rotation2d(Units.degreesToRadians(60))), // J
@@ -137,8 +137,8 @@ public class Constants {
       FlippingUtil.flipFieldPose(new Pose2d(4.963, 2.835, new Rotation2d(Units.degreesToRadians(-60)))), // E
       FlippingUtil.flipFieldPose(new Pose2d(5.250, 3.030, new Rotation2d(Units.degreesToRadians(-60)))), // F   
   
-      FlippingUtil.flipFieldPose(new Pose2d(5.750, 3.860, new Rotation2d(Units.degreesToRadians(0)))), // G
-      FlippingUtil.flipFieldPose(new Pose2d(5.750, 4.150, new Rotation2d(Units.degreesToRadians(0)))), // H
+      FlippingUtil.flipFieldPose(new Pose2d(5.650, 3.860, new Rotation2d(Units.degreesToRadians(0)))), // G
+      FlippingUtil.flipFieldPose(new Pose2d(5.650, 4.150, new Rotation2d(Units.degreesToRadians(0)))), // H
   
       FlippingUtil.flipFieldPose(new Pose2d(5.255, 5.039, new Rotation2d(Units.degreesToRadians(60)))), // I  
       FlippingUtil.flipFieldPose(new Pose2d(4.963, 5.205, new Rotation2d(Units.degreesToRadians(60)))), // J
