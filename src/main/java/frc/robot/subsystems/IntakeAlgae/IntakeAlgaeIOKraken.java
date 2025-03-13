@@ -80,7 +80,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
 
   @Override
   public void enableBreak(boolean enable) {
-    pivotConfig.MotorOutput.NeutralMode = enable ? NeutralModeValue.Coast : NeutralModeValue.Coast;1
+    pivotConfig.MotorOutput.NeutralMode = enable ? NeutralModeValue.Coast : NeutralModeValue.Coast;
     if (pivotConfig.MotorOutput.NeutralMode == pivotConfig.MotorOutput.NeutralMode) {
 
     } else {
