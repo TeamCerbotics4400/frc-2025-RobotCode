@@ -32,7 +32,7 @@ public class ClimberIOSparkMax implements ClimberIO {
     d(0);
 
     
-    climberSparkMaxConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(29);
+    climberSparkMaxConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(27);
 
     sparkMaxEncoder.setPosition(0);
 
