@@ -37,6 +37,7 @@ import frc.robot.Commands.DoNothingCommandCommand;
 import frc.robot.Commands.AlgaeIntakeCommand.IntakeAlgaeCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
+import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.LeaveAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left1CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left3CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
@@ -144,6 +145,7 @@ public class RobotContainer {
     autoChooser.addOption("Left Side 1 Coral", new Left1CoralAuto());
     autoChooser.addOption("Right Side 3 Coral", new Right3CoralAuto());
     autoChooser.addOption("Right Side 1 Coral", new Right1CoralAuto());
+    autoChooser.addOption("LEAVE NOTHING ELSE", new LeaveAuto());
 
     autoChooser.onChange(auto->{
         autoFieldPreview.getObject("path").setPoses(auto.getAllPathPoses());
