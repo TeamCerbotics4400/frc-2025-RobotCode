@@ -70,9 +70,7 @@ public class VisionSubsystem extends SubsystemBase {
         m_drive.filterOutOfFieldData();
         odometryWithVision(limelightNames, xyStdDev,0);
 
-        Logger.recordOutput("AutoPoses/pose1", new Pose2d(5.010,5.300, new Rotation2d(Units.degreesToRadians(60))));
-        Logger.recordOutput("AutoPoses/pose2", new Pose2d(4.007,5.244, new Rotation2d(Units.degreesToRadians(120))));
-        Logger.recordOutput("AutoPoses/pose3", new Pose2d(3.730,5.070, new Rotation2d(Units.degreesToRadians(120))));
+        Logger.recordOutput("Vision/Detected tag",LimelightHelpers.getTV(limelightNames));
 
     }
 
