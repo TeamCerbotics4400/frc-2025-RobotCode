@@ -237,7 +237,7 @@ public class RobotContainer {
     chassisDriver.povLeft().whileTrue(
       m_climber.setNeoVoltage(-1)).whileFalse(m_climber.setNeoVoltage(0));
   
-      chassisDriver.povRight().onTrue(m_climber.setNeoPosition(-160));
+      chassisDriver.povRight().onTrue(m_climber.setNeoPosition(-119));
 
     chassisDriver.leftBumper().whileTrue(
       m_algae.setVoltageCommandRoll(1).onlyIf(()-> m_algae.getPivotPosition() > 20))
@@ -251,7 +251,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         
         switch (val.get()) {
             case 3:
-                selectedCommand = m_climber.setNeoPosition(-160).until(()->3 != val.get()); //Step 1
+                selectedCommand = m_climber.setNeoPosition(-119).until(()->3 != val.get()); //Step 1
                 break;
             case 2:
                 selectedCommand = m_climber.setKrakenPosition(-3.77).until(()->2 != val.get()); //Step 2
