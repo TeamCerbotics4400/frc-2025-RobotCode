@@ -37,6 +37,7 @@ import frc.robot.Commands.DoNothingCommandCommand;
 import frc.robot.Commands.AlgaeIntakeCommand.IntakeAlgaeCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
+import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.LeaveAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left1CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left3CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
@@ -144,6 +145,7 @@ public class RobotContainer {
     autoChooser.addOption("Left Side 1 Coral", new Left1CoralAuto());
     autoChooser.addOption("Right Side 3 Coral", new Right3CoralAuto());
     autoChooser.addOption("Right Side 1 Coral", new Right1CoralAuto());
+    autoChooser.addOption("LEAVE NOTHING ELSE", new LeaveAuto());
 
     autoChooser.onChange(auto->{
         autoFieldPreview.getObject("path").setPoses(auto.getAllPathPoses());
@@ -224,7 +226,7 @@ public class RobotContainer {
  /*__________________ IntakeAlgae Commands __________________*/
 
     chassisDriver.rightTrigger().whileTrue(
-      m_algae.goToPosition(226, AlgaeState.ACTIVEPOSITION)
+      m_algae.goToPosition(200, AlgaeState.ACTIVEPOSITION)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
           .andThen(m_algae.setVoltageCommandRoll(-0.5)));
 
@@ -235,7 +237,7 @@ public class RobotContainer {
     chassisDriver.povLeft().whileTrue(
       m_climber.setNeoVoltage(-1)).whileFalse(m_climber.setNeoVoltage(0));
   
-      chassisDriver.povRight().onTrue(m_climber.setNeoPosition(-160));
+      chassisDriver.povRight().onTrue(m_climber.setNeoPosition(-119));
 
     chassisDriver.leftBumper().whileTrue(
       m_algae.setVoltageCommandRoll(1).onlyIf(()-> m_algae.getPivotPosition() > 20))
@@ -249,7 +251,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         
         switch (val.get()) {
             case 3:
-                selectedCommand = m_climber.setNeoPosition(-160).until(()->3 != val.get()); //Step 1
+                selectedCommand = m_climber.setNeoPosition(-119).until(()->3 != val.get()); //Step 1
                 break;
             case 2:
                 selectedCommand = m_climber.setKrakenPosition(-3.77).until(()->2 != val.get()); //Step 2

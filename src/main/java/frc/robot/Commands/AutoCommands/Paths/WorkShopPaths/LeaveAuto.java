@@ -12,27 +12,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Right3CoralAuto extends AutoCommand {
+public class LeaveAuto extends AutoCommand {
 
   private final PathPlannerPath first;
-  private final PathPlannerPath second;
-  private final PathPlannerPath third;
-  private final PathPlannerPath fourth;
-  private final PathPlannerPath five;
-  private final PathPlannerPath six;
 
-  public Right3CoralAuto() {
-    first = loadPath("3RightCoral1");
-    second = loadPath("3RightCoral2");
-    third = loadPath("3RightCoral3");
-    fourth = loadPath("3RightCoral4");
-    five = loadPath("3RightCoral5");
-    six = loadPath("3RightCoral6");
+
+  public LeaveAuto() {
+    first = loadPath("Emeregency");
 
     addCommands(
         Commands.deadline(
             Commands.sequence(
-             new PathPlannerAuto("3RightCoralAutoNew"))));
+             new PathPlannerAuto("EmergencyPath"))));
   }
 
   private PathPlannerPath loadPath(String fileName) {
@@ -47,13 +38,8 @@ public class Right3CoralAuto extends AutoCommand {
   @Override
   public List<Pose2d> getAllPathPoses() {
     return Stream.of(
-            safeGetPathPoses(first),
-            safeGetPathPoses(second),
-            safeGetPathPoses(third),
-            safeGetPathPoses(fourth),
-            safeGetPathPoses(five),
-            safeGetPathPoses(six))
-        .flatMap(Collection::stream)
+            safeGetPathPoses(first))
+                    .flatMap(Collection::stream)
         .collect(Collectors.toList());
   }
 
