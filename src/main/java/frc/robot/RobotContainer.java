@@ -195,9 +195,9 @@ public class RobotContainer {
 
  /*__________________ Elevator Commands __________________*/
   
-  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.28).onlyIf(()->m_intake.finishedIntakeSequence)); //L1
+  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.26).onlyIf(()->m_intake.finishedIntakeSequence)); //L1
   chassisDriver.b().onTrue(new ConditionalCommand(
-    m_elevator.goToPosition(0.46).onlyIf(()->m_intake.finishedIntakeSequence),
+    m_elevator.goToPosition(0.44).onlyIf(()->m_intake.finishedIntakeSequence),
     m_elevator.goToPosition(0.76),
     ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION));  //L2
   chassisDriver.x().onTrue(
