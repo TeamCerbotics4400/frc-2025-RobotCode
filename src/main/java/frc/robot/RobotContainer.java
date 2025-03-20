@@ -220,7 +220,7 @@ public class RobotContainer {
   chassisDriver.leftBumper().whileTrue(
     new ConditionalCommand(
       m_intake.setVoltageCommand(0.15,0.35),
-      m_intake.setVoltageCommand(0.5, 0.5), 
+      m_intake.setVoltageCommand(0.3, 0.3), 
     ()-> m_elevator.getPosition() < 0.36))
     .whileFalse(m_intake.setVoltageCommand(0, 0));
 
