@@ -131,7 +131,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "SafeFailElevator"
+                              "name": "SafeFailElevatorBackup"
                             }
                           }
                         ]

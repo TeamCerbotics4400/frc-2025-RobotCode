@@ -309,11 +309,14 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
 
   private void enableNamedCommands(){
     NamedCommands.registerCommand("ElevatorL4", new ElevatorAutoCommand(m_elevator, 1.74, m_intake));
+    NamedCommands.registerCommand("ElevatorL4Backup", new ElevatorAutoCommand(m_elevator, 1.71, m_intake));
     NamedCommands.registerCommand("ElevatorL0", m_elevator.goToPosition( 0.0));
     NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
     NamedCommands.registerCommand("IntakeCoral", new IntakeSequence3(m_intake));
     NamedCommands.registerCommand("SafeFailElevator",
       new ElevatorAutoCommand(m_elevator, 1.74, m_intake)); 
+      NamedCommands.registerCommand("SafeFailElevatorBackup",
+      new ElevatorAutoCommand(m_elevator, 1.71, m_intake)); 
      } 
 
   private Command controllerRumbleCommand() {
