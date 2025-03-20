@@ -228,7 +228,7 @@ public class RobotContainer {
 
     chassisDriver.rightTrigger().whileTrue(
       m_algae.goToPosition(20.4, AlgaeState.ACTIVEPOSITION)
-          .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
+          .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 0.1))
           .andThen(m_algae.setVoltageCommandRoll(-0.5)));
 
         /* chassisDriver.povDown().whileTrue(
@@ -248,7 +248,7 @@ public class RobotContainer {
 
     chassisDriver.leftBumper().whileTrue(
       m_algae.setVoltageCommandRoll(1).onlyIf(()-> m_algae.getPivotPosition() > 20))
-        .whileFalse(m_algae.goToPosition(10,AlgaeState.BACKPOSITION)
+        .whileFalse(m_algae.goToPosition(0.2,AlgaeState.BACKPOSITION)
         .andThen(m_algae.setVoltageCommandRoll(0)));
   }
 
