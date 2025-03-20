@@ -31,7 +31,7 @@ public class ElevatorAutoCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_intake.finishedIntakeSequence){
+    if(m_intake.finishedIntakeSequence && m_intake.hasGamePieceInside()){
     m_elevator.goToPositionVoid(position);
     }
   }
