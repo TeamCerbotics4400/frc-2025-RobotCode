@@ -55,7 +55,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     inputs.pivotMotorappliedVolts = pivotMotor.getMotorVoltage().getValueAsDouble();
     inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
     inputs.pivotCurrentRpms = pivotMotor.getVelocity().getValueAsDouble() * 60;
-    inputs.positionPiv = getCurrentPosition();//pivotMotor.getPosition().getValueAsDouble();
+    inputs.positionPiv = pivotMotor.getPosition().getValueAsDouble();//getCurrentPosition();
 
     inputs.rollerMotorappliedVolts = rollerMotor.getMotorVoltage().getValueAsDouble();
     inputs.rollerMotortempCelcius = rollerMotor.getDeviceTemp().getValueAsDouble();
