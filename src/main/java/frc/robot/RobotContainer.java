@@ -202,7 +202,7 @@ public class RobotContainer {
     ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION));  //L2
   chassisDriver.x().onTrue(
     new ConditionalCommand(
-      m_elevator.goToPosition(0.94).onlyIf(()->m_intake.finishedIntakeSequence),
+      m_elevator.goToPosition(0.92).onlyIf(()->m_intake.finishedIntakeSequence),
       m_elevator.goToPosition(1.20),
       ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION)); //L3
   chassisDriver.y().onTrue(m_elevator.goToPosition(1.66).onlyIf(()->m_intake.finishedIntakeSequence)); //L4
@@ -220,7 +220,7 @@ public class RobotContainer {
   chassisDriver.leftBumper().whileTrue(
     new ConditionalCommand(
       m_intake.setVoltageCommand(0.15,0.35),
-      m_intake.setVoltageCommand(0.3, 0.3), 
+      m_intake.setVoltageCommand(0.4, 0.4), 
     ()-> m_elevator.getPosition() < 0.36))
     .whileFalse(m_intake.setVoltageCommand(0, 0));
 
