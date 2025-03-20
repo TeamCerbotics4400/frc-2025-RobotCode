@@ -227,7 +227,7 @@ public class RobotContainer {
  /*__________________ IntakeAlgae Commands __________________*/
 
     chassisDriver.rightTrigger().whileTrue(
-      m_algae.goToPosition(20.4, AlgaeState.ACTIVEPOSITION)
+      m_algae.goToPosition(22.5, AlgaeState.ACTIVEPOSITION)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 0.1))
           .andThen(m_algae.setVoltageCommandRoll(-0.5)));
 
