@@ -205,7 +205,7 @@ public class RobotContainer {
       m_elevator.goToPosition(0.94).onlyIf(()->m_intake.finishedIntakeSequence),
       m_elevator.goToPosition(1.20),
       ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION)); //L3
-  chassisDriver.y().onTrue(m_elevator.goToPosition(1.74).onlyIf(()->m_intake.finishedIntakeSequence)); //L4
+  chassisDriver.y().onTrue(m_elevator.goToPosition(1.72).onlyIf(()->m_intake.finishedIntakeSequence)); //L4
 
   chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
 
