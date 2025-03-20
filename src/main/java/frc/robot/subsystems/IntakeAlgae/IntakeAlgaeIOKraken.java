@@ -65,11 +65,11 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     }
     @Override
     public void setVoltagePiv(double pivotVolt){
-        pivotMotor.set(pivotVolt);
+     //   pivotMotor.set(pivotVolt);
     }
     @Override
     public void setVoltageRoll(double rollerVolt){
-      rollerMotor.set(rollerVolt);
+     // rollerMotor.set(rollerVolt);
   }
 
   @Override

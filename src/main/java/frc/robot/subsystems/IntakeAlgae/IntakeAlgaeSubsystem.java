@@ -38,11 +38,11 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
     public void periodic(){
         io.updateInputs(inputs);
         Logger.processInputs("IntakeAlgae", inputs);
-        if(enablePID){
+        /*if(enablePID){
             io.setVoltagePiv(
               m_controller.calculate(inputs.positionPiv));
                     }
-
+*/
         Logger.recordOutput("IntakeAlgae/PID output", m_controller.calculate(inputs.positionPiv));  
         Logger.recordOutput("IntakeAlgae/PID setpoint", m_controller.getSetpoint());    
         Logger.recordOutput("IntakeAlgae/PID enables", enablePID);      
@@ -111,7 +111,7 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
             () -> {
               m_controller.reset();
               m_controller.setSetpoint(position);
-              enablePID = true;
+          //    enablePID = true;
               systemStates = state;
             },
             this);
