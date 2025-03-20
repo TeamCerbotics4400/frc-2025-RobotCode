@@ -59,6 +59,15 @@ public class Constants {
 
     public static final int PIGEON_ID = 15;
 
+    public static double xkp = 2.5,
+                         xKi = 0.0,
+                         xKd = 0.0,
+                         yKp = 2.5,
+                         yKi = 0.0,
+                         yKd = 0.0,
+                         tKp = 3.0,
+                         tKi = 0.0,
+                         tKd = 0.0;
   }
 
   public class FieldConstants {

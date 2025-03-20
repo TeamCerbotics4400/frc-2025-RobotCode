@@ -91,7 +91,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
   }
  
   public double getCurrentPosition() {
-    return m_encoder.getDistance()*0.2737;
+    return -m_encoder.getDistance()*0.2737;
   }
     
 }

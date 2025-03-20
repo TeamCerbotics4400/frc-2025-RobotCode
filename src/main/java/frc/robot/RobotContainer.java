@@ -48,6 +48,7 @@ import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequence3;
 import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
+import frc.robot.Commands.SwerveCommands.SwerveAutoAlignPose;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
@@ -194,7 +195,7 @@ public class RobotContainer {
 
  /*__________________ Elevator Commands __________________*/
   
-  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.3)); //L1
+  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.28)); //L1
   chassisDriver.b().onTrue(new ConditionalCommand(
     m_elevator.goToPosition(0.46),
     m_elevator.goToPosition(0.76),
@@ -229,6 +230,12 @@ public class RobotContainer {
       m_algae.goToPosition(200, AlgaeState.ACTIVEPOSITION)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
           .andThen(m_algae.setVoltageCommandRoll(-0.5)));
+
+        /* chassisDriver.povDown().whileTrue(
+      m_algae.goToPosition(100, AlgaeState.ACTIVEPOSITION)
+          .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
+          .andThen(m_algae.setVoltageCommandRoll(-0.5)));
+           */ 
 
   chassisDriver.povUp().whileTrue(
     m_climber.setNeoVoltage(1)).whileFalse(m_climber.setNeoVoltage(0));
@@ -288,40 +295,14 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
               Set.of(m_drive)
           )
           .andThen(
-              new DeferredCommand(
-                  () -> {
-                      Pose2d currentPose = m_drive.getState().Pose;
-                      ChassisSpeeds currentSpeeds =
-                          ChassisSpeeds.fromRobotRelativeSpeeds(
-                              m_drive.getCurrentChassisSpeeds(), currentPose.getRotation());
-  
-                      Rotation2d heading =
-                          new Rotation2d(
-                              currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
-  
-                      Pose2d targetPose =
-                          Robot.isRedAlliance()
-                              ? FieldConstants.redSidePositions[val.get()]
-                              : FieldConstants.blueSidePositions[val.get()];
-                      var bezierPoints =
-                          PathPlannerPath.waypointsFromPoses(
-                              new Pose2d(currentPose.getTranslation(), heading), targetPose);
-                      PathPlannerPath path =
-                          new PathPlannerPath(
-                              bezierPoints,
-                              new PathConstraints(
-                                  3.0,
-                                  3.0,
-                                  Units.degreesToRadians(360),
-                                  Units.degreesToRadians(360)),
-                              null,
-                              new GoalEndState(0.0, targetPose.getRotation()));
-                      path.preventFlipping = true;
-  
-                      return AutoBuilder.followPath(path);
-                  },
-                  Set.of(m_drive)
-              )
+            Commands.defer(
+              () -> new SwerveAutoAlignPose(
+                  () -> FieldConstants.redSidePositions[val.get()],
+                  () -> FieldConstants.blueSidePositions[val.get()],
+                  m_drive
+              ),
+              Set.of(m_drive)
+            )
           )
       );
   }
