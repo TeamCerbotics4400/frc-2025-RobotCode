@@ -32,7 +32,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     pivotConfig.CurrentLimits.StatorCurrentLimit = 60;
     pivotConfig.MotorOutput.withInverted(InvertedValue.Clockwise_Positive);
-    pivotConfig.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
+    pivotConfig.MotorOutput.withNeutralMode(NeutralModeValue.Coast);
 
     pivotConfig.Slot0.kP = 0.0;
     pivotConfig.Slot0.kD = 0.0;
@@ -40,7 +40,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     rollerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     rollerConfig.CurrentLimits.StatorCurrentLimit = 60;
     rollerConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
-    rollerConfig.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
+    rollerConfig.MotorOutput.withNeutralMode(NeutralModeValue.Coast);
 
     rollerConfig.Slot0.kP = 0.0;
     rollerConfig.Slot0.kD = 0.0;
@@ -55,7 +55,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     inputs.pivotMotorappliedVolts = pivotMotor.getMotorVoltage().getValueAsDouble();
     inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
     inputs.pivotCurrentRpms = pivotMotor.getVelocity().getValueAsDouble() * 60;
-    inputs.positionPiv = getCurrentPosition();
+    inputs.positionPiv = pivotMotor.getPosition().getValueAsDouble();
 
     inputs.rollerMotorappliedVolts = rollerMotor.getMotorVoltage().getValueAsDouble();
     inputs.rollerMotortempCelcius = rollerMotor.getDeviceTemp().getValueAsDouble();
