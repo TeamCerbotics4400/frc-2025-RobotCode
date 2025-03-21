@@ -56,6 +56,17 @@
           "name": "ElevatorL4"
         }
       }
+    },
+    {
+      "name": "",
+      "waypointRelativePos": 0.993923024983118,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "OutakeReef"
+        }
+      }
     }
   ],
   "globalConstraints": {
