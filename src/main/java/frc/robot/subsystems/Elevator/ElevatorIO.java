@@ -33,6 +33,9 @@ public interface ElevatorIO {
 
   public default void enableBreak(boolean enable){}
 
+  public default void resetEncoder(){}
+
+
   /** Optimize status signals for running sysID */
   default void optimizeForSysID() {}
 }

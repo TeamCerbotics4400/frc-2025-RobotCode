@@ -11,6 +11,8 @@ import frc.robot.Constants;
 
 import static frc.robot.Constants.ElevatorConstants.*;
 
+import org.littletonrobotics.junction.Logger;
+
 public class ElevatorIOKraken implements ElevatorIO {
   private final TalonFX rightMotor;
   private final TalonFX leftMotor;
@@ -51,6 +53,8 @@ public class ElevatorIOKraken implements ElevatorIO {
     return Units.inchesToMeters(m_encoder.getDistance() * 0.01066) / 2;
   }
 
+
+
   /**
    * Update the inputs for the elevator
    *
@@ -65,9 +69,16 @@ public class ElevatorIOKraken implements ElevatorIO {
 
     inputs.rightElevatorTemp = rightMotor.getDeviceTemp().getValueAsDouble();
     inputs.rightElevatorCurrent = rightMotor.getStatorCurrent().getValueAsDouble();
-    inputs.rightElevatorVoltage = rightMotor.getMotorVoltage().getValueAsDouble();    
+    inputs.rightElevatorVoltage = rightMotor.getMotorVoltage().getValueAsDouble();  
+    
+    Logger.recordOutput("Elevator/Relative encoder pos",rightMotor.getPosition().getValueAsDouble());
   }
 
+
+  @Override
+  public void resetEncoder(){
+    m_encoder.reset();
+  }
   /**
    * Set the voltage output to both elevator motors
    *

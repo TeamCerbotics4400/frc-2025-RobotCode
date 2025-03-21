@@ -3,19 +3,13 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathfindingCommand;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -26,15 +20,12 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
-import frc.robot.Commands.DoNothingCommandCommand;
-import frc.robot.Commands.AlgaeIntakeCommand.IntakeAlgaeCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.LeaveAuto;
@@ -43,10 +34,8 @@ import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left3CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
-import frc.robot.Commands.ClimberCommand.ClimberSequenceCommand;
 import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequence3;
-import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
 import frc.robot.Commands.SwerveCommands.SwerveAutoAlignPose;
 import frc.robot.Constants.FieldConstants;
@@ -56,6 +45,7 @@ import frc.robot.Subsystems.Climber.ClimberIOSparkMax;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOKraken;
+import frc.robot.Subsystems.Elevator.ElevatorIOSim;
 import frc.robot.Subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.Subsystems.Intake.IntakeIO;
 import frc.robot.Subsystems.Intake.IntakeIOKraken;
@@ -195,17 +185,17 @@ public class RobotContainer {
 
  /*__________________ Elevator Commands __________________*/
   
-  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.26).onlyIf(()->m_intake.finishedIntakeSequence)); //L1
+  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.3).onlyIf(()->m_intake.finishedIntakeSequence)); //L1   0.26
   chassisDriver.b().onTrue(new ConditionalCommand(
-    m_elevator.goToPosition(0.42).onlyIf(()->m_intake.finishedIntakeSequence),
+    m_elevator.goToPosition(0.46).onlyIf(()->m_intake.finishedIntakeSequence),  //0.46
     m_elevator.goToPosition(0.76),
     ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION));  //L2
   chassisDriver.x().onTrue(
     new ConditionalCommand(
-      m_elevator.goToPosition(0.92).onlyIf(()->m_intake.finishedIntakeSequence),
+      m_elevator.goToPosition(0.94).onlyIf(()->m_intake.finishedIntakeSequence),  //0.92
       m_elevator.goToPosition(1.20),
       ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION)); //L3
-  chassisDriver.y().onTrue(m_elevator.goToPosition(1.67).onlyIf(()->m_intake.finishedIntakeSequence)); //L4
+  chassisDriver.y().onTrue(m_elevator.goToPosition(1.74).onlyIf(()->m_intake.finishedIntakeSequence)); //L4  1.67
 
   chassisDriver.a().onTrue(m_elevator.goToPosition(0.0));
 
@@ -231,12 +221,6 @@ public class RobotContainer {
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 0.1))
           .andThen(m_algae.setVoltageCommandRoll(-0.5)));
 
-        /* chassisDriver.povDown().whileTrue(
-      m_algae.goToPosition(100, AlgaeState.ACTIVEPOSITION)
-          .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 20))
-          .andThen(m_algae.setVoltageCommandRoll(-0.5)));
-           */ 
-
   chassisDriver.povUp().whileTrue(
     m_climber.setNeoVoltage(1)).whileFalse(m_climber.setNeoVoltage(0));
     
@@ -250,6 +234,13 @@ public class RobotContainer {
       m_algae.setVoltageCommandRoll(1).onlyIf(()-> m_algae.getPivotPosition() > 1))
         .whileFalse(m_algae.goToPosition(0.2,AlgaeState.BACKPOSITION)
         .andThen(m_algae.setVoltageCommandRoll(0)));
+
+      /* BACLUP CONTROLLER */
+
+      subsystemsDriver.
+      leftTrigger().
+      whileTrue(m_elevator.setManualVoltage(-0.3)).
+      whileFalse(m_elevator.resetEncoder().andThen(m_elevator.setManualVoltage(0)));
   }
 
 public static Command climberIpadCommand(Supplier<Integer> val) {
@@ -308,15 +299,15 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
   }
 
   private void enableNamedCommands(){
-    NamedCommands.registerCommand("ElevatorL4", new ElevatorAutoCommand(m_elevator, 1.74, m_intake));
-    NamedCommands.registerCommand("ElevatorL4Backup", new ElevatorAutoCommand(m_elevator, 1.71, m_intake));
+    NamedCommands.registerCommand("ElevatorL4", new ElevatorAutoCommand(m_elevator, 1.74, m_intake,1.73));
+    NamedCommands.registerCommand("ElevatorL4Backup", new ElevatorAutoCommand(m_elevator, 1.71, m_intake,1.70));
     NamedCommands.registerCommand("ElevatorL0", m_elevator.goToPosition( 0.0));
     NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
     NamedCommands.registerCommand("IntakeCoral", new IntakeSequence3(m_intake));
     NamedCommands.registerCommand("SafeFailElevator",
-      new ElevatorAutoCommand(m_elevator, 1.74, m_intake)); 
+      new ElevatorAutoCommand(m_elevator, 1.74, m_intake,1.73)); 
       NamedCommands.registerCommand("SafeFailElevatorBackup",
-      new ElevatorAutoCommand(m_elevator, 1.71, m_intake)); 
+      new ElevatorAutoCommand(m_elevator, 1.71, m_intake,1.70)); 
      } 
 
   private Command controllerRumbleCommand() {
