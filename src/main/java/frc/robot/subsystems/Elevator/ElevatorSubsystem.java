@@ -133,6 +133,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         Commands.runOnce(
             () -> {
             io.resetEncoder();
+            enablePID = false;
             },
             this);
     return ejecutable;

@@ -238,7 +238,7 @@ public class RobotContainer {
       /* BACLUP CONTROLLER */
 
       subsystemsDriver.
-      leftTrigger().
+      a().
       whileTrue(m_elevator.setManualVoltage(-0.3)).
       whileFalse(m_elevator.resetEncoder().andThen(m_elevator.setManualVoltage(0)));
   }
