@@ -48,23 +48,12 @@
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0.02878411910669669,
+      "waypointRelativePos": 0.09453072248480719,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
           "name": "ElevatorL4"
-        }
-      }
-    },
-    {
-      "name": "",
-      "waypointRelativePos": 0.9796526054590546,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "OutakeReef"
         }
       }
     }
