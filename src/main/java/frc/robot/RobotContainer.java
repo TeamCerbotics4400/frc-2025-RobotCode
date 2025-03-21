@@ -209,7 +209,7 @@ public class RobotContainer {
   /* Outake coral depending on the level */
   chassisDriver.leftBumper().whileTrue(
     new ConditionalCommand(
-      m_intake.setVoltageCommand(0.1,0.28),
+      m_intake.setVoltageCommand(0.15,0.35),
       m_intake.setVoltageCommand(0.4, 0.4), 
     ()-> m_elevator.getPosition() < 0.36))
     .whileFalse(m_intake.setVoltageCommand(0, 0));
