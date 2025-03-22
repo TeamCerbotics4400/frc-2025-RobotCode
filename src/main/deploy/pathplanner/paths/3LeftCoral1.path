@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 4.89,
-        "y": 5.3
+        "x": 4.97,
+        "y": 5.28
       },
       "prevControl": {
-        "x": 5.435999999999999,
-        "y": 5.553499999999999
+        "x": 5.515999999999999,
+        "y": 5.533499999999999
       },
       "nextControl": null,
       "isLocked": false,
@@ -54,17 +54,6 @@
         "type": "named",
         "data": {
           "name": "ElevatorL4"
-        }
-      }
-    },
-    {
-      "name": "",
-      "waypointRelativePos": 0.993923024983118,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "OutakeReef"
         }
       }
     }
