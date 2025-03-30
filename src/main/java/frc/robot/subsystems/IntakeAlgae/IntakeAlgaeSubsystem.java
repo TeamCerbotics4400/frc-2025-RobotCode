@@ -14,7 +14,7 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
 
     private final IntakeAlgaeIO io;
     private final IntakeAlgaeIOInputsAutoLogged inputs = new IntakeAlgaeIOInputsAutoLogged();
-    private PIDController m_controller = new PIDController(0.0032,0,0);
+    private PIDController m_controller = new PIDController(0.032,0,0);
     private boolean enablePID = false;
     private SendableChooser<String> pivotChooser = new SendableChooser<>();
 

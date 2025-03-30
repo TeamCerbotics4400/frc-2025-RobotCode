@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -7,10 +9,12 @@ import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 public class ElevatorIOSim implements ElevatorIO {
 
   private final ElevatorSim profile1 =
-      new ElevatorSim(0.11515, 0.0017514, DCMotor.getFalcon500Foc(1), 0.0, 1.74, false, 0.0);
+      new ElevatorSim(0.11515, 0.0017514, DCMotor.getFalcon500Foc(1), 0.0, 34, false, 0.0);
 
   public double appliedVolts = 0.0;
 
+  private double offsetVal = 0.0;
+  private boolean resetEncoder = false;
   public ElevatorIOSim() {
     profile1.setState(0.0, 0.0);
   }
@@ -19,7 +23,7 @@ public class ElevatorIOSim implements ElevatorIO {
   public void updateInputs(ElevatorInputs inputs) {
     profile1.update(0.02);
 
-    inputs.elevatorPosition = profile1.getPositionMeters();
+    inputs.elevatorPosition = getPosition(0);
 
     inputs.leftElevatorCurrent = profile1.getCurrentDrawAmps();
 
@@ -31,6 +35,18 @@ public class ElevatorIOSim implements ElevatorIO {
     runVolts(
         v1
             + v2);
+  }
+
+  @Override
+  public void resetEncoder(){
+    offsetVal = profile1.getPositionMeters(); 
+    Logger.recordOutput("Elevator/Maybe", resetEncoder);
+    resetEncoder = true;// Store the current position as the offset
+
+  }
+
+  public double getPosition(double reset){
+    return profile1.getPositionMeters() - offsetVal; // Return the relative position
   }
 
   public void runVolts(double volts) {

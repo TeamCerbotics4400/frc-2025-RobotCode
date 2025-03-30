@@ -25,6 +25,7 @@ public class SwerveAutoAlignPose extends Command {
   private final Supplier<Pose2d>  redPose;
   private final Supplier<Pose2d> bluePose;
   private Supplier<Pose2d> targetPose;
+  private double invertVal = 1.0;
 
   private final ProfiledPIDController xController;
   private final ProfiledPIDController yController;
@@ -80,8 +81,10 @@ public class SwerveAutoAlignPose extends Command {
 
     if (Robot.isRedAlliance()) {
       targetPose = redPose;
+      invertVal = -1.0;
     } else {
       targetPose = bluePose;
+      invertVal = 1.0;
     }
 
 
@@ -126,14 +129,15 @@ public class SwerveAutoAlignPose extends Command {
 
     m_swerve.setControl(
       fieldCentricdrive.
-            withVelocityX(xVel).
-            withVelocityY(yVel).
+            withVelocityX(xVel * invertVal).
+            withVelocityY(yVel * invertVal).
             withRotationalRate(-rotVel));
 
     Logger.recordOutput("Swerve/PIDOutput X",  xVel);
     Logger.recordOutput("Swerve/PIDOutput Y",  yVel);
     Logger.recordOutput("Swerve/PIDOutput T",  rotVel);
     Logger.recordOutput("Swerve/Target PID Pose",  targetPose.get());
+    Logger.recordOutput("Swerve/Invert Val", invertVal);
     }
 
   @Override

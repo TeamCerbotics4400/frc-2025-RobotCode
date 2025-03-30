@@ -128,6 +128,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     return ejecutable;
   }
 
+  public Command resetEncoder() {
+    Command ejecutable =
+        Commands.runOnce(
+            () -> {
+            io.resetEncoder();
+            enablePID = false;
+            },
+            this);
+    return ejecutable;
+  }
+
   public void goToPositionVoid(double position) {
     m_controller.setGoal(position);
     enablePID = true;
@@ -144,6 +155,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   public boolean isInPosition(){
     return isWithinThreshold(inputs.elevatorPosition, getController().getGoal().position, 0.27);
   }
+
+  public Command setManualVoltage(double voltage) {
+    return run(() -> io.setVoltage(voltage,0));
+  }  
 
   public void updatePID(){
     if(logMaxAcc.hasChanged(0)

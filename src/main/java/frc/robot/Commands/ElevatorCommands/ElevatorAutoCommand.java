@@ -14,10 +14,12 @@ public class ElevatorAutoCommand extends Command {
   private ElevatorSubsystem m_elevator;
   private IntakeSubsystem m_intake;
   private double position = 0.0;
-  public ElevatorAutoCommand(ElevatorSubsystem m_elevator, double position, IntakeSubsystem m_intake) {
+  private double limit = 0.0;
+  public ElevatorAutoCommand(ElevatorSubsystem m_elevator, double position, IntakeSubsystem m_intake, double limit) {
     this.m_elevator = m_elevator;
     this.m_intake = m_intake;
     this.position = position;
+    this.limit = limit;
 
     addRequirements(m_elevator);
   }
@@ -31,7 +33,7 @@ public class ElevatorAutoCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_intake.finishedIntakeSequence){
+    if(m_intake.finishedIntakeSequence && m_intake.hasGamePieceInside()){
     m_elevator.goToPositionVoid(position);
     }
   }
@@ -43,6 +45,6 @@ public class ElevatorAutoCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_elevator.getPosition() > 1.73;
+    return m_elevator.getPosition() > limit;
   }
 }

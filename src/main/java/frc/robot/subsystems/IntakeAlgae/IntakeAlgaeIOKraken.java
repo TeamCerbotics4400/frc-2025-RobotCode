@@ -27,12 +27,13 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
 
     pivotConfig = new TalonFXConfiguration();
     rollerConfig = new TalonFXConfiguration();
+    pivotMotor.setPosition(0);
 
     pivotConfig.Feedback.FeedbackRemoteSensorID = 12;
     pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     pivotConfig.CurrentLimits.StatorCurrentLimit = 60;
     pivotConfig.MotorOutput.withInverted(InvertedValue.Clockwise_Positive);
-    pivotConfig.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
+    pivotConfig.MotorOutput.withNeutralMode(NeutralModeValue.Coast);
 
     pivotConfig.Slot0.kP = 0.0;
     pivotConfig.Slot0.kD = 0.0;
@@ -40,7 +41,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     rollerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     rollerConfig.CurrentLimits.StatorCurrentLimit = 60;
     rollerConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
-    rollerConfig.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
+    rollerConfig.MotorOutput.withNeutralMode(NeutralModeValue.Coast);
 
     rollerConfig.Slot0.kP = 0.0;
     rollerConfig.Slot0.kD = 0.0;
@@ -55,7 +56,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     inputs.pivotMotorappliedVolts = pivotMotor.getMotorVoltage().getValueAsDouble();
     inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
     inputs.pivotCurrentRpms = pivotMotor.getVelocity().getValueAsDouble() * 60;
-    inputs.positionPiv = getCurrentPosition();
+    inputs.positionPiv = pivotMotor.getPosition().getValueAsDouble();//getCurrentPosition();
 
     inputs.rollerMotorappliedVolts = rollerMotor.getMotorVoltage().getValueAsDouble();
     inputs.rollerMotortempCelcius = rollerMotor.getDeviceTemp().getValueAsDouble();
@@ -65,7 +66,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     }
     @Override
     public void setVoltagePiv(double pivotVolt){
-        pivotMotor.set(pivotVolt);
+       pivotMotor.set(pivotVolt);
     }
     @Override
     public void setVoltageRoll(double rollerVolt){
