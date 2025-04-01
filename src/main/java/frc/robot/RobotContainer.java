@@ -36,6 +36,7 @@ import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
 import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequence3;
+import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
 import frc.robot.Commands.SwerveCommands.SwerveAutoAlignPose;
 import frc.robot.Constants.FieldConstants;
@@ -209,9 +210,8 @@ public class RobotContainer {
   /* Outake coral depending on the level */
   chassisDriver.leftBumper().whileTrue(
     new ConditionalCommand(
-      m_intake.setVoltageCommand(0.15,0.35),
-      m_intake.setVoltageCommand(0.4, 0.4), 
-    ()-> m_elevator.getPosition() < 0.36))
+      new IntakeSequenceCommand(m_intake),
+      m_intake.setVoltageCommand(0.4, 0.4), ()-> m_elevator.getPosition() < 0.36))
     .whileFalse(m_intake.setVoltageCommand(0, 0));
 
  /*__________________ IntakeAlgae Commands __________________*/
