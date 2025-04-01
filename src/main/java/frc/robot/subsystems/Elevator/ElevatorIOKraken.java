@@ -20,18 +20,12 @@ public class ElevatorIOKraken implements ElevatorIO {
   private final TalonFXConfiguration leftConfig;
   private final TalonFXConfiguration rightConfig;
 
-  private final Encoder m_encoder;
-
   private final DutyCycleOut m_setterControl = new DutyCycleOut(0);
 
   public ElevatorIOKraken() {
 
     leftMotor = new TalonFX(leftElevatorMotorId, Constants.rioCanbus);
     rightMotor = new TalonFX(rightElevatorMotorId, Constants.rioCanbus);
-
-    m_encoder = new Encoder(8,9);
-    m_encoder.reset();
-    m_encoder.setDistancePerPulse(1);
 
     leftConfig = new TalonFXConfiguration();
     leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -45,12 +39,16 @@ public class ElevatorIOKraken implements ElevatorIO {
     rightConfig.CurrentLimits.SupplyCurrentLimit = 40;
     rightConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
+    rightMotor.setPosition(0);
+    leftMotor.setPosition(0);
+
     rightMotor.getConfigurator().apply(rightConfig);
     leftMotor.getConfigurator().apply(leftConfig);
   }
 
   public double getCurrentPosition() {
-    return Units.inchesToMeters(m_encoder.getDistance() * 0.01066) / 2;
+    double val = (rightMotor.getPosition().getValueAsDouble() + leftMotor.getPosition().getValueAsDouble())/2;
+    return val * 0.03097097166;  //56.18
   }
 
 
@@ -77,8 +75,9 @@ public class ElevatorIOKraken implements ElevatorIO {
 
   @Override
   public void resetEncoder(){
-    m_encoder.reset();
-  }
+    rightMotor.setPosition(0);
+    leftMotor.setPosition(0);
+    }
   /**
    * Set the voltage output to both elevator motors
    *
