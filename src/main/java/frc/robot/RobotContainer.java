@@ -186,7 +186,7 @@ public class RobotContainer {
 
  /*__________________ Elevator Commands __________________*/
   
-  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.3).onlyIf(()->m_intake.finishedIntakeSequence)); //L1   0.26
+  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.26).onlyIf(()->m_intake.finishedIntakeSequence)); //L1   0.26
   chassisDriver.b().onTrue(new ConditionalCommand(
     m_elevator.goToPosition(0.46).onlyIf(()->m_intake.finishedIntakeSequence),  //0.46
     m_elevator.goToPosition(0.76),
@@ -208,7 +208,7 @@ public class RobotContainer {
   chassisDriver.rightBumper().onTrue(new IntakeSequence3(m_intake));
 
   /* Outake coral depending on the level */
-  chassisDriver.leftBumper().whileTrue(
+  chassisDriver.leftBumper().onTrue(
     new ConditionalCommand(
       new IntakeSequenceCommand(m_intake),
       m_intake.setVoltageCommand(0.4, 0.4), ()-> m_elevator.getPosition() < 0.36))
