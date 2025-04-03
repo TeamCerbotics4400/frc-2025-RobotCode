@@ -35,6 +35,7 @@ import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
 import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
+import frc.robot.Commands.IntakeCommand.IntakeSequence2;
 import frc.robot.Commands.IntakeCommand.IntakeSequence3;
 import frc.robot.Commands.IntakeCommand.IntakeSequenceCommand;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
@@ -186,7 +187,7 @@ public class RobotContainer {
 
  /*__________________ Elevator Commands __________________*/
   
-  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.26).onlyIf(()->m_intake.finishedIntakeSequence)); //L1   0.26
+  chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.20).onlyIf(()->m_intake.finishedIntakeSequence)); //L1   0.26
   chassisDriver.b().onTrue(new ConditionalCommand(
     m_elevator.goToPosition(0.46).onlyIf(()->m_intake.finishedIntakeSequence),  //0.46
     m_elevator.goToPosition(0.76),
@@ -210,8 +211,8 @@ public class RobotContainer {
   /* Outake coral depending on the level */
   chassisDriver.leftBumper().onTrue(
     new ConditionalCommand(
-      new IntakeSequenceCommand(m_intake),
-      m_intake.setVoltageCommand(0.4, 0.4), ()-> m_elevator.getPosition() < 0.36))
+      new IntakeSequence2(m_intake),
+      m_intake.setVoltageCommand(0.3, 0.3), ()-> m_elevator.getPosition() < 0.36))
     .whileFalse(m_intake.setVoltageCommand(0, 0));
 
  /*__________________ IntakeAlgae Commands __________________*/
@@ -273,13 +274,13 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
                       .goToPose(() -> FieldConstants.alignRedPose[val.get()])   // RED VAL
                       .until(() -> 
                           m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.alignRedPose[val.get()].getTranslation()) <= 0.1
+                              .getDistance(FieldConstants.alignRedPose[val.get()].getTranslation()) <= 0.2
                       ),
                   m_drive
                       .goToPose(() -> FieldConstants.alignBluePose[val.get()])
                       .until(() -> 
                           m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.alignBluePose[val.get()].getTranslation()) <= 0.1
+                              .getDistance(FieldConstants.alignBluePose[val.get()].getTranslation()) <= 0.2
                       ),
                   Robot::isRedAlliance
               ),

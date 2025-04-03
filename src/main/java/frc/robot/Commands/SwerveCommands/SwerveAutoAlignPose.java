@@ -50,19 +50,19 @@ public class SwerveAutoAlignPose extends Command {
 
     this.xController =
         new ProfiledPIDController(
-            3,
-            0,
+            10,
+            11,
             0,
             new TrapezoidProfile.Constraints(3.0, 2.0));
     this.yController =
         new ProfiledPIDController(
-          3,
-          0,
+          10,
+          11,
           0,
             new TrapezoidProfile.Constraints(3.0, 2.0));
     this.rotationController =
         new ProfiledPIDController(
-          2,
+          8,
           0,
           0,
             new TrapezoidProfile.Constraints(
@@ -117,13 +117,13 @@ public class SwerveAutoAlignPose extends Command {
     double yVel = yFF + yFeedback;
     double rotVel = rotFF + rotFeedback;
 
-    if (Math.abs(currentPose.getX() - targetPose.get().getX()) < 0.025) {
+    if (Math.abs(currentPose.getX() - targetPose.get().getX()) < 0.004) {
       xVel = 0;
     }
-    if (Math.abs(currentPose.getY() - targetPose.get().getY()) < 0.025) {
+    if (Math.abs(currentPose.getY() - targetPose.get().getY()) < 0.004) {
       yVel = 0;
     }
-    if (Math.abs(currentPose.getRotation().minus(targetPose.get().getRotation()).getDegrees()) < 0.4) {
+    if (Math.abs(currentPose.getRotation().minus(targetPose.get().getRotation()).getDegrees()) < 0.01) {
       rotVel = 0;
     }
 

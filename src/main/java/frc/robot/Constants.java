@@ -117,23 +117,23 @@ public class Constants {
 
     /* SECOND PID OUTPUT ------------------------------------------------------------------------------------  */
     public static final Pose2d[] blueSidePositions = {
-        new Pose2d(3.300, 4.150, new Rotation2d(Units.degreesToRadians(180))), // A                    
-        new Pose2d(3.300, 3.860, new Rotation2d(Units.degreesToRadians(180))), // B                    
+        new Pose2d(3.09, 4.18, new Rotation2d(Units.degreesToRadians(180))), // A                    
+        new Pose2d(3.09, 3.86, new Rotation2d(Units.degreesToRadians(180))), // B                    
 
-        new Pose2d(3.700, 3.010, new Rotation2d(Units.degreesToRadians(-120))), // C                            
-        new Pose2d(3.990, 2.870, new Rotation2d(Units.degreesToRadians(-120))), // D                            
+        new Pose2d(3.65, 2.90, new Rotation2d(Units.degreesToRadians(-120))), // C                            
+        new Pose2d(3.91, 2.74, new Rotation2d(Units.degreesToRadians(-120))), // D      no                      
 
-        new Pose2d(4.963, 2.835, new Rotation2d(Units.degreesToRadians(-60))), // E
-        new Pose2d(5.250, 3.030, new Rotation2d(Units.degreesToRadians(-60))), // F   
+        new Pose2d(4.99, 2.82, new Rotation2d(Units.degreesToRadians(-60))), // E
+        new Pose2d(5.30, 2.91, new Rotation2d(Units.degreesToRadians(-60))), // F   
 
-        new Pose2d(5.650, 3.860, new Rotation2d(Units.degreesToRadians(0))), // G
-        new Pose2d(5.650, 4.150, new Rotation2d(Units.degreesToRadians(0))), // H
+        new Pose2d(5.84, 3.84, new Rotation2d(Units.degreesToRadians(0))), // G
+        new Pose2d(5.84, 4.15, new Rotation2d(Units.degreesToRadians(0))), // H  
 
-        new Pose2d(5.255, 5.039, new Rotation2d(Units.degreesToRadians(60))), // I  
-        new Pose2d(4.963, 5.205, new Rotation2d(Units.degreesToRadians(60))), // J
+        new Pose2d(5.37, 5.09, new Rotation2d(Units.degreesToRadians(60))), // I  
+        new Pose2d(5.04, 5.30, new Rotation2d(Units.degreesToRadians(60))), // J
         
-        new Pose2d(4.017, 5.205, new Rotation2d(Units.degreesToRadians(120))), // K            
-        new Pose2d(3.750, 5.100, new Rotation2d(Units.degreesToRadians(120)))  // L         
+        new Pose2d(3.97, 5.319, new Rotation2d(Units.degreesToRadians(120))), // K            
+        new Pose2d(3.67, 5.13, new Rotation2d(Units.degreesToRadians(120)))  // L         
     };
 
     public static final Pose2d[] redSidePositions = {

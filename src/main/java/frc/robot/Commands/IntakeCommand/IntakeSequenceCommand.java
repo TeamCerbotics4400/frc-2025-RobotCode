@@ -16,8 +16,8 @@ public class IntakeSequenceCommand extends SequentialCommandGroup {
     this.m_intake = m_intake;
 
     addCommands(
-      new IntakeSequence1(m_intake),
-      new IntakeSequence2(m_intake)
+      new IntakeSequence1(m_intake)
+     // new IntakeSequence2(m_intake)
       //new IntakeSequence3(m_intake)
     );
   }

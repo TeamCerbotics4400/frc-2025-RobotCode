@@ -1,6 +1,6 @@
 {
   "robotWidth": 0.775,
-  "robotLength": 0.927,
+  "robotLength": 0.889,
   "holonomicMode": true,
   "pathFolders": [
     "1LeftCoralAuto",

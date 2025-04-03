@@ -30,7 +30,7 @@ public class IntakeSequence1 extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { //1100
-    m_intake.setVoltageVoid(0.10, 0.10);
+    m_intake.setVoltageVoid(0.1, 0.1);
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +44,6 @@ public class IntakeSequence1 extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-      return timer.hasElapsed(0.2);
+      return timer.hasElapsed(0.54);
     }
 }

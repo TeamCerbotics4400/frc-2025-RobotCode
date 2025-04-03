@@ -9,6 +9,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import static frc.robot.Constants.ClimberConstants.*;
@@ -30,6 +31,8 @@ public class ClimberIOSparkMax implements ClimberIO {
     p(3).
     i(0).
     d(0);
+
+    climberSparkMaxConfig.idleMode(IdleMode.kBrake);
 
     
     climberSparkMaxConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(27);

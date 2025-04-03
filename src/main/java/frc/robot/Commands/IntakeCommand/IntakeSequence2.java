@@ -32,9 +32,9 @@ public class IntakeSequence2 extends Command {
   @Override
   public void execute() { //1100
 
-    if(timer.hasElapsed(0.1) && timer.isRunning()){
-      m_intake.setVoltageVoid(0.11, 0.36);
-    }
+    //if(timer.hasElapsed(0.1) && timer.isRunning()){    0.3    0.7    0.1     0.5
+      m_intake.setVoltageVoid(0.1, 0.5);
+    //}
   
   }
 
