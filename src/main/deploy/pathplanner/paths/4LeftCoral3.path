@@ -12,7 +12,7 @@
         "y": 6.814101835634817
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4LeftCoral2"
     },
     {
       "anchor": {
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.5846153846153901,
+      "minWaypointRelativePos": 0.8486352357320035,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 2.0,

@@ -47,12 +47,6 @@
                       "data": {
                         "commands": [
                           {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.1
-                            }
-                          },
-                          {
                             "type": "path",
                             "data": {
                               "pathName": "4LeftCoral3"
@@ -117,12 +111,6 @@
                       "data": {
                         "commands": [
                           {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.1
-                            }
-                          },
-                          {
                             "type": "path",
                             "data": {
                               "pathName": "4LeftCoral5"
@@ -156,15 +144,54 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "IntakeCoral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "4LeftCoral7"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 5.0
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeCoral"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.1
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "4LeftCoral7"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "SafeFailElevator"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {

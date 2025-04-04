@@ -12,16 +12,16 @@
         "y": 6.838934758977717
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4LeftCoral6"
     },
     {
       "anchor": {
         "x": 3.179,
-        "y": 4.3
+        "y": 4.13
       },
       "prevControl": {
         "x": 2.9546526085701093,
-        "y": 4.410309781790208
+        "y": 4.2403097817902085
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,12 +29,26 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.8764267990074455,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0.058560794044663925,
+      "waypointRelativePos": 0.15980148883374481,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -45,7 +59,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 4.0,
     "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
