@@ -31,6 +31,7 @@ import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.LeaveAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left1CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left3CoralAuto;
+import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left4CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
@@ -134,6 +135,7 @@ public class RobotContainer {
     enableNamedCommands();
   /* Path follower */
     autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
+    autoChooser.addOption("Left Side 4 Coral", new Left4CoralAuto());
     autoChooser.addOption("Left Side 3 Coral", new Left3CoralAuto());
     autoChooser.addOption("Left Side 1 Coral", new Left1CoralAuto());
     autoChooser.addOption("Right Side 3 Coral", new Right3CoralAuto());
@@ -212,7 +214,7 @@ public class RobotContainer {
   chassisDriver.leftBumper().onTrue(
     new ConditionalCommand(
       new IntakeSequence2(m_intake),
-      m_intake.setVoltageCommand(0.3, 0.3), ()-> m_elevator.getPosition() < 0.36))
+      m_intake.setVoltageCommand(0.4, 0.4), ()-> m_elevator.getPosition() < 0.36))
     .whileFalse(m_intake.setVoltageCommand(0, 0));
 
  /*__________________ IntakeAlgae Commands __________________*/

@@ -50,14 +50,14 @@ public class SwerveAutoAlignPose extends Command {
 
     this.xController =
         new ProfiledPIDController(
-            10,
-            11,
+            30,
+            15,
             0,
             new TrapezoidProfile.Constraints(3.0, 2.0));
     this.yController =
         new ProfiledPIDController(
-          10,
-          11,
+          30,
+          15,
           0,
             new TrapezoidProfile.Constraints(3.0, 2.0));
     this.rotationController =
@@ -67,6 +67,10 @@ public class SwerveAutoAlignPose extends Command {
           0,
             new TrapezoidProfile.Constraints(
                 Units.degreesToRadians(360), Units.degreesToRadians(360)));
+
+    this.yController.setIZone(0.0254);
+    this.xController.setIZone(0.0254);
+
     this.rotationController.setIZone(0);
     this.rotationController.enableContinuousInput(-Math.PI, Math.PI);
 
