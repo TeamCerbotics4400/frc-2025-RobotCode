@@ -4,6 +4,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -155,6 +156,7 @@ public class RobotContainer {
     Pathfinding.setPathfinder(new LocalADStarAK());
     /*This code warms up the library to avoid delay on the path */
     PathfindingCommand.warmupCommand().schedule();
+    FollowPathCommand.warmupCommand().schedule();
   
     /* Shows the preview before match setup */
     SmartDashboard.putData("Auto Mode", autoChooser);
@@ -191,7 +193,7 @@ public class RobotContainer {
   
   chassisDriver.povDown().onTrue(m_elevator.goToPosition(0.20).onlyIf(()->m_intake.finishedIntakeSequence)); //L1   0.26
   chassisDriver.b().onTrue(new ConditionalCommand(
-    m_elevator.goToPosition(0.46).onlyIf(()->m_intake.finishedIntakeSequence),  //0.46
+    m_elevator.goToPosition(0.48).onlyIf(()->m_intake.finishedIntakeSequence),  //0.46
     m_elevator.goToPosition(0.76),
     ()-> m_algae.getState() != AlgaeState.ACTIVEPOSITION));  //L2
   chassisDriver.x().onTrue(

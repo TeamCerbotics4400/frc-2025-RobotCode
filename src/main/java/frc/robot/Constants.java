@@ -123,13 +123,13 @@ public class Constants {
         new Pose2d(3.65, 2.90, new Rotation2d(Units.degreesToRadians(-120))), // C                            
         new Pose2d(3.91, 2.74, new Rotation2d(Units.degreesToRadians(-120))), // D      no                      
 
-        new Pose2d(4.99, 2.82, new Rotation2d(Units.degreesToRadians(-60))), // E
+        new Pose2d(4.96, 2.82, new Rotation2d(Units.degreesToRadians(-60))), // E
         new Pose2d(5.30, 2.91, new Rotation2d(Units.degreesToRadians(-60))), // F   
 
         new Pose2d(5.84, 3.84, new Rotation2d(Units.degreesToRadians(0))), // G
         new Pose2d(5.84, 4.15, new Rotation2d(Units.degreesToRadians(0))), // H  
 
-        new Pose2d(5.37, 5.09, new Rotation2d(Units.degreesToRadians(60))), // I  
+        new Pose2d(5.35, 5.12, new Rotation2d(Units.degreesToRadians(60))), // I  
         new Pose2d(5.04, 5.30, new Rotation2d(Units.degreesToRadians(60))), // J
         
         new Pose2d(3.97, 5.319, new Rotation2d(Units.degreesToRadians(120))), // K            
