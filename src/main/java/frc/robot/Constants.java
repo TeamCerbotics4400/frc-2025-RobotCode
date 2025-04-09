@@ -186,7 +186,7 @@ public class Constants {
       public static final class IntakeConstants{
         public static final int leftIntakeMotorId = 51;
         public static final int rightIntakeMotorId = 41;
-        public static final int laserCanId = 35;
+        public static final int laserCanId = 0;
 
         
     }

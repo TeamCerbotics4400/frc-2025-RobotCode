@@ -222,9 +222,9 @@ public class RobotContainer {
  /*__________________ IntakeAlgae Commands __________________*/
 
     chassisDriver.rightTrigger().whileTrue(
-      m_algae.goToPosition(22.5, AlgaeState.ACTIVEPOSITION)
+      m_algae.goToPosition(2.5, AlgaeState.ACTIVEPOSITION)
           .andThen(Commands.waitUntil(() -> m_algae.getPivotPosition() > 0.1))
-          .andThen(m_algae.setVoltageCommandRoll(-0.5)));
+          .andThen(m_algae.setVoltageCommandRoll(0.83)));
 
   chassisDriver.povUp().whileTrue(
     m_climber.setNeoVoltage(1)).whileFalse(m_climber.setNeoVoltage(0));
@@ -233,11 +233,11 @@ public class RobotContainer {
     chassisDriver.povLeft().whileTrue(
       m_climber.setNeoVoltage(-1)).whileFalse(m_climber.setNeoVoltage(0));
   
-      chassisDriver.povRight().onTrue(m_climber.setNeoPosition(-160));
+      chassisDriver.povRight().onTrue(m_climber.setNeoPosition(-225));
 
     chassisDriver.leftBumper().whileTrue(
-      m_algae.setVoltageCommandRoll(1).onlyIf(()-> m_algae.getPivotPosition() > 1))
-        .whileFalse(m_algae.goToPosition(0.2,AlgaeState.BACKPOSITION)
+      m_algae.setVoltageCommandRoll(-1).onlyIf(()-> m_algae.getPivotPosition() > 1))
+        .whileFalse(m_algae.goToPosition(0.5,AlgaeState.BACKPOSITION)
         .andThen(m_algae.setVoltageCommandRoll(0)));
 
       /* BACLUP CONTROLLER */

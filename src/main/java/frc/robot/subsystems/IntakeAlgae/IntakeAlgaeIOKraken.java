@@ -33,7 +33,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     pivotConfig.CurrentLimits.StatorCurrentLimit = 60;
     pivotConfig.MotorOutput.withInverted(InvertedValue.Clockwise_Positive);
-    pivotConfig.MotorOutput.withNeutralMode(NeutralModeValue.Coast);
+    pivotConfig.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
 
     pivotConfig.Slot0.kP = 0.0;
     pivotConfig.Slot0.kD = 0.0;
@@ -41,7 +41,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     rollerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     rollerConfig.CurrentLimits.StatorCurrentLimit = 60;
     rollerConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
-    rollerConfig.MotorOutput.withNeutralMode(NeutralModeValue.Coast);
+    rollerConfig.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
 
     rollerConfig.Slot0.kP = 0.0;
     rollerConfig.Slot0.kD = 0.0;
@@ -81,11 +81,11 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
 
   @Override
   public void enableBreak(boolean enable) {
-    pivotConfig.MotorOutput.NeutralMode = enable ? NeutralModeValue.Coast : NeutralModeValue.Coast;
+    pivotConfig.MotorOutput.NeutralMode = enable ? NeutralModeValue.Brake : NeutralModeValue.Brake;
     if (pivotConfig.MotorOutput.NeutralMode == pivotConfig.MotorOutput.NeutralMode) {
 
     } else {
-      pivotConfig.MotorOutput.NeutralMode = enable ? NeutralModeValue.Coast : NeutralModeValue.Coast;
+      pivotConfig.MotorOutput.NeutralMode = enable ? NeutralModeValue.Brake : NeutralModeValue.Brake;
 
       pivotMotor.getConfigurator().apply(pivotConfig);
     }
