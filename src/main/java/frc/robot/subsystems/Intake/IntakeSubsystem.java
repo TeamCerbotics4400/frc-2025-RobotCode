@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem.AlgaeState;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -12,6 +13,12 @@ public class IntakeSubsystem extends SubsystemBase {
   /*Io and inputs */
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
+
+  public static enum IntakeState{
+    INTAKING,
+    FINISHED
+  }
+    private IntakeState intakeState = IntakeState.FINISHED;
 
   public IntakeSubsystem(IntakeIO io) {
     this.io = io;
@@ -45,4 +52,14 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean hasGamePieceInside() {
     return inputs.sensor;
   }
+
+  public IntakeState getState() {
+    return intakeState;
+  }
+
+  public IntakeState changeState(IntakeState state) {
+    intakeState = state;
+    return intakeState;
+  }
+
 }
