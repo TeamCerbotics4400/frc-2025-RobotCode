@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.IntakeAlgae;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -18,6 +19,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     private TalonFXConfiguration rollerConfig;
 
       private final Encoder m_encoder;
+  private final DutyCycleOut m_setterControl = new DutyCycleOut(0);
 
     public IntakeAlgaeIOKraken(){ 
 
@@ -56,7 +58,7 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     inputs.pivotMotorappliedVolts = pivotMotor.getMotorVoltage().getValueAsDouble();
     inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
     inputs.pivotCurrentRpms = pivotMotor.getVelocity().getValueAsDouble() * 60;
-    inputs.positionPiv = pivotMotor.getPosition().getValueAsDouble();//getCurrentPosition();
+    inputs.positionPiv = pivotMotor.getPosition().getValueAsDouble();
 
     inputs.rollerMotorappliedVolts = rollerMotor.getMotorVoltage().getValueAsDouble();
     inputs.rollerMotortempCelcius = rollerMotor.getDeviceTemp().getValueAsDouble();
@@ -66,12 +68,12 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     }
     @Override
     public void setVoltagePiv(double pivotVolt){
-       pivotMotor.set(pivotVolt);
+       pivotMotor.setControl(m_setterControl.withOutput(pivotVolt).withEnableFOC(true));
     }
     @Override
     public void setVoltageRoll(double rollerVolt){
-      rollerMotor.set(rollerVolt);
-  }
+      rollerMotor.setControl(m_setterControl.withOutput(rollerVolt).withEnableFOC(true));
+    }
 
   @Override
   public void stopMotors() {

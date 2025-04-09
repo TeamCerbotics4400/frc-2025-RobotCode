@@ -14,7 +14,7 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
 
     private final IntakeAlgaeIO io;
     private final IntakeAlgaeIOInputsAutoLogged inputs = new IntakeAlgaeIOInputsAutoLogged();
-    private PIDController m_controller = new PIDController(0.082,0,0);
+    private PIDController m_controller = new PIDController(0.074,0,0);
     private boolean enablePID = false;
     private SendableChooser<String> pivotChooser = new SendableChooser<>();
 
@@ -45,7 +45,9 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
 
         Logger.recordOutput("IntakeAlgae/PID output", m_controller.calculate(inputs.positionPiv));  
         Logger.recordOutput("IntakeAlgae/PID setpoint", m_controller.getSetpoint());    
-        Logger.recordOutput("IntakeAlgae/PID enables", enablePID);      
+        Logger.recordOutput("IntakeAlgae/PID enables", enablePID);   
+        Logger.recordOutput("IntakeAlgae/Algae Detected", inputs.rollerMotorCurrent > 54);      
+   
       if(DriverStation.isDisabled()){
 
       enablePID = false;

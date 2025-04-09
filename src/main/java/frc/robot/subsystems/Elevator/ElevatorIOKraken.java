@@ -48,7 +48,7 @@ public class ElevatorIOKraken implements ElevatorIO {
 
   public double getCurrentPosition() {
     double val = (rightMotor.getPosition().getValueAsDouble() + leftMotor.getPosition().getValueAsDouble())/2;
-    return val * 0.03097097166;  //56.18
+    return val * 0.02988;  //56.18
   }
 
 
