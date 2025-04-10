@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -201,10 +202,12 @@ public class RobotContainer {
     /*__________________ Elevator Commands __________________*/
   
     // Level 1
-    chassisDriver.povDown().onTrue(
+    chassisDriver.povDown().whileTrue(
+      new ParallelCommandGroup(
       m_elevator.goToPosition(0.20)
-        .onlyIf(() -> m_intake.finishedIntakeSequence)
-    );
+        .onlyIf(() -> m_intake.finishedIntakeSequence),
+        m_intake.setVoltageCommand(0.4, 0.4).onlyIf(()->m_elevator.getPosition() > 0.16))
+    ).whileFalse(m_intake.setVoltageCommand(0, 0));
   
     // Level 2
     chassisDriver.b().onTrue(
@@ -395,6 +398,17 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
       new ElevatorAutoCommand(m_elevator, 1.73, m_intake,1.72)); 
       NamedCommands.registerCommand("SafeFailElevatorBackup",
       new ElevatorAutoCommand(m_elevator, 1.71, m_intake,1.70)); 
+
+
+   NamedCommands.registerCommand("AlgaeElevatorPos",      
+   m_elevator.goToPosition(0.20)
+      );
+
+      NamedCommands.registerCommand("AlgaeIntake",      
+      m_algae.goToPosition(2, AlgaeState.BACKPOSITION)
+      .andThen(m_algae.setVoltageCommandRoll(0.83))
+   );
+
      } 
 
   private Command controllerRumbleCommand() {

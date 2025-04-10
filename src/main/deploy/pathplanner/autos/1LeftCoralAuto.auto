@@ -21,6 +21,12 @@
           "data": {
             "pathName": "1LeftCoral2"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1LeftCoral3"
+          }
         }
       ]
     }
