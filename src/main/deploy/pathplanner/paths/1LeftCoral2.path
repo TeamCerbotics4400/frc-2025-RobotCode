@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.989599384921498,
-        "y": 4.2041473335583035
+        "x": 5.989934081936971,
+        "y": 4.195740617242404
       },
       "isLocked": false,
       "linkedName": "1LeftCoral1"
     },
     {
       "anchor": {
-        "x": 6.4935,
-        "y": 4.19
+        "x": 5.74,
+        "y": 4.028061373487133
       },
       "prevControl": {
-        "x": 6.210750000000001,
-        "y": 4.17125
+        "x": 7.286417475941184,
+        "y": 4.0752592971898425
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,18 +34,18 @@
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0.058560794044668296,
+      "waypointRelativePos": 0.9836228287841124,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "AlgaeElevatorPos"
+          "name": "AlgaeIntake"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -60,7 +60,7 @@
   "folder": "1LeftCoralAuto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -0.1594700733563215
   },
   "useDefaultConstraints": false
 }

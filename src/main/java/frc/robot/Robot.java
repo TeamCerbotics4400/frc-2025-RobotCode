@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.Util.CustomDashboardUtil;
+import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem.AlgaeState;
 
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -137,7 +138,7 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-  //  RobotContainer.getAlgaeSubsystem().goToPosition(10,AlgaeState.BACKPOSITION).schedule();
+   // RobotContainer.getAlgaeSubsystem().goToPosition(0,AlgaeState.BACKPOSITION).schedule();
   }
 
   @Override
@@ -146,7 +147,7 @@ public class Robot extends LoggedRobot {
     && RobotContainer.getElevatorSubsystem().getPosition() > 0.05 && !RobotContainer.getIntakeSubsystem().hasGamePieceInside()) {
             
     // Force elevator to return to 0
-    RobotContainer.getElevatorSubsystem().goToPosition(0.0).schedule();
+    RobotContainer.getElevatorSubsystem().goToPosition(0.1).schedule();
     }
   }
 
@@ -159,7 +160,7 @@ public class Robot extends LoggedRobot {
       m_autonomousCommand.cancel();
     }
 
-   // RobotContainer.getAlgaeSubsystem().goToPosition(10,AlgaeState.BACKPOSITION).schedule();
+    RobotContainer.getAlgaeSubsystem().goToPosition(0.1,AlgaeState.BACKPOSITION).schedule();
   }
 
   @Override

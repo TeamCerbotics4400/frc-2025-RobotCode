@@ -51,13 +51,13 @@ public class SwerveAutoAlignPose extends Command {
     this.xController =
         new ProfiledPIDController(
             30,
-            20,
+            0,
             0,
             new TrapezoidProfile.Constraints(3.0, 2.0));
     this.yController =
         new ProfiledPIDController(
           30,
-          20,
+          0,
           0,
             new TrapezoidProfile.Constraints(3.0, 2.0));
     this.rotationController =

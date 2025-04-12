@@ -31,6 +31,14 @@ public class Constants {
     REPLAY
   }
 
+  public static enum endEffectorPriority {
+    CORAL,
+
+    ALGAE
+  }
+
+  public static endEffectorPriority currentPriority = endEffectorPriority.CORAL;
+
   public static class DriveConstants {
 
     public static final double kDriveGearRatio = 4.59;
@@ -123,7 +131,7 @@ public class Constants {
         new Pose2d(3.65, 2.90, new Rotation2d(Units.degreesToRadians(-120))), // C                            
         new Pose2d(3.91, 2.74, new Rotation2d(Units.degreesToRadians(-120))), // D      no                      
 
-        new Pose2d(4.96, 2.82, new Rotation2d(Units.degreesToRadians(-60))), // E
+        new Pose2d(5.01, 2.72, new Rotation2d(Units.degreesToRadians(-60))), // E
         new Pose2d(5.30, 2.91, new Rotation2d(Units.degreesToRadians(-60))), // F   
 
         new Pose2d(5.90, 3.85, new Rotation2d(Units.degreesToRadians(0))), // G

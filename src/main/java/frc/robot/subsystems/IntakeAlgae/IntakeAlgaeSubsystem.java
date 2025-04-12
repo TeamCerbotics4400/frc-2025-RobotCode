@@ -107,6 +107,10 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
       return systemStates;
     }
 
+    public double getRollerCurrent(){
+      return inputs.rollerMotorCurrent;
+    }
+
       public Command goToPosition(double position, AlgaeState state) {
     Command ejecutable =
         Commands.runOnce(

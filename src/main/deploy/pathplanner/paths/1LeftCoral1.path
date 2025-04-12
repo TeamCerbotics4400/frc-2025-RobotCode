@@ -34,6 +34,17 @@
   "eventMarkers": [
     {
       "name": "",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareAlgae"
+        }
+      }
+    },
+    {
+      "name": "",
       "waypointRelativePos": 0.14854827819041308,
       "endWaypointRelativePos": null,
       "command": {
@@ -54,7 +65,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -0.1594700733563215
   },
   "reversed": false,
   "folder": "1LeftCoralAuto",

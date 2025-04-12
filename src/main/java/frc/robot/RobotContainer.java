@@ -37,6 +37,7 @@ import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
 import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
+import frc.robot.Commands.ElevatorCommands.Level1CycleCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequence2;
 import frc.robot.Commands.IntakeCommand.IntakeSequence3;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
@@ -202,12 +203,7 @@ public class RobotContainer {
     /*__________________ Elevator Commands __________________*/
   
     // Level 1
-    chassisDriver.povDown().whileTrue(
-      new ParallelCommandGroup(
-      m_elevator.goToPosition(0.20)
-        .onlyIf(() -> m_intake.finishedIntakeSequence),
-        m_intake.setVoltageCommand(0.4, 0.4).onlyIf(()->m_elevator.getPosition() > 0.16))
-    ).whileFalse(m_intake.setVoltageCommand(0, 0));
+    chassisDriver.povDown().onTrue(new Level1CycleCommand(m_elevator, m_intake));
   
     // Level 2
     chassisDriver.b().onTrue(
@@ -293,17 +289,7 @@ public class RobotContainer {
         m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
           .andThen(m_algae.setVoltageCommandRoll(0.83))
       );
-  
-    // Left Bumper - Manual algae roll (reversed)
-    chassisDriver.leftBumper()
-      .whileTrue(
-        m_algae.setVoltageCommandRoll(-0.83)
-          .onlyIf(() -> m_intake.getState() == IntakeState.FINISHED)
-      )
-      .whileFalse(
-        m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0))
-      );
+
   
     /*__________________ Climber Manual Commands __________________*/
   
@@ -324,11 +310,21 @@ public class RobotContainer {
   
     /*__________________ BACKUP CONTROLLER __________________*/
   
-    subsystemsDriver.a()
+    /*subsystemsDriver.a()
       .whileTrue(m_elevator.setManualVoltage(-0.3))
       .whileFalse(
         m_elevator.resetEncoder()
           .andThen(m_elevator.setManualVoltage(0))
+      );*/
+
+      chassisDriver.leftBumper()
+      .whileTrue(
+        m_algae.setVoltageCommandRoll(-0.83)
+         
+      )
+      .whileFalse(
+        m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
+          .andThen(m_algae.setVoltageCommandRoll(0))
       );
   }
   
@@ -338,13 +334,14 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         Command selectedCommand;
         
         switch (val.get()) {
-            case 3:
-                selectedCommand = m_climber.setNeoPosition(-160).until(()->3 != val.get()); //Step 1
+            case 0:
+                selectedCommand = m_climber.setNeoPosition(-160).until(()->3 != val.get()); //Escalar
                 break;
-            case 2:
+            case 1:
                 selectedCommand = m_climber.setKrakenPosition(-3.77).until(()->2 != val.get()); //Step 2
                 break;
-            case 0:
+            case 2:
+
             default:
                 selectedCommand = m_climber.setNeoVoltage(0.0).until(()->0 != val.get()); //End
                 break;
@@ -408,6 +405,17 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
       m_algae.goToPosition(2, AlgaeState.BACKPOSITION)
       .andThen(m_algae.setVoltageCommandRoll(0.83))
    );
+
+   NamedCommands.registerCommand("PrepareAlgae",      
+   m_algae.goToPosition(0, AlgaeState.BACKPOSITION));
+
+   NamedCommands.registerCommand("OutakeAlgae",      
+    m_algae.setVoltageCommandRoll(-0.83).until(()-> m_algae.getRollerCurrent() < 30));
+
+    NamedCommands.registerCommand("ElevatorL4NoSafe",      
+   m_elevator.goToPosition(1.73));
+
+   NamedCommands.registerCommand("HighAlgaeElevator",m_elevator.goToPosition(0.76));
 
      } 
 

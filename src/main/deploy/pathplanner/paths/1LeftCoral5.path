@@ -3,53 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.74,
-        "y": 4.028061373487133
+        "x": 5.09,
+        "y": 5.172
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.5325,
-        "y": 4.349051338334839
+        "x": 5.9670000000000005,
+        "y": 6.17975
       },
       "isLocked": false,
-      "linkedName": "1LeftCoral2"
-    },
-    {
-      "anchor": {
-        "x": 6.805499999999999,
-        "y": 5.097499999999999
-      },
-      "prevControl": {
-        "x": 6.440953750450603,
-        "y": 5.1120818499819745
-      },
-      "nextControl": {
-        "x": 7.055300239680447,
-        "y": 5.087507990412782
-      },
-      "isLocked": false,
-      "linkedName": null
+      "linkedName": "1LeftCoral6"
     },
     {
       "anchor": {
         "x": 7.6,
-        "y": 5.097499999999999
+        "y": 5.55
       },
       "prevControl": {
-        "x": 7.6,
-        "y": 5.347499999999999
+        "x": 6.318,
+        "y": 5.52175
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "1LeftCoral3"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6848635235732143,
-      "maxWaypointRelativePos": 2.0,
+      "minWaypointRelativePos": 0.6243176178660047,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 2.0,
         "maxAcceleration": 2.0,
@@ -64,7 +48,18 @@
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0.8555831265508678,
+      "waypointRelativePos": 0.38213399503722084,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareAlgae"
+        }
+      }
+    },
+    {
+      "name": "",
+      "waypointRelativePos": 0.7215880893300126,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -84,13 +79,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.57397631636195
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "1LeftCoralAuto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 58.671307132195814
   },
   "useDefaultConstraints": true
 }
