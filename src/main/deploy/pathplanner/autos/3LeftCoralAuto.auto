@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "PrepareAlgae"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "3LeftCoral1"

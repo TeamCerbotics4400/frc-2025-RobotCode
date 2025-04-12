@@ -27,6 +27,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
+import frc.robot.Commands.DoNothingCommandCommand;
+import frc.robot.Commands.AlgaeIntakeCommand.PriorityOutakeCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.LeaveAuto;
@@ -36,6 +38,7 @@ import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left4CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
 import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
+import frc.robot.Commands.ClimberCommand.ClimberSequence;
 import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
 import frc.robot.Commands.ElevatorCommands.Level1CycleCommand;
 import frc.robot.Commands.IntakeCommand.IntakeSequence2;
@@ -43,6 +46,7 @@ import frc.robot.Commands.IntakeCommand.IntakeSequence3;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
 import frc.robot.Commands.SwerveCommands.SwerveAutoAlignPose;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.OuttakeState;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
 import frc.robot.Subsystems.Climber.ClimberIOSparkMax;
@@ -250,7 +254,7 @@ public class RobotContainer {
     );
   
     // Outtake coral depending on elevator level
-    chassisDriver.leftBumper()
+    /*chassisDriver.leftBumper()
       .onTrue(
         new ConditionalCommand(
           new IntakeSequence2(m_intake),
@@ -264,7 +268,7 @@ public class RobotContainer {
         ).andThen(
           m_intake.setVoltageCommand(0, 0)
         )
-      );
+      );*/
   
     /*__________________ Algae Commands __________________*/
   
@@ -295,8 +299,7 @@ public class RobotContainer {
   
     // POV Up - Climber up
     chassisDriver.povUp()
-      .whileTrue(m_climber.setNeoVoltage(1))
-      .whileFalse(m_climber.setNeoVoltage(0));
+      .whileTrue(new ClimberSequence(m_climber, m_algae));
   
     // POV Left - Climber down
     chassisDriver.povLeft()
@@ -305,7 +308,7 @@ public class RobotContainer {
   
     // POV Right - Climber set position
     chassisDriver.povRight().onTrue(
-      m_climber.setNeoPosition(-225)
+      m_climber.setNeoPosition(-196)
     );
   
     /*__________________ BACKUP CONTROLLER __________________*/
@@ -317,7 +320,7 @@ public class RobotContainer {
           .andThen(m_elevator.setManualVoltage(0))
       );*/
 
-      chassisDriver.leftBumper()
+     /*  chassisDriver.leftBumper()
       .whileTrue(
         m_algae.setVoltageCommandRoll(-0.83)
          
@@ -325,7 +328,25 @@ public class RobotContainer {
       .whileFalse(
         m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
           .andThen(m_algae.setVoltageCommandRoll(0))
-      );
+      ); */
+
+      /*chassisDriver.leftBumper()
+      .whileTrue(
+        m_algae.setVoltageCommandRoll(-0.83)
+      )
+      .whileFalse(
+        m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
+          .andThen(m_algae.setVoltageCommandRoll(0))
+      ); */
+
+      chassisDriver.leftBumper().onTrue(
+        new ConditionalCommand(
+          m_intake.setVoltageCommand(0.4, 0.4), 
+          m_algae.setVoltageCommandRoll(-1), 
+          ()-> (Constants.outtakeState == OuttakeState.CORAL_PRIORITY
+          && m_intake.hasGamePieceInside()) || !m_algae.isGamePieceInside())
+      ).whileFalse(m_intake.setVoltageCommand(0, 0).alongWith(m_algae.setVoltageCommandRoll(0)
+      .onlyIf(()-> !m_algae.isGamePieceInside())));
   }
   
 
@@ -334,19 +355,21 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         Command selectedCommand;
         
         switch (val.get()) {
-            case 0:
-                selectedCommand = m_climber.setNeoPosition(-160).until(()->3 != val.get()); //Escalar
-                break;
+          
             case 1:
-                selectedCommand = m_climber.setKrakenPosition(-3.77).until(()->2 != val.get()); //Step 2
+                selectedCommand = m_climber.setKrakenPosition(-196.0).until(()->2 != val.get()); //Step 2
                 break;
-            case 2:
-
+            
             default:
                 selectedCommand = m_climber.setNeoVoltage(0.0).until(()->0 != val.get()); //End
                 break;
         }
-        
+        if(val.get() == 3){
+          Constants.outtakeState = OuttakeState.CORAL_PRIORITY;
+        }
+        if(val.get() == 2){
+          Constants.outtakeState = OuttakeState.ALGAE_PRIORITY;
+        }
         selectedCommand.schedule();
     }, m_climber);
 }
@@ -455,6 +478,10 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
 
   public static CustomDashboardUtil getDashboardUtil(){
     return m_dashboard;
+  }
+
+  public static ClimberSubsystem getClimberSubsystem(){
+    return m_climber;
   }
 
   public static CommandSwerveDrivetrain getSwerve(){

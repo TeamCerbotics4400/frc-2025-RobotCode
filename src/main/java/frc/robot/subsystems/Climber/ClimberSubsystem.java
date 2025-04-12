@@ -29,6 +29,10 @@ public class ClimberSubsystem extends SubsystemBase {
     return run(() -> io.setSparkMaxVoltage(voltage));
   }  
 
+  public void setNeoVoidVoltage(double voltage){
+    io.setSparkMaxVoltage(voltage);
+  }
+
   public Command setNeoPosition(double position) {
     return   
            run(

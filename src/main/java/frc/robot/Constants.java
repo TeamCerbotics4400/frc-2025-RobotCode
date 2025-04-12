@@ -31,13 +31,12 @@ public class Constants {
     REPLAY
   }
 
-  public static enum endEffectorPriority {
-    CORAL,
+  public static enum OuttakeState {
+    CORAL_PRIORITY,
+    ALGAE_PRIORITY
+}
 
-    ALGAE
-  }
-
-  public static endEffectorPriority currentPriority = endEffectorPriority.CORAL;
+public static OuttakeState outtakeState = OuttakeState.ALGAE_PRIORITY;
 
   public static class DriveConstants {
 

@@ -165,7 +165,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopPeriodic() {
-
+    Logger.recordOutput("Dashboard/Priority", Constants.outtakeState.name());
   }
 
   @Override

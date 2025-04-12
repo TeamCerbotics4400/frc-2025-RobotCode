@@ -284,10 +284,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
               });
     }
-    Logger.recordOutput("Swerve/RPMS", this.getModule(0).getDriveMotor().getVelocity().getValueAsDouble());
-
-    Logger.recordOutput("Rotation Swerve rad", this.getState().Pose.getRotation().getRadians());
-
   }
 
   private void startSimThread() {

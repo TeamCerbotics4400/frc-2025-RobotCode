@@ -16,7 +16,6 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
     private final IntakeAlgaeIOInputsAutoLogged inputs = new IntakeAlgaeIOInputsAutoLogged();
     private PIDController m_controller = new PIDController(0.074,0,0);
     private boolean enablePID = false;
-    private SendableChooser<String> pivotChooser = new SendableChooser<>();
 
     public static enum AlgaeState{
       ACTIVEPOSITION,
@@ -27,11 +26,6 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
     public IntakeAlgaeSubsystem(IntakeAlgaeIO io){
         this.io = io;
 
-    pivotChooser.setDefaultOption("Break", "Break");
-    pivotChooser.addOption("Coast", "Coast");
-    pivotChooser.addOption("Break", "Break");
-
-    SmartDashboard.putData("Pivot algae mode",pivotChooser);
     }
     
     @Override
@@ -49,26 +43,8 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
         Logger.recordOutput("IntakeAlgae/Algae Detected", inputs.rollerMotorCurrent > 54);      
    
       if(DriverStation.isDisabled()){
-
       enablePID = false;
-      switch(pivotChooser.getSelected()){
-        case "Break":
-        io.enableBreak(true);
-        break;
-
-        case "Coast":
-        io.enableBreak(false);
-        break;
-
-        default:
-        io.enableBreak(true);
-        break;
       }
-    }else{
-      io.enableBreak(true);
-    }
-
-
     }
 
     public double getAmperage(){
@@ -124,6 +100,11 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
     return ejecutable;
   }
 
+  public void goToPositionVoid(double position){
+    m_controller.setSetpoint(position);
+    enablePID = true;
+  }
+
   public Command goToPositionVoltage(double position) {
     Command ejecutable =
         Commands.runOnce(
@@ -138,5 +119,9 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
 
     public void setVoltageRollerVoid(double voltage){
       io.setVoltageRoll(voltage);
+    }
+
+    public boolean isGamePieceInside(){
+      return inputs.rollerMotorCurrent > 40;
     }
 }
