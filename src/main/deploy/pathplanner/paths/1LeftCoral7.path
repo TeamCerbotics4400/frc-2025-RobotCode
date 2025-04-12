@@ -3,43 +3,68 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.754098360655737,
-        "y": 4.01
+        "x": 5.09,
+        "y": 5.172
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.754098360655737,
-        "y": 4.01
+        "x": 5.9670000000000005,
+        "y": 6.17975
       },
       "isLocked": false,
-      "linkedName": "1LeftCoral3"
+      "linkedName": "1LeftCoral6"
     },
     {
       "anchor": {
-        "x": 6.641188524590164,
-        "y": 5.25373975409836
+        "x": 7.6,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 6.377459016393443,
-        "y": 4.73826844262295
+        "x": 6.318,
+        "y": 5.52175
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "1LeftCoral4"
+      "linkedName": "1LeftCoral7"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.6243176178660047,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0.5455773126266026,
+      "waypointRelativePos": 0.38213399503722084,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
           "name": "PrepareAlgae"
+        }
+      }
+    },
+    {
+      "name": "",
+      "waypointRelativePos": 0.7215880893300126,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorL4NoSafe"
         }
       }
     }
@@ -60,7 +85,7 @@
   "folder": "1LeftCoralAuto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 58.671307132195814
   },
   "useDefaultConstraints": true
 }

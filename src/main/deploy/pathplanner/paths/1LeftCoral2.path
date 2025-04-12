@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.989934081936971,
-        "y": 4.195740617242404
+        "x": 6.005634233156342,
+        "y": 4.082736138501437
       },
       "isLocked": false,
       "linkedName": "1LeftCoral1"
     },
     {
       "anchor": {
-        "x": 5.74,
-        "y": 4.028061373487133
+        "x": 6.44475,
+        "y": 4.0445
       },
       "prevControl": {
-        "x": 7.286417475941184,
-        "y": 4.0752592971898425
+        "x": 6.025499999999999,
+        "y": 4.1225
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,12 +34,12 @@
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0.9836228287841124,
+      "waypointRelativePos": 0.048615800135041805,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "AlgaeIntake"
+          "name": "ElevatorL0"
         }
       }
     }

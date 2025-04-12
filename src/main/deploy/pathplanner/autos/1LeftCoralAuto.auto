@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "ElevatorL0"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "1LeftCoral2"
@@ -32,18 +26,6 @@
           "type": "path",
           "data": {
             "pathName": "1LeftCoral3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "OutakeAlgae"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ElevatorL0"
           }
         },
         {
@@ -68,6 +50,36 @@
           "type": "named",
           "data": {
             "name": "ElevatorL0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1LeftCoral6"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1LeftCoral7"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OutakeAlgae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorL0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1LeftCoral8"
           }
         }
       ]
