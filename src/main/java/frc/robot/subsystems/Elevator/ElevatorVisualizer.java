@@ -28,7 +28,6 @@ public class ElevatorVisualizer {
   public void update(double position) {
     // Log Mechanism2d
     elevator.setLength(position);
-    Logger.recordOutput("Elevator/Mechanism2d/" + key, mechanism);
 
     // Log 3D poses
     Pose3d pivot = new Pose3d(-0.0, 0.0, 0.0, new Rotation3d(0.0, 0, 0.0));

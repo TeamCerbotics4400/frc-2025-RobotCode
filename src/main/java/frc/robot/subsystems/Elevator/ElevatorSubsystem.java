@@ -43,7 +43,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private SendableChooser<String> elevatorModeChooser = new SendableChooser<>();
 
     /* Tunable numbers */
-    LoggedTunableNumber logkS = new LoggedTunableNumber("ElevatorTunable/kS",kS);
+    /*LoggedTunableNumber logkS = new LoggedTunableNumber("ElevatorTunable/kS",kS);
     LoggedTunableNumber logkG = new LoggedTunableNumber("ElevatorTunable/kG",kG);
     LoggedTunableNumber logkA = new LoggedTunableNumber("ElevatorTunable/kA",kA);
     LoggedTunableNumber logkV = new LoggedTunableNumber("ElevatorTunable/kV",kV);
@@ -51,7 +51,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     LoggedTunableNumber logkI = new LoggedTunableNumber("ElevatorTunable/kI",kI);
     LoggedTunableNumber logkD = new LoggedTunableNumber("ElevatorTunable/kD",kD);
     LoggedTunableNumber logMaxVel = new LoggedTunableNumber("ElevatorTunable/MAXVEL",maxVelElevator);
-    LoggedTunableNumber logMaxAcc = new LoggedTunableNumber("ElevatorTunable/MAXACC",maxAccElevator);
+    LoggedTunableNumber logMaxAcc = new LoggedTunableNumber("ElevatorTunable/MAXACC",maxAccElevator);*/
 
     
   public ElevatorSubsystem(ElevatorIO io) {
@@ -67,7 +67,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    updatePID();
+    //updatePID();
     Logger.processInputs("Elevator", inputs);
     Logger.recordOutput("Elevator/Value Error", m_controller.getPositionError());
     Logger.recordOutput("Elevator/Setpoint", m_controller.getSetpoint().position);
@@ -128,12 +128,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     return ejecutable;
   }
 
-  public Command resetEncoder() {
+  public Command safeReset(double voltage) {
     Command ejecutable =
         Commands.runOnce(
             () -> {
-            io.resetEncoder();
             enablePID = false;
+            io.resetEncoder();
+            io.setVoltage(voltage,0);
             },
             this);
     return ejecutable;
@@ -160,7 +161,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     return run(() -> io.setVoltage(voltage,0));
   }  
 
-  public void updatePID(){
+  /*public void updatePID(){
     if(logMaxAcc.hasChanged(0)
     || logMaxVel.hasChanged(0)
     || logkA.hasChanged(0)
@@ -175,5 +176,5 @@ public class ElevatorSubsystem extends SubsystemBase {
       m_controller = new ProfiledPIDController(logkP.get(), logkI.get(), logkD.get(), m_profile);
       m_ElevatorFeedforward = new ElevatorFeedforward(logkS.get(), logkG.get(), logkV.get() ,logkA.get());
     }
-  }
+  }*/
 }

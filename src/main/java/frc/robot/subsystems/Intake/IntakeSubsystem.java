@@ -14,12 +14,6 @@ public class IntakeSubsystem extends SubsystemBase {
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
-  public static enum IntakeState{
-    INTAKING,
-    FINISHED
-  }
-    private IntakeState intakeState = IntakeState.FINISHED;
-
   public IntakeSubsystem(IntakeIO io) {
     this.io = io;
   }
@@ -52,14 +46,4 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean hasGamePieceInside() {
     return inputs.sensor;
   }
-
-  public IntakeState getState() {
-    return intakeState;
-  }
-
-  public IntakeState changeState(IntakeState state) {
-    intakeState = state;
-    return intakeState;
-  }
-
 }

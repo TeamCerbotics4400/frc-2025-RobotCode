@@ -54,7 +54,8 @@ public class Left4CoralAuto extends AutoCommand {
             safeGetPathPoses(third),
             safeGetPathPoses(fourth),
             safeGetPathPoses(five),
-            safeGetPathPoses(six))
+            safeGetPathPoses(six),
+            safeGetPathPoses((seven)))
         .flatMap(Collection::stream)
         .collect(Collectors.toList());
   }

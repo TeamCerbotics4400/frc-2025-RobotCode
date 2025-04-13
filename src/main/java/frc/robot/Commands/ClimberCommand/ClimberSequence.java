@@ -6,6 +6,7 @@ package frc.robot.Commands.ClimberCommand;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
+import frc.robot.Subsystems.Climber.ClimberSubsystem.ClimbingState;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem.AlgaeState;
 
@@ -28,8 +29,13 @@ public class ClimberSequence extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    if(m_climber.getSparkMaxPosition() < -190){
+      m_climber.climbState = ClimbingState.CLIMBING;
+    }
+
     m_climber.setNeoVoidVoltage(1);
-    if(m_climber.getSparkMaxPosition() > -20){
+    if(m_climber.getSparkMaxPosition() > -20 && m_climber.climbState == ClimbingState.CLIMBING){
     m_algae.goToPositionVoid(10);
     }
   }

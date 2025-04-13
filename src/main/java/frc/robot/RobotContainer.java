@@ -51,13 +51,13 @@ import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
 import frc.robot.Subsystems.Climber.ClimberIOSparkMax;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
+import frc.robot.Subsystems.Climber.ClimberSubsystem.ClimbingState;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOKraken;
 import frc.robot.Subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.Subsystems.Intake.IntakeIO;
 import frc.robot.Subsystems.Intake.IntakeIOKraken;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
-import frc.robot.Subsystems.Intake.IntakeSubsystem.IntakeState;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeIO;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeIOKraken;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem;
@@ -286,7 +286,7 @@ public class RobotContainer {
     // Right Trigger - Algae to position 2
     chassisDriver.rightTrigger()
       .whileTrue(
-        m_algae.goToPosition(2, AlgaeState.ACTIVEPOSITION)
+        m_algae.goToPosition(2.5, AlgaeState.ACTIVEPOSITION)
           .andThen(m_algae.setVoltageCommandRoll(0.83))
       )
       .whileFalse(
@@ -313,32 +313,6 @@ public class RobotContainer {
   
     /*__________________ BACKUP CONTROLLER __________________*/
   
-    /*subsystemsDriver.a()
-      .whileTrue(m_elevator.setManualVoltage(-0.3))
-      .whileFalse(
-        m_elevator.resetEncoder()
-          .andThen(m_elevator.setManualVoltage(0))
-      );*/
-
-     /*  chassisDriver.leftBumper()
-      .whileTrue(
-        m_algae.setVoltageCommandRoll(-0.83)
-         
-      )
-      .whileFalse(
-        m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0))
-      ); */
-
-      /*chassisDriver.leftBumper()
-      .whileTrue(
-        m_algae.setVoltageCommandRoll(-0.83)
-      )
-      .whileFalse(
-        m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0))
-      ); */
-
       chassisDriver.leftBumper().onTrue(
         new ConditionalCommand(
           m_intake.setVoltageCommand(0.4, 0.4), 
@@ -347,6 +321,12 @@ public class RobotContainer {
           && m_intake.hasGamePieceInside()) || !m_algae.isGamePieceInside())
       ).whileFalse(m_intake.setVoltageCommand(0, 0).alongWith(m_algae.setVoltageCommandRoll(0)
       .onlyIf(()-> !m_algae.isGamePieceInside())));
+
+
+      subsystemsDriver.a().whileTrue(
+        m_elevator.safeReset(-0.1))
+        .whileFalse(m_elevator.setManualVoltage(0));
+
   }
   
 
@@ -357,11 +337,11 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         switch (val.get()) {
           
             case 1:
-                selectedCommand = m_climber.setKrakenPosition(-196.0).until(()->2 != val.get()); //Step 2
+                selectedCommand = m_climber.setNeoPosition(-196.0).unless(()-> m_climber.climbState == ClimbingState.CLIMBING); //Step 2
                 break;
             
             default:
-                selectedCommand = m_climber.setNeoVoltage(0.0).until(()->0 != val.get()); //End
+                selectedCommand = new DoNothingCommandCommand(); //End
                 break;
         }
         if(val.get() == 3){

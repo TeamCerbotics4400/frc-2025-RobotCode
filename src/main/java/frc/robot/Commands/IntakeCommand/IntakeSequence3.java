@@ -7,7 +7,6 @@ package frc.robot.Commands.IntakeCommand;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
-import frc.robot.Subsystems.Intake.IntakeSubsystem.IntakeState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeSequence3 extends Command {
@@ -27,7 +26,6 @@ public class IntakeSequence3 extends Command {
   public void initialize() {
     m_intake.finishedIntakeSequence = false;
     timer.reset();
-    m_intake.changeState(IntakeState.INTAKING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

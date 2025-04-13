@@ -11,6 +11,13 @@ public class ClimberSubsystem extends SubsystemBase {
   private final ClimberIO io;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
+  public static enum ClimbingState{
+    PREPARING_CLIMB,
+    CLIMBING
+  }
+
+  public ClimbingState climbState = ClimbingState.PREPARING_CLIMB;
+
   public ClimberSubsystem(ClimberIO io) {
     this.io = io;
   }
@@ -38,7 +45,6 @@ public class ClimberSubsystem extends SubsystemBase {
            run(
             () -> 
               io.setSparkPosition(position));
-            
               }  
   
   public Command setKrakenPosition(double position) {

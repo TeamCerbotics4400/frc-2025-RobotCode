@@ -118,6 +118,7 @@ public class Robot extends LoggedRobot {
                                     .getDistance(FieldConstants.blueSidePositions[RobotContainer.getDashboardUtil().getReefSelected()].getTranslation()));
 */
     Logger.recordOutput("Swerve Position", RobotContainer.getSwerve().getState().Pose); 
+    Logger.recordOutput("Dashboard/Priority", Constants.outtakeState.name());
 
 
   }
@@ -165,7 +166,6 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopPeriodic() {
-    Logger.recordOutput("Dashboard/Priority", Constants.outtakeState.name());
   }
 
   @Override
