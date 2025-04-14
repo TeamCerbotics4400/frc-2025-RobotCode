@@ -3,6 +3,8 @@ package frc.robot.Subsystems.IntakeAlgae;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,8 +16,9 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
 
     private final IntakeAlgaeIO io;
     private final IntakeAlgaeIOInputsAutoLogged inputs = new IntakeAlgaeIOInputsAutoLogged();
-    private PIDController m_controller = new PIDController(0.074,0,0);
+    private PIDController m_controller = new PIDController(0.074,0,0.001);
     private boolean enablePID = false;
+    private Debouncer currentFilter = new Debouncer(0.5,DebounceType.kBoth);
 
     public static enum AlgaeState{
       ACTIVEPOSITION,
@@ -40,7 +43,7 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
         Logger.recordOutput("IntakeAlgae/PID output", m_controller.calculate(inputs.positionPiv));  
         Logger.recordOutput("IntakeAlgae/PID setpoint", m_controller.getSetpoint());    
         Logger.recordOutput("IntakeAlgae/PID enables", enablePID);   
-        Logger.recordOutput("IntakeAlgae/Algae Detected", inputs.rollerMotorCurrent > 54);      
+        Logger.recordOutput("IntakeAlgae/Algae Detected", currentFilter.calculate(inputs.rollerMotorCurrent > 54));      
    
       if(DriverStation.isDisabled()){
       enablePID = false;

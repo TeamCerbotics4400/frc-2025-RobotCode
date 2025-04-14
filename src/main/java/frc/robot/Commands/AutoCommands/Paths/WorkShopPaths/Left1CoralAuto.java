@@ -16,11 +16,23 @@ public class Left1CoralAuto extends AutoCommand {
 
   private final PathPlannerPath first;
   private final PathPlannerPath second;
+  private final PathPlannerPath third;
+  private final PathPlannerPath fourth;
+  private final PathPlannerPath fifth;
+  private final PathPlannerPath sixth;
+  private final PathPlannerPath seventh;
+  private final PathPlannerPath eight;
 
 
   public Left1CoralAuto() {
     first = loadPath("1LeftCoral1");
     second = loadPath("1LeftCoral2");
+    third = loadPath("1LeftCoral3");
+    fourth = loadPath("1LeftCoral4");
+    fifth = loadPath("1LeftCoral5");
+    sixth = loadPath("1LeftCoral6");
+    seventh = loadPath("1LeftCoral7");
+    eight = loadPath("1LeftCoral8");
 
     addCommands(
         Commands.deadline(
@@ -41,7 +53,13 @@ public class Left1CoralAuto extends AutoCommand {
   public List<Pose2d> getAllPathPoses() {
     return Stream.of(
             safeGetPathPoses(first),
-            safeGetPathPoses(second))
+            safeGetPathPoses(second),
+            safeGetPathPoses(third),
+            safeGetPathPoses(fourth),
+            safeGetPathPoses(fifth),
+            safeGetPathPoses(sixth),
+            safeGetPathPoses(seventh),
+            safeGetPathPoses(eight))
         .flatMap(Collection::stream)
         .collect(Collectors.toList());
   }

@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 import static frc.robot.Constants.IntakeAlgaeConstants.*;
@@ -20,6 +21,8 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
 
       private final Encoder m_encoder;
   private final DutyCycleOut m_setterControl = new DutyCycleOut(0);
+
+  
 
     public IntakeAlgaeIOKraken(){ 
 

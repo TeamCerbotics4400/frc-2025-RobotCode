@@ -139,7 +139,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
     autoChooser.addOption("Left Side 4 Coral", new Left4CoralAuto());
     autoChooser.addOption("Left Side 3 Coral", new Left3CoralAuto());
-    autoChooser.addOption("Left Side 1 Coral", new Left1CoralAuto());
+    autoChooser.addOption("Left 1 Coral + 2 Algae", new Left1CoralAuto());
     autoChooser.addOption("Right Side 3 Coral", new Right3CoralAuto());
     autoChooser.addOption("Right Side 1 Coral", new Right1CoralAuto());
     autoChooser.addOption("LEAVE NOTHING ELSE", new LeaveAuto());
@@ -214,7 +214,7 @@ public class RobotContainer {
       new ConditionalCommand(
         m_elevator.goToPosition(0.48)
           .onlyIf(() -> m_intake.finishedIntakeSequence),
-        m_elevator.goToPosition(0.76),
+        m_elevator.goToPosition(0.57),
         () -> m_algae.getState() != AlgaeState.ACTIVEPOSITION
       )
     );
@@ -224,7 +224,7 @@ public class RobotContainer {
       new ConditionalCommand(
         m_elevator.goToPosition(0.94)
           .onlyIf(() -> m_intake.finishedIntakeSequence),
-        m_elevator.goToPosition(0.76),
+        m_elevator.goToPosition(0.57),
         () -> m_algae.getState() != AlgaeState.ACTIVEPOSITION
       )
     );
@@ -275,7 +275,7 @@ public class RobotContainer {
     // Left Trigger - Algae to position 10
     chassisDriver.leftTrigger()
       .whileTrue(
-        m_algae.goToPosition(10, AlgaeState.ACTIVEPOSITION)
+        m_algae.goToPosition(9.5, AlgaeState.ACTIVEPOSITION)
           .andThen(m_algae.setVoltageCommandRoll(0.83))
       )
       .whileFalse(
@@ -307,9 +307,11 @@ public class RobotContainer {
       .whileFalse(m_climber.setNeoVoltage(0));
   
     // POV Right - Climber set position
-    chassisDriver.povRight().onTrue(
+    subsystemsDriver.povRight().onTrue(
       m_climber.setNeoPosition(-196)
     );
+
+    chassisDriver.povRight().whileTrue(m_algae.goToPosition(7.0, AlgaeState.ACTIVEPOSITION));
   
     /*__________________ BACKUP CONTROLLER __________________*/
   
@@ -345,7 +347,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
                 break;
         }
         if(val.get() == 3){
-          Constants.outtakeState = OuttakeState.CORAL_PRIORITY;
+       //   Constants.outtakeState = OuttakeState.CORAL_PRIORITY;
         }
         if(val.get() == 2){
           Constants.outtakeState = OuttakeState.ALGAE_PRIORITY;
