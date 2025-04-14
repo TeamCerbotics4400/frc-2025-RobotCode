@@ -4,6 +4,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,7 +30,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     // Subsystem & Limelight
     private final CommandSwerveDrivetrain m_drive;
-    private final String limelightNames;
+    private final String limelightNames = "limelight-tags";
 
     // Pose estimation
     private double averageTagDistance = 0.0;
@@ -39,9 +40,8 @@ public class VisionSubsystem extends SubsystemBase {
     //Logging
     List<Pose3d> allTagPoses = new ArrayList<>();
 
-    public VisionSubsystem(CommandSwerveDrivetrain m_drive, String limelightNames) {
+    public VisionSubsystem(CommandSwerveDrivetrain m_drive) {
         this.m_drive = m_drive;
-        this.limelightNames = limelightNames;
         mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames);
     }
 
@@ -71,18 +71,19 @@ public class VisionSubsystem extends SubsystemBase {
         odometryWithVision(limelightNames, xyStdDev,0);
 
         Logger.recordOutput("Vision/Detected tag",LimelightHelpers.getTV(limelightNames));
+        Logger.recordOutput("Vision/Distance from tag",averageTagDistance);
 
     }
 
     public void odometryWithVision(String limelightName, double xySTD, double thetaSTD) {
-        if (LimelightHelpers.getTV(limelightName)) {
+        if (LimelightHelpers.getTV(limelightNames)) {
             
             if (mt2 != null) {
                 oldMt = mt2;
             }
 
             // Fetch latest bot pose
-            mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+            mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames);
             boolean doRejectUpdate = false;
 
             // Reject updates if robot is spinning too fast
@@ -114,6 +115,7 @@ public class VisionSubsystem extends SubsystemBase {
             if (!doRejectUpdate) {
                 m_drive.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
             }
+            Logger.recordOutput("MegatagPose", mt2.pose);
         }
     }
   }

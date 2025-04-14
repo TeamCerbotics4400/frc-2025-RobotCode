@@ -240,7 +240,7 @@ public static OuttakeState outtakeState = OuttakeState.ALGAE_PRIORITY;
       public static final double targetLogTimeSecs = 0.1;
 
       public static final String neuralLimelight = "limelight-neural";
-      public static final String tagLimelightName = "limelight-lowtag";
+      public static final String tagLimelightName = "limelight-tags";
 
     public static double xyStdDevCoefficient = 0.2;
     public static double thetaStdDevCoefficient = 0.4;

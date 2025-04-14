@@ -97,7 +97,7 @@ public class RobotContainer {
   public static IntakeAlgaeSubsystem m_algae;
 
   /* Vision */
-  public static VisionSubsystem m_vision = new VisionSubsystem(m_drive, VisionConstants.tagLimelightName);
+  public static VisionSubsystem m_vision = new VisionSubsystem(m_drive);
 
   /* Chooser for autonomous */
   private final SendableChooser<AutoCommand> autoChooser = new SendableChooser<>();
@@ -389,36 +389,46 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
   }
 
   private void enableNamedCommands(){
-    NamedCommands.registerCommand("ElevatorL4", new ElevatorAutoCommand(m_elevator, 1.73, m_intake,1.72));
-    NamedCommands.registerCommand("ElevatorL4Backup", new ElevatorAutoCommand(m_elevator, 1.71, m_intake,1.70));
-    NamedCommands.registerCommand("ElevatorL0", m_elevator.goToPosition( 0.0));
-    NamedCommands.registerCommand("OutakeReef", new LeaveReefCommand(m_intake, m_elevator));
-    NamedCommands.registerCommand("IntakeCoral", new IntakeSequence3(m_intake));
-    NamedCommands.registerCommand("SafeFailElevator",
-      new ElevatorAutoCommand(m_elevator, 1.73, m_intake,1.72)); 
-      NamedCommands.registerCommand("SafeFailElevatorBackup",
-      new ElevatorAutoCommand(m_elevator, 1.71, m_intake,1.70)); 
+  NamedCommands.registerCommand("ElevatorL4", 
+    new ElevatorAutoCommand(m_elevator, 1.73, m_intake, 1.72));
 
+  NamedCommands.registerCommand("ElevatorL4Backup", 
+    new ElevatorAutoCommand(m_elevator, 1.71, m_intake, 1.70));
 
-   NamedCommands.registerCommand("AlgaeElevatorPos",      
-   m_elevator.goToPosition(0.20)
-      );
+  NamedCommands.registerCommand("ElevatorL0", 
+    m_elevator.goToPosition(0.0));
 
-      NamedCommands.registerCommand("AlgaeIntake",      
-      m_algae.goToPosition(2, AlgaeState.BACKPOSITION)
-      .andThen(m_algae.setVoltageCommandRoll(0.83))
-   );
+  NamedCommands.registerCommand("OutakeReef", 
+    new LeaveReefCommand(m_intake, m_elevator));
 
-   NamedCommands.registerCommand("PrepareAlgae",      
-   m_algae.goToPosition(0, AlgaeState.BACKPOSITION));
+  NamedCommands.registerCommand("IntakeCoral", 
+    new IntakeSequence3(m_intake));
 
-   NamedCommands.registerCommand("OutakeAlgae",      
-    m_algae.setVoltageCommandRoll(-0.83).until(()-> m_algae.getRollerCurrent() < 30));
+  NamedCommands.registerCommand("SafeFailElevator", 
+    new ElevatorAutoCommand(m_elevator, 1.73, m_intake, 1.72)); 
 
-    NamedCommands.registerCommand("ElevatorL4NoSafe",      
-   m_elevator.goToPosition(1.73));
+  NamedCommands.registerCommand("SafeFailElevatorBackup", 
+    new ElevatorAutoCommand(m_elevator, 1.71, m_intake, 1.70)); 
 
-   NamedCommands.registerCommand("HighAlgaeElevator",m_elevator.goToPosition(0.76));
+  NamedCommands.registerCommand("AlgaeElevatorPos", 
+    m_elevator.goToPosition(0.20));
+
+  NamedCommands.registerCommand("AlgaeIntake", 
+    m_algae.goToPosition(2, AlgaeState.BACKPOSITION)
+           .andThen(m_algae.setVoltageCommandRoll(0.83)));
+
+  NamedCommands.registerCommand("PrepareAlgae", 
+    m_algae.goToPosition(0, AlgaeState.BACKPOSITION));
+
+  NamedCommands.registerCommand("OutakeAlgae", 
+    m_algae.setVoltageCommandRoll(-0.83)
+           .until(() -> m_algae.getRollerCurrent() < 30));
+
+  NamedCommands.registerCommand("ElevatorL4NoSafe", 
+    m_elevator.goToPosition(1.73));
+
+  NamedCommands.registerCommand("HighAlgaeElevator", 
+    m_elevator.goToPosition(0.76));
 
      } 
 
