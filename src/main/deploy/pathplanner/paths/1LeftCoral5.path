@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 7.6,
-        "y": 5.25373975409836
+        "x": 7.71,
+        "y": 5.254
       },
       "prevControl": {
-        "x": 6.6,
-        "y": 5.25373975409836
+        "x": 6.709999999999998,
+        "y": 5.254
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,7 +39,7 @@
       "command": {
         "type": "named",
         "data": {
-          "name": "ElevatorL4NoSafe"
+          "name": "ElevatorAlgaePose"
         }
       }
     }

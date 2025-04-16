@@ -432,6 +432,8 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
   NamedCommands.registerCommand("HighAlgaeElevator", 
     m_elevator.goToPosition(0.76));
 
+    NamedCommands.registerCommand("ElevatorAlgaePose", 
+    m_elevator.goToPosition(1.758));   
      } 
 
   private Command controllerRumbleCommand() {
