@@ -321,7 +321,7 @@ public class RobotContainer {
           new ConditionalCommand( 
           m_intake.setVoltageCommand(0.4, 0.4),
           m_intake.setVoltageCommand(0.35, 0.35),
-          ()-> m_elevator.getPosition() < 1.70
+          ()-> m_elevator.getPosition() > 1.70
           ), 
 
           m_algae.setVoltageCommandRoll(-1), 
