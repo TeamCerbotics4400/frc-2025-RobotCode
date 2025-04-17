@@ -321,7 +321,9 @@ public class RobotContainer {
           m_algae.setVoltageCommandRoll(-1), 
           ()-> (Constants.outtakeState == OuttakeState.CORAL_PRIORITY
           && m_intake.hasGamePieceInside()) || !m_algae.isGamePieceInside())
-      ).whileFalse(m_intake.setVoltageCommand(0, 0).alongWith(m_algae.setVoltageCommandRoll(0)
+      ).whileFalse(m_intake.setVoltageCommand(0, 0).alongWith(
+        m_algae.goToPosition(0.2, AlgaeState.BACKPOSITION).andThen(
+        m_algae.setVoltageCommandRoll(0))
       .onlyIf(()-> !m_algae.isGamePieceInside())));
 
 
