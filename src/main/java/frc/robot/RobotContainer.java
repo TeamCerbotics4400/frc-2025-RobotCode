@@ -317,8 +317,15 @@ public class RobotContainer {
   
       chassisDriver.leftBumper().onTrue(
         new ConditionalCommand(
-          m_intake.setVoltageCommand(0.4, 0.4), 
+
+          new ConditionalCommand( 
+          m_intake.setVoltageCommand(0.4, 0.4),
+          m_intake.setVoltageCommand(0.35, 0.35),
+          ()-> m_elevator.getPosition() < 1.70
+          ), 
+
           m_algae.setVoltageCommandRoll(-1), 
+
           ()-> (Constants.outtakeState == OuttakeState.CORAL_PRIORITY
           && m_intake.hasGamePieceInside()) || !m_algae.isGamePieceInside())
       ).whileFalse(m_intake.setVoltageCommand(0, 0).alongWith(
