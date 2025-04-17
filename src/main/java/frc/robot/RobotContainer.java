@@ -308,7 +308,7 @@ public class RobotContainer {
   
     // POV Right - Climber set position
     subsystemsDriver.povRight().onTrue(
-      m_climber.setNeoPosition(-196)
+      m_climber.setNeoPosition(-228)
     );
 
     chassisDriver.povRight().whileTrue(m_algae.goToPosition(7.0, AlgaeState.ACTIVEPOSITION));
@@ -339,7 +339,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         switch (val.get()) {
           
             case 1:
-                selectedCommand = m_climber.setNeoPosition(-196.0).unless(()-> m_climber.climbState == ClimbingState.CLIMBING); //Step 2
+                selectedCommand = m_climber.setNeoPosition(-228.0).unless(()-> m_climber.climbState == ClimbingState.CLIMBING); //Step 2
                 break;
             
             default:

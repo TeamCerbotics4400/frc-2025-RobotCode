@@ -35,7 +35,7 @@ public class ClimberIOSparkMax implements ClimberIO {
     climberSparkMaxConfig.idleMode(IdleMode.kBrake);
 
     
-    climberSparkMaxConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(-12);
+    climberSparkMaxConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(-17);
 
     sparkMaxEncoder.setPosition(0);
 
