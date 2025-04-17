@@ -42,7 +42,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     public VisionSubsystem(CommandSwerveDrivetrain m_drive) {
         this.m_drive = m_drive;
-        mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames);
+        mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames) == null ? new PoseEstimate():LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames) ;
     }
 
     @Override
@@ -76,14 +76,14 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public void odometryWithVision(String limelightName, double xySTD, double thetaSTD) {
-        if (LimelightHelpers.getTV(limelightNames)) {
+        if (LimelightHelpers.getTV(limelightNames) && LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames) != null) {
             
             if (mt2 != null) {
                 oldMt = mt2;
             }
 
             // Fetch latest bot pose
-            mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames);
+            mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames) == null ? new PoseEstimate():LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightNames) ;
             boolean doRejectUpdate = false;
 
             // Reject updates if robot is spinning too fast
