@@ -150,7 +150,7 @@ public static OuttakeState outtakeState = OuttakeState.ALGAE_PRIORITY;
       FlippingUtil.flipFieldPose(new Pose2d(3.65, 2.90, new Rotation2d(Units.degreesToRadians(-120)))), // C                            
       FlippingUtil.flipFieldPose(new Pose2d(3.91, 2.74, new Rotation2d(Units.degreesToRadians(-120)))), // D                            
   
-      FlippingUtil.flipFieldPose(new Pose2d(4.96, 2.82, new Rotation2d(Units.degreesToRadians(-60)))), // E
+      FlippingUtil.flipFieldPose(new Pose2d(5.01, 2.72, new Rotation2d(Units.degreesToRadians(-60)))), // E
       FlippingUtil.flipFieldPose(new Pose2d(5.30, 2.91, new Rotation2d(Units.degreesToRadians(-60)))), // F   
   
       FlippingUtil.flipFieldPose(new Pose2d(5.90, 3.85, new Rotation2d(Units.degreesToRadians(0)))), // G

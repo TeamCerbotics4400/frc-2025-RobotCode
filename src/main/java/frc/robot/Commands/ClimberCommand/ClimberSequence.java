@@ -35,7 +35,7 @@ public class ClimberSequence extends Command {
     }
 
     m_climber.setNeoVoidVoltage(1);
-    if(m_climber.getSparkMaxPosition() > -20 && m_climber.climbState == ClimbingState.CLIMBING){
+    if(m_climber.getSparkMaxPosition() > -180 && m_climber.climbState == ClimbingState.CLIMBING){
     m_algae.goToPositionVoid(10);
     }
   }

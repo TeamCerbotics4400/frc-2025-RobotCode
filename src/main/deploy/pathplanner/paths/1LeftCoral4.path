@@ -17,18 +17,23 @@
     {
       "anchor": {
         "x": 6.641188524590164,
-        "y": 5.25373975409836
+        "y": 5.55
       },
       "prevControl": {
         "x": 6.377459016393443,
-        "y": 4.73826844262295
+        "y": 5.03452868852459
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "1LeftCoral4"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.11513859275053519,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [

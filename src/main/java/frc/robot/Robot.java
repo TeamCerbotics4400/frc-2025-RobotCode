@@ -132,7 +132,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledExit() {}
 
-  @Override
+  @Override 
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -148,7 +148,7 @@ public class Robot extends LoggedRobot {
     && RobotContainer.getElevatorSubsystem().getPosition() > 0.05 && !RobotContainer.getIntakeSubsystem().hasGamePieceInside()) {
             
     // Force elevator to return to 0
-    RobotContainer.getElevatorSubsystem().goToPosition(0.1).schedule();
+    RobotContainer.getElevatorSubsystem().goToPosition(0.2).schedule();
     }
   }
 
