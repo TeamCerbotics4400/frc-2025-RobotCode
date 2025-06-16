@@ -3,51 +3,19 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathfindingCommand;
-import com.pathplanner.lib.pathfinding.Pathfinding;
-import com.pathplanner.lib.util.PathPlannerLogging;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Util.CustomDashboardUtil;
-import frc.Util.LocalADStarAK;
 import frc.robot.Commands.DoNothingCommandCommand;
-import frc.robot.Commands.AlgaeIntakeCommand.PriorityOutakeCommand;
-import frc.robot.Commands.AutoCommands.AutoCommand;
-import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
-import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.LeaveAuto;
-import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left1CoralAuto;
-import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left3CoralAuto;
-import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Left4CoralAuto;
-import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right1CoralAuto;
-import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.Right3CoralAuto;
-import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
-import frc.robot.Commands.ClimberCommand.ClimberSequence;
-import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
 import frc.robot.Commands.ElevatorCommands.Level1CycleCommand;
-import frc.robot.Commands.IntakeCommand.IntakeSequence2;
 import frc.robot.Commands.IntakeCommand.IntakeSequence3;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
-import frc.robot.Commands.SwerveCommands.SwerveAutoAlignPose;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OuttakeState;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Climber.ClimberIO;
 import frc.robot.Subsystems.Climber.ClimberIOSparkMax;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
@@ -66,10 +34,7 @@ import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.Swerve.TunerConstants;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
 
-import java.util.Set;
 import java.util.function.Supplier;
-
-import org.littletonrobotics.junction.Logger;
 
 public class RobotContainer {
 
@@ -99,11 +64,7 @@ public class RobotContainer {
   /* Vision */
   public static VisionSubsystem m_vision = new VisionSubsystem(m_drive);
 
-  /* Chooser for autonomous */
-  private final SendableChooser<AutoCommand> autoChooser = new SendableChooser<>();
-
   /* Set up for utils */
-  public static Field2d autoFieldPreview = new Field2d();
   public static CustomDashboardUtil m_dashboard = new CustomDashboardUtil();
   private final Telemetry logger = new Telemetry(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
 
@@ -134,35 +95,6 @@ public class RobotContainer {
         break;
     }
 
-    enableNamedCommands();
-  /* Path follower */
-    autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
-    autoChooser.addOption("Left Side 4 Coral", new Left4CoralAuto());
-    autoChooser.addOption("Left Side 3 Coral", new Left3CoralAuto());
-    autoChooser.addOption("Left 1 Coral + 2 Algae", new Left1CoralAuto());
-    autoChooser.addOption("Right Side 3 Coral", new Right3CoralAuto());
-    autoChooser.addOption("Right Side 1 Coral", new Right1CoralAuto());
-    autoChooser.addOption("LEAVE NOTHING ELSE", new LeaveAuto());
-
-    autoChooser.onChange(auto->{
-        autoFieldPreview.getObject("path").setPoses(auto.getAllPathPoses());
-    });
-
-    /* Record path poses and targets for logging */
-    PathPlannerLogging.setLogActivePathCallback(
-            (poses -> Logger.recordOutput("Swerve/ActivePath", poses.toArray(new Pose2d[0]))));
-    PathPlannerLogging.setLogTargetPoseCallback(
-            pose -> Logger.recordOutput("Swerve/TargetPathPose", pose));
-
-    Pathfinding.setPathfinder(new LocalADStarAK());
-    /*This code warms up the library to avoid delay on the path */
-    PathfindingCommand.warmupCommand().schedule();
-    FollowPathCommand.warmupCommand().schedule();
-  
-    /* Shows the preview before match setup */
-    SmartDashboard.putData("Auto Mode", autoChooser);
-    SmartDashboard.putData("Auto Preview", autoFieldPreview);
-
     configureBindings();
   }
 
@@ -178,17 +110,6 @@ public class RobotContainer {
         () -> -chassisDriver.getLeftY(),
         () -> -chassisDriver.getLeftX(), 
         () -> chassisDriver.getRightX()
-      )
-    );
-  
-    // Auto Align Command
-    chassisDriver.start().onTrue(
-      new ParallelRaceGroup(
-        pathFindAndAlignCommand(() -> m_dashboard.getReefSelected()),
-        new SequentialCommandGroup(
-          new WaitCommand(1),
-          new WaitCommand(10000).until(() -> isJoystickActive())
-        )
       )
     );
   
@@ -297,9 +218,6 @@ public class RobotContainer {
   
     /*__________________ Climber Manual Commands __________________*/
   
-    // POV Up - Climber up
-    chassisDriver.povUp()
-      .whileTrue(new ClimberSequence(m_climber, m_algae));
   
     // POV Left - Climber down
     chassisDriver.povLeft()
@@ -365,86 +283,6 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
     }, m_climber);
 }
 
-
-    public static Command pathFindAndAlignCommand(Supplier<Integer> val) {
-      return Commands.sequence(
-          new DeferredCommand(
-              () -> Commands.either(
-                  m_drive
-                      .goToPose(() -> FieldConstants.alignRedPose[val.get()])   // RED VAL
-                      .until(() -> 
-                          m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.alignRedPose[val.get()].getTranslation()) <= 0.2
-                      ),
-                  m_drive
-                      .goToPose(() -> FieldConstants.alignBluePose[val.get()])
-                      .until(() -> 
-                          m_drive.getState().Pose.getTranslation()
-                              .getDistance(FieldConstants.alignBluePose[val.get()].getTranslation()) <= 0.2
-                      ),
-                  Robot::isRedAlliance
-              ),
-              Set.of(m_drive)
-          )
-          .andThen(
-            Commands.defer(
-              () -> new SwerveAutoAlignPose(
-                  () -> FieldConstants.redSidePositions[val.get()],
-                  () -> FieldConstants.blueSidePositions[val.get()],
-                  m_drive
-              ),
-              Set.of(m_drive)
-            )
-          )
-      );
-  }
-
-  private void enableNamedCommands(){
-  NamedCommands.registerCommand("ElevatorL4", 
-    new ElevatorAutoCommand(m_elevator, 1.73, m_intake, 1.72));
-
-  NamedCommands.registerCommand("ElevatorL4Backup", 
-    new ElevatorAutoCommand(m_elevator, 1.71, m_intake, 1.70));
-
-  NamedCommands.registerCommand("ElevatorL0", 
-    m_elevator.goToPosition(0.0));
-
-  NamedCommands.registerCommand("OutakeReef", 
-    new LeaveReefCommand(m_intake, m_elevator));
-
-  NamedCommands.registerCommand("IntakeCoral", 
-    new IntakeSequence3(m_intake));
-
-  NamedCommands.registerCommand("SafeFailElevator", 
-    new ElevatorAutoCommand(m_elevator, 1.73, m_intake, 1.72)); 
-
-  NamedCommands.registerCommand("SafeFailElevatorBackup", 
-    new ElevatorAutoCommand(m_elevator, 1.71, m_intake, 1.70)); 
-
-  NamedCommands.registerCommand("AlgaeElevatorPos", 
-    m_elevator.goToPosition(0.20));
-
-  NamedCommands.registerCommand("AlgaeIntake", 
-    m_algae.goToPosition(2, AlgaeState.BACKPOSITION)
-           .andThen(m_algae.setVoltageCommandRoll(0.83)));
-
-  NamedCommands.registerCommand("PrepareAlgae", 
-    m_algae.goToPosition(0, AlgaeState.BACKPOSITION));
-
-  NamedCommands.registerCommand("OutakeAlgae", 
-    m_algae.setVoltageCommandRoll(-0.83)
-           .until(() -> m_algae.getRollerCurrent() < 30));
-
-  NamedCommands.registerCommand("ElevatorL4NoSafe", 
-    m_elevator.goToPosition(1.73));
-
-  NamedCommands.registerCommand("HighAlgaeElevator", 
-    m_elevator.goToPosition(0.76));
-
-    NamedCommands.registerCommand("ElevatorAlgaePose", 
-    m_elevator.goToPosition(1.758));   
-     } 
-
   private Command controllerRumbleCommand() {
     return Commands.startEnd(
         () -> {
@@ -463,7 +301,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
 }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return null;
    //return new FieldCentricDrive(m_drive,()->0.4, ()->0.0, ()->0.0);
   }
 
