@@ -1,0 +1,23 @@
+{
+  "NTProvider": {
+    "types": {
+      "/AdvantageKit/RealOutputs/Alerts": "Alerts",
+      "/AdvantageKit/RealOutputs/Elevator/Mechanism2d/Elevator Position": "Mechanism2d",
+      "/AdvantageKit/RealOutputs/Elevator/Mechanism2d/Elevator Setpoint": "Mechanism2d",
+      "/FMSInfo": "FMSInfo",
+      "/Pose": "Field2d",
+      "/SmartDashboard/Alerts": "Alerts",
+      "/SmartDashboard/Auto Mode": "String Chooser",
+      "/SmartDashboard/Auto Preview": "Field2d",
+      "/SmartDashboard/Elevator mode": "String Chooser",
+      "/SmartDashboard/Module 0": "Mechanism2d",
+      "/SmartDashboard/Module 1": "Mechanism2d",
+      "/SmartDashboard/Module 2": "Mechanism2d",
+      "/SmartDashboard/Module 3": "Mechanism2d",
+      "/SmartDashboard/Pivot algae mode": "String Chooser"
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  }
+}

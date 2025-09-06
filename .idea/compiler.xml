@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$PROJECT_DIR$/../../../../Public/wpilib/2025/maven/edu/wpi/first/epilogue/epilogue-processor-java/2025.3.1/epilogue-processor-java-2025.3.1.jar" />
+          <entry name="$PROJECT_DIR$/../../../../Public/wpilib/2025/maven/edu/wpi/first/epilogue/epilogue-runtime-java/2025.3.1/epilogue-runtime-java-2025.3.1.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.littletonrobotics.akit/akit-autolog/4.1.1/8bc9af5f0b6bee7e0bcfb2897b2193d3e4388db9/akit-autolog-4.1.1.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup/javapoet/1.13.0/d6562d385049f35eb50403fa86bb11cce76b866a/javapoet-1.13.0.jar" />
+        </processorPath>
+        <module name="frc-2025-code.main" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="17" />
+  </component>
+</project>

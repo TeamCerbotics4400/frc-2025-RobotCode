@@ -7,13 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SimplePath"
+            "pathName": "3CoralAuto1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3CoralAuto2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3CoralAuto3"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": []
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

@@ -4,6 +4,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -28,12 +29,11 @@ import frc.robot.Commands.FieldCentricDrive;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.TestAuto;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Swerve.TunerConstants;
 
 import java.util.Set;
-
-import javax.crypto.spec.RC2ParameterSpec;
 
 public class RobotContainer {
 
@@ -42,6 +42,7 @@ public class RobotContainer {
   private final Trigger robotRelative = overrides.driverSwitch(0);
 
   public static final CommandSwerveDrivetrain m_drive = TunerConstants.createDrivetrain();
+  public static final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
 
   public static Field2d autoFieldPreview = new Field2d();
   private final Telemetry logger = new Telemetry(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
@@ -50,6 +51,9 @@ public class RobotContainer {
   private final SendableChooser<AutoCommand> autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
+
+    NamedCommands.registerCommand("moveElevador", m_elevator.goToPosition(1.1));
+    NamedCommands.registerCommand("elevator0", m_elevator.goToPosition(0.0));
 
     autoChooser.setDefaultOption("Nothing Path", new NoneAuto());
     autoChooser.addOption("Test Auto", new TestAuto());
@@ -81,6 +85,10 @@ public class RobotContainer {
               new WaitCommand(10000).until(()->isJoystickActive()))));
 
     chassisDriver.a().onTrue(m_drive.runOnce(() -> m_drive.seedFieldCentric()));
+
+    chassisDriver.povLeft().onTrue(m_elevator.goToPosition(1.4));
+    chassisDriver.povRight().onTrue(m_elevator.goToPosition(0.0));
+
 
     m_drive.registerTelemetry(logger::telemeterize);
   }
