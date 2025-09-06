@@ -185,3 +185,10 @@ compile_commands.json
 
 # Eclipse generated file for annotation processors
 .factorypath
+"build/" 
+"bin/"   
+"*.class" 
+"*.jar" 
+"*.so" 
+"*.dll" 
+"*.pdb" 
