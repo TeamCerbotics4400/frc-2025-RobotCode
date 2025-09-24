@@ -11,6 +11,7 @@ public interface ClimberIO {
     public double sparkTempCelcius = 0.0;
     public double sparkPosition = 0.0;
     public double pidOutput = 0.0;
+    public double motorClimberSpark = 0.0;
 
   }
 
@@ -19,6 +20,8 @@ public interface ClimberIO {
 
   /** Run the intake open loop at the specified voltage. */
   public default void setSparkMaxVoltage(double voltage) {}
+
+  public default void setMotorClimberVoltage(double voltage){}
 
   public default void setTalonFXVoltage(double voltage) {}
 

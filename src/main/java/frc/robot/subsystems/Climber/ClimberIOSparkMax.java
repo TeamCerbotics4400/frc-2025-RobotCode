@@ -21,7 +21,14 @@ public class ClimberIOSparkMax implements ClimberIO {
   private final SparkClosedLoopController m_pidController = climberSparkMax.getClosedLoopController();
   private final RelativeEncoder sparkMaxEncoder = climberSparkMax.getEncoder();
 
+  private final SparkMax motorClimber = new SparkMax(MotorClimberID, MotorType.kBrushless);
+  private final SparkMaxConfig motorClimberConfig = new SparkMaxConfig();
+
+
   public ClimberIOSparkMax() {
+
+    motorClimberConfig.smartCurrentLimit(40);
+    
 
     climberSparkMaxConfig.encoder.positionConversionFactor(1).velocityConversionFactor(1);
 
@@ -38,13 +45,20 @@ public class ClimberIOSparkMax implements ClimberIO {
     climberSparkMaxConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(-2);
 
     sparkMaxEncoder.setPosition(0);
+    
 
     climberSparkMax.configure(climberSparkMaxConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    motorClimber.configure(climberSparkMaxConfig, null, null);
   }
 
   @Override
   public void setSparkMaxVoltage(double voltage) {
     climberSparkMax.set(voltage);
+  }
+
+  @Override
+  public void setMotorClimberVoltage(double voltage){
+    motorClimber.set(voltage);
   }
 
   @Override

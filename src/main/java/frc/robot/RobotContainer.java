@@ -223,6 +223,14 @@ public class RobotContainer {
     chassisDriver.povLeft()
       .whileTrue(m_climber.setNeoVoltage(-1))
       .whileFalse(m_climber.setNeoVoltage(0));
+
+      subsystemsDriver.a()
+      .whileTrue(m_climber.setMotorClimberVoltage(1))
+      .whileFalse(m_climber.setNeoVoltage(0));
+
+      subsystemsDriver.b()
+      .whileTrue(m_climber.setMotorClimberVoltage(-1))
+      .whileFalse(m_climber.setNeoVoltage(0));
   
     // POV Right - Climber set position
     subsystemsDriver.povRight().onTrue(
