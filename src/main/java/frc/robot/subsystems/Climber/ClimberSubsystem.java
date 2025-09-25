@@ -40,6 +40,7 @@ public class ClimberSubsystem extends SubsystemBase {
    return run (()  -> io.setMotorClimberVoltage(voltage));
   }
 
+
   public void setNeoVoidVoltage(double voltage){
     io.setSparkMaxVoltage(voltage);
   }

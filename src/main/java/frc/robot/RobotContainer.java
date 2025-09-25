@@ -99,6 +99,7 @@ public class RobotContainer {
   }
 
 
+  
   private void configureBindings() {
 
     /*__________________ Chassis commands __________________*/
@@ -224,6 +225,7 @@ public class RobotContainer {
       .whileTrue(m_climber.setNeoVoltage(-1))
       .whileFalse(m_climber.setNeoVoltage(0));
 
+      /*Motor para el cage */
       subsystemsDriver.a()
       .whileTrue(m_climber.setMotorClimberVoltage(1))
       .whileFalse(m_climber.setNeoVoltage(0));
@@ -231,6 +233,16 @@ public class RobotContainer {
       subsystemsDriver.b()
       .whileTrue(m_climber.setMotorClimberVoltage(-1))
       .whileFalse(m_climber.setNeoVoltage(0));
+
+      /*Mover el escalador por voltage */
+      subsystemsDriver.y()
+      .whileTrue(m_climber.setKrakenVoltage(1))
+      .whileFalse(m_climber.setNeoVoltage(0));
+
+      subsystemsDriver.x()
+      .whileTrue(m_climber.setKrakenVoltage(-1))
+      .whileFalse(m_climber.setNeoVoltage(0));
+
   
     // POV Right - Climber set position
     subsystemsDriver.povRight().onTrue(
