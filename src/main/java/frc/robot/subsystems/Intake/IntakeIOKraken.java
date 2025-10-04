@@ -52,6 +52,7 @@ public class IntakeIOKraken implements IntakeIO {
 
   }
 
+
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.rightMotortempCelcius = rightMotor.getDeviceTemp().getValueAsDouble();

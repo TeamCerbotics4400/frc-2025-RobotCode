@@ -193,7 +193,7 @@ public static OuttakeState outtakeState = OuttakeState.ALGAE_PRIORITY;
       public static final class IntakeConstants{
         public static final int leftIntakeMotorId = 51;
         public static final int rightIntakeMotorId = 41;
-        public static final int laserCanId = 0;
+        public static final int laserCanId = 60;
 
         
     }
@@ -224,15 +224,15 @@ public static OuttakeState outtakeState = OuttakeState.ALGAE_PRIORITY;
     }
 
     public static final class ClimberConstants{
-        public static final int CLIMBERKRAKENID = 53;
+        public static final int CLIMBERKRAKENID = 17;
         public static final int CLIMBERSPARKMAXID = 40;
 
-        public static final int MotorClimberID = 5;
+        public static final int cageMotorID = 10;
 
     }
 
     public static final class IntakeAlgaeConstants {
-      public static final int pivotAlgaeMotorId = 17;
+      public static final int pivotAlgaeMotorId = 20;
       public static final int rollerAlgaeMotorId = 50;
     }
 

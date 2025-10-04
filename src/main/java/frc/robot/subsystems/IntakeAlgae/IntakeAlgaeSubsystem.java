@@ -6,8 +6,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,14 +19,17 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
     private Debouncer currentFilter = new Debouncer(0.5,DebounceType.kBoth);
 
     public static enum AlgaeState{
-      ACTIVEPOSITION,
+      FLOORPOSITION,
+      REEFPOSITION,
       BACKPOSITION
+      
     }
     private AlgaeState systemStates = AlgaeState.BACKPOSITION;
 
     public IntakeAlgaeSubsystem(IntakeAlgaeIO io){
         this.io = io;
 
+        
     }
     
     @Override
@@ -43,7 +44,9 @@ public class IntakeAlgaeSubsystem extends SubsystemBase{
         Logger.recordOutput("IntakeAlgae/PID output", m_controller.calculate(inputs.positionPiv));  
         Logger.recordOutput("IntakeAlgae/PID setpoint", m_controller.getSetpoint());    
         Logger.recordOutput("IntakeAlgae/PID enables", enablePID);   
-        Logger.recordOutput("IntakeAlgae/Algae Detected", currentFilter.calculate(inputs.rollerMotorCurrent > 54));      
+        Logger.recordOutput("IntakeAlgae/Algae Detected", currentFilter.calculate(inputs.rollerMotorCurrent > 54));     
+      
+
    
       if(DriverStation.isDisabled()){
       enablePID = false;

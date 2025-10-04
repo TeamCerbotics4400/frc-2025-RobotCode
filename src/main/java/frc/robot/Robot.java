@@ -20,6 +20,8 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import au.grapplerobotics.CanBridge;
+
 public class Robot extends LoggedRobot {
   /* Class to log the app Network tables data*/
   private CustomDashboardUtil dashboardCustom = new CustomDashboardUtil();
@@ -41,6 +43,8 @@ public class Robot extends LoggedRobot {
           if(Robot.isReal()){
             Constants.currentMode = Constants.Mode.REAL;
           }
+
+     CanBridge.runTCP();
     
     m_robotContainer = new RobotContainer();
     /* PDH configs */

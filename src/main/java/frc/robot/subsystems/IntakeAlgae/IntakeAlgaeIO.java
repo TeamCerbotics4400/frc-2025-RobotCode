@@ -11,6 +11,7 @@ public interface IntakeAlgaeIO {
     public double pivotMotortempCelcius = 0.0;
     public double pivotMotorCurrent = 0.0;
     public double pivotCurrentRpms = 0.0;
+    
     public double positionPiv = 0.0;
 
     public double rollerMotorappliedVolts = 0.0;
@@ -33,4 +34,9 @@ public interface IntakeAlgaeIO {
     public default void enableBreak(boolean enable) {}
 
     public default void stopMotors(){}
+
+   
+
+
+    
 }

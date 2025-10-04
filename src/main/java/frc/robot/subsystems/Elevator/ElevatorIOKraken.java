@@ -50,9 +50,6 @@ public class ElevatorIOKraken implements ElevatorIO {
     double val = (rightMotor.getPosition().getValueAsDouble() + leftMotor.getPosition().getValueAsDouble())/2;
     return val * 0.02988;  //56.18
   }
-
-
-
   /**
    * Update the inputs for the elevator
    *

@@ -1,8 +1,8 @@
 package frc.robot.Subsystems.Climber;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -10,17 +10,17 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.Constants;
 
-public class ClimberIOkraken {
+public class ClimberIOkraken implements ClimberIO {
 
     private final TalonFX climberFx;
     private final TalonFXConfiguration climberTalonFXConfiguration;
 
-    private final SparkMax motorClimber = new SparkMax(Constants.ClimberConstants.MotorClimberID, MotorType.kBrushless);
-    private final SparkMaxConfig motorClimberConfig = new SparkMaxConfig();
+    private final SparkMax cageMotor = new SparkMax(Constants.ClimberConstants.cageMotorID, MotorType.kBrushless);
+    private final SparkMaxConfig cageMotorConfig = new SparkMaxConfig();
 
     public ClimberIOkraken() {
 
-        motorClimberConfig.smartCurrentLimit(40);
+        cageMotorConfig.smartCurrentLimit(40);
 
         climberFx = new TalonFX(Constants.ClimberConstants.CLIMBERKRAKENID, Constants.rioCanbus);
 
@@ -28,11 +28,13 @@ public class ClimberIOkraken {
         climberTalonFXConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         climberTalonFXConfiguration.CurrentLimits.SupplyCurrentLimit = 40;
         climberTalonFXConfiguration.CurrentLimits.StatorCurrentLimitEnable = true;
-
+        climberTalonFXConfiguration.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
         climberFx.setPosition(0);
+
+        // climberFx.setPosition(0);
         climberFx.getConfigurator().apply(climberTalonFXConfiguration);
 
-        motorClimber.configure(motorClimberConfig, null, null);
+        cageMotor.configure(cageMotorConfig, null, null);
 
     }
 
@@ -40,8 +42,22 @@ public class ClimberIOkraken {
         climberFx.set(voltage);
     }
 
-    public void setMotorClimberVoltage(double voltage) {
-        motorClimber.set(voltage);
+    public void setCageMotorVolatge(double voltage) {
+        cageMotor.set(voltage);
+    }
+
+    public double getClimberPosition(){
+        double  pos = (climberFx.getPosition().getValueAsDouble());
+         return pos;
+
+    }
+
+    @Override
+    public void updateInputs(ClimberIOInputs inputs) {
+        inputs.sparkAppliedVolts = cageMotor.getAppliedOutput();
+        inputs.climberFxPosition = getClimberPosition();
+    
+
     }
 
 }

@@ -32,36 +32,57 @@ public class ClimberSubsystem extends SubsystemBase {
     return run(() -> io.setTalonFXVoltage(voltage));
   }
 
-  public Command setNeoVoltage(double voltage) {
-    return run(() -> io.setSparkMaxVoltage(voltage));
-  }  
 
-  public Command setMotorClimberVoltage(double voltage){
-   return run (()  -> io.setMotorClimberVoltage(voltage));
+
+  public Command setCageMotorVoltage(double voltage){
+   return run (()  -> io.setCageMotorVolatge(voltage));
   }
 
+  public Command setClimberPosition(double position) {
+    Command ejecutable = Commands.runOnce(() -> {
+      io.setTalonFXPosition(position);
+    },
+    this);
+    return ejecutable;
+  }  
+
+   /* return     Commands.runOnce(
+            () -> {
+              io.setTalonFXPosition(position);
+            },
+            this);*/ 
+
+/* 
+
+ public Command goToPosition(Double position) {
+    Command ejecutable =
+        Commands.runOnce(
+            () -> {
+              getController().reset(inputs.elevatorPosition);
+              m_controller.setGoal(position);
+              enablePID = true;
+            },
+            this);
+    return ejecutable;
+  }
 
   public void setNeoVoidVoltage(double voltage){
     io.setSparkMaxVoltage(voltage);
   }
+    
+      public Command setNeoVoltage(double voltage) {
+    return run(() -> io.setSparkMaxVoltage(voltage));
+  }  
 
+  
   public Command setNeoPosition(double position) {
     return   
            run(
             () -> 
               io.setSparkPosition(position));
               }  
-  
-  public Command setKrakenPosition(double position) {
-    return   
-           Commands.runOnce(
-            () -> {
-              io.setTalonFXPosition(position);
-            },
-            this);
-  }  
 
-  public double getSparkMaxPosition(){
-    return inputs.sparkPosition;
-  }
+
+              */
+    
 }
