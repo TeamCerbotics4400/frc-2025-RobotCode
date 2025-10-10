@@ -46,12 +46,11 @@ public class IntakeIOKraken implements IntakeIO {
     rightConfig.Slot0.kP = 0.4;
     rightConfig.Slot0.kD = 0.00501;
 
-    /* Apply Configurations*/
+    /* Apply Configurations */
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
 
   }
-
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
@@ -69,7 +68,7 @@ public class IntakeIOKraken implements IntakeIO {
   }
 
   @Override
-  public void setVoltage(double armVolt,double leftVolt) {
+  public void setVoltage(double armVolt, double leftVolt) {
     rightMotor.set(armVolt);
     leftMotor.set(leftVolt);
   }
@@ -86,9 +85,10 @@ public class IntakeIOKraken implements IntakeIO {
     rightMotor.stopMotor();
   }
 
-  public boolean isIntakeFull(){
+  public boolean isIntakeFull() {
     LaserCan.Measurement measurement = intakeSensor.getMeasurement();
-    if(measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT && measurement.distance_mm < 50){
+    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT
+        && measurement.distance_mm < 50) {
       return true;
     } else {
       return false;

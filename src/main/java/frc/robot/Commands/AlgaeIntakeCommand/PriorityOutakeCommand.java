@@ -6,7 +6,6 @@ package frc.robot.Commands.AlgaeIntakeCommand;
 
 import java.util.function.Supplier;
 
-import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;

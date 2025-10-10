@@ -227,8 +227,7 @@ public static OuttakeState outtakeState = OuttakeState.ALGAE_PRIORITY;
         public static final int CLIMBERKRAKENID = 17;
         public static final int CLIMBERSPARKMAXID = 40;
 
-        public static final int cageMotorID = 10;
-
+      
     }
 
     public static final class IntakeAlgaeConstants {

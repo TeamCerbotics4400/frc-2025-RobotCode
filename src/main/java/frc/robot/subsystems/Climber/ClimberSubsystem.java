@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.Climber;
 
+import edu.wpi.first.math.controller.PIDController;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -7,11 +9,15 @@ import org.littletonrobotics.junction.Logger;
 
 public class ClimberSubsystem extends SubsystemBase {
 
-  /*Io and inputs */
+  /* Io and inputs */
   private final ClimberIO io;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
+  private PIDController m_controller = new PIDController(1, 0, 0.0);
 
-  public static enum ClimbingState{
+  private boolean enablePID = false;
+  private double setpoint = 0.0;
+
+  public static enum ClimbingState {
     PREPARING_CLIMB,
     CLIMBING
   }
@@ -26,63 +32,34 @@ public class ClimberSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Climber", inputs);
+
+    if (enablePID) {
+      double output = m_controller.calculate(inputs.climberFxPosition, setpoint);
+      io.setTalonFXVoltage(output);
+
+      Logger.recordOutput("Climber/Setpoint", setpoint);
+      Logger.recordOutput("Climber/Position", inputs.climberFxPosition);
+  }
+}
+
+  public PIDController getController() {
+    return m_controller;
+  }
+
+  public Command stopMotor() {
+    return run(() -> io.stopMotor());
   }
 
   public Command setKrakenVoltage(double voltage) {
     return run(() -> io.setTalonFXVoltage(voltage));
   }
 
-
-
-  public Command setCageMotorVoltage(double voltage){
-   return run (()  -> io.setCageMotorVolatge(voltage));
+  public Command goToPosition(double position) {
+    return Commands.runOnce(() -> {
+      m_controller.reset();
+      setpoint = position;
+      enablePID = true;
+    }, this);
   }
 
-  public Command setClimberPosition(double position) {
-    Command ejecutable = Commands.runOnce(() -> {
-      io.setTalonFXPosition(position);
-    },
-    this);
-    return ejecutable;
-  }  
-
-   /* return     Commands.runOnce(
-            () -> {
-              io.setTalonFXPosition(position);
-            },
-            this);*/ 
-
-/* 
-
- public Command goToPosition(Double position) {
-    Command ejecutable =
-        Commands.runOnce(
-            () -> {
-              getController().reset(inputs.elevatorPosition);
-              m_controller.setGoal(position);
-              enablePID = true;
-            },
-            this);
-    return ejecutable;
-  }
-
-  public void setNeoVoidVoltage(double voltage){
-    io.setSparkMaxVoltage(voltage);
-  }
-    
-      public Command setNeoVoltage(double voltage) {
-    return run(() -> io.setSparkMaxVoltage(voltage));
-  }  
-
-  
-  public Command setNeoPosition(double position) {
-    return   
-           run(
-            () -> 
-              io.setSparkPosition(position));
-              }  
-
-
-              */
-    
 }

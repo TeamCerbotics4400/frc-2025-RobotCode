@@ -38,7 +38,7 @@ import java.util.function.Supplier;
 
 public class RobotContainer {
 
-  /* Driver controllers*/
+  /* Driver controllers */
   private final CommandXboxController chassisDriver = new CommandXboxController(0);
   private final CommandXboxController subsystemsDriver = new CommandXboxController(1);
 
@@ -57,7 +57,7 @@ public class RobotContainer {
   public static final ClimberIO climberIO = new ClimberIOkraken();
   public static ClimberSubsystem m_climber;
 
-  /*IntakeAlgae */
+  /* IntakeAlgae */
   public static final IntakeAlgaeIO intakeAlgaeIO = new IntakeAlgaeIOKraken();
   public static IntakeAlgaeSubsystem m_algae;
 
@@ -81,16 +81,20 @@ public class RobotContainer {
         break;
       /* Configs to replay a log */
       case REPLAY:
-        m_elevator = new ElevatorSubsystem(new ElevatorIO(){});
-        m_intake = new IntakeSubsystem(new IntakeIO(){});
-        m_climber = new ClimberSubsystem(new ClimberIO(){});
-        m_algae = new IntakeAlgaeSubsystem(new IntakeAlgaeIO(){});
-      break;
+        m_elevator = new ElevatorSubsystem(new ElevatorIO() {
+        });
+        m_intake = new IntakeSubsystem(new IntakeIO() {
+        });
+        m_climber = new ClimberSubsystem(new ClimberIO() {
+        });
+        m_algae = new IntakeAlgaeSubsystem(new IntakeAlgaeIO() {
+        });
+        break;
       /* Default to just in case it somehow fails, lol */
       default:
         m_elevator = new ElevatorSubsystem(elevatorIO);
         m_intake = new IntakeSubsystem(intakeIO);
-        m_climber = new ClimberSubsystem(climberIO);       
+        m_climber = new ClimberSubsystem(climberIO);
         m_algae = new IntakeAlgaeSubsystem(intakeAlgaeIO);
         break;
     }
@@ -98,216 +102,173 @@ public class RobotContainer {
     configureBindings();
   }
 
-
-  
   private void configureBindings() {
 
-    /*__________________ Chassis commands __________________*/
-  
+    /* __________________ Chassis commands __________________ */
+
     // Drive Swerve Command
     m_drive.setDefaultCommand(
-      new FieldCentricDrive(
-        m_drive,
-        () -> -chassisDriver.getLeftY(),
-        () -> -chassisDriver.getLeftX(), 
-        () -> chassisDriver.getRightX()
-      )
-    );
-  
+        new FieldCentricDrive(
+            m_drive,
+            () -> -chassisDriver.getLeftY(),
+            () -> -chassisDriver.getLeftX(),
+            () -> chassisDriver.getRightX()));
+
     // Reset Field Centric (usable while disabled)
     chassisDriver.back().onTrue(
-      m_drive.runOnce(() -> 
-        m_drive.resetRotation(new Rotation2d(
-          Robot.isRedAlliance() ? Math.PI : 0
-        ))
-      ).ignoringDisable(true)
-    );
-  
+        m_drive.runOnce(() -> m_drive.resetRotation(new Rotation2d(
+            Robot.isRedAlliance() ? Math.PI : 0))).ignoringDisable(true));
+
     // Logging telemetry
     m_drive.registerTelemetry(logger::telemeterize);
-  
-    /*__________________ Elevator Commands __________________*/
-  
+
+    /* __________________ Elevator Commands __________________ */
+
     // Level 1
     chassisDriver.povDown().onTrue(new Level1CycleCommand(m_elevator, m_intake));
-  
+
     // Level 2
     chassisDriver.b().onTrue(
-      new ConditionalCommand(
-        m_elevator.goToPosition(0.48)
-          .onlyIf(() -> m_intake.finishedIntakeSequence),
-        m_elevator.goToPosition(0.57),
-        () -> m_algae.getState() != AlgaeState.FLOORPOSITION
-      )
-    );
-  
+        new ConditionalCommand(
+            m_elevator.goToPosition(0.48)
+                .onlyIf(() -> m_intake.finishedIntakeSequence),
+            m_elevator.goToPosition(0.57),
+            () -> m_algae.getState() != AlgaeState.FLOORPOSITION));
+
     // Level 3
     chassisDriver.x().onTrue(
-      new ConditionalCommand(
-        m_elevator.goToPosition(0.94)
-          .onlyIf(() -> m_intake.finishedIntakeSequence),
-        m_elevator.goToPosition(0.57),
-        () -> m_algae.getState() != AlgaeState.FLOORPOSITION
-      )
-    );
-  
+        new ConditionalCommand(
+            m_elevator.goToPosition(0.94)
+                .onlyIf(() -> m_intake.finishedIntakeSequence),
+            m_elevator.goToPosition(0.57),
+            () -> m_algae.getState() != AlgaeState.FLOORPOSITION));
+
     // Level 4
     chassisDriver.y().onTrue(
-      m_elevator.goToPosition(1.73)
-        .onlyIf(() -> m_intake.finishedIntakeSequence)
-    );
-  
+        m_elevator.goToPosition(1.73)
+            .onlyIf(() -> m_intake.finishedIntakeSequence));
+
     // Reset Elevator
     chassisDriver.a().onTrue(
-      m_elevator.goToPosition(0.0)
-    );
-  
-    /*__________________ Climber Commands __________________*/
-  
+        m_elevator.goToPosition(0.0));
+
+    /* __________________ Climber Commands __________________ */
+
     m_climber.setDefaultCommand(
-      climberIpadCommand(() -> m_dashboard.getLevelEntry())
-    );
-  
-    /*__________________ End Effector Commands __________________*/
-  
+        climberIpadCommand(() -> m_dashboard.getLevelEntry()));
+
+    /* __________________ End Effector Commands __________________ */
+
     // Intake in and out sequence
     chassisDriver.rightBumper().onTrue(
-      new IntakeSequence3(m_intake)
-    );
-  
+        new IntakeSequence3(m_intake));
+
     // Outtake coral depending on elevator level
-    /*chassisDriver.leftBumper()
-      .onTrue(
-        new ConditionalCommand(
-          new IntakeSequence2(m_intake),
-          m_intake.setVoltageCommand(0.4, 0.4),
-          () -> m_elevator.getPosition() < 0.36
-        )
-      )
-      .whileFalse(
-        new InstantCommand(() -> 
-          m_intake.changeState(IntakeState.FINISHED)
-        ).andThen(
-          m_intake.setVoltageCommand(0, 0)
-        )
-      );*/
-  
-    /*__________________ Algae Commands __________________*/
-  
+    /*
+     * chassisDriver.leftBumper()
+     * .onTrue(
+     * new ConditionalCommand(
+     * new IntakeSequence2(m_intake),
+     * m_intake.setVoltageCommand(0.4, 0.4),
+     * () -> m_elevator.getPosition() < 0.36
+     * )
+     * )
+     * .whileFalse(
+     * new InstantCommand(() ->
+     * m_intake.changeState(IntakeState.FINISHED)
+     * ).andThen(
+     * m_intake.setVoltageCommand(0, 0)
+     * )
+     * );
+     */
+
+    /* __________________ Algae Commands __________________ */
+
     // Left Trigger - Algae to position 10
     chassisDriver.leftTrigger()
-      .whileTrue(
-        m_algae.goToPosition(9.3, AlgaeState.FLOORPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0.83))
-      )
-      .whileFalse(
-        m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0.83))
-      );
+        .whileTrue(
+            m_algae.goToPosition(10, AlgaeState.FLOORPOSITION)
+                .andThen(m_algae.setVoltageCommandRoll(0.83)))
+        .whileFalse(
+            m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
+                .andThen(m_algae.setVoltageCommandRoll(0.83)));
 
-  
     // Right Trigger - Algae to position 2
     chassisDriver.rightTrigger()
-      .whileTrue(
-        m_algae.goToPosition(2.5, AlgaeState.REEFPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0.83))
-      )
-      .whileFalse(
-        m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0.83))
-      );
+        .whileTrue(
+            m_algae.goToPosition(3.3, AlgaeState.REEFPOSITION)
+                .andThen(m_algae.setVoltageCommandRoll(0.83)))
+        .whileFalse(
+            m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
+                .andThen(m_algae.setVoltageCommandRoll(0.83)));
 
-  
-    /*__________________ Climber Manual Commands __________________*/
-  
-  
-    // POV Left - Climber down
-    chassisDriver.povLeft()
-      .whileTrue(m_climber.setKrakenVoltage(-1))
-      .whileFalse(m_climber.setKrakenVoltage(0));
+    /* __________________ Climber Manual Commands __________________ */
 
-      /*Motor para el cage */
-      subsystemsDriver.a()
-      .whileTrue(m_climber.setCageMotorVoltage(1))
-      .whileFalse(m_climber.setCageMotorVoltage(0));
+    /* Mover el escalador por voltage */
 
-      subsystemsDriver.b()
-      .whileTrue(m_climber.setCageMotorVoltage(-1))
-      .whileFalse(m_climber.setCageMotorVoltage(0));
+    subsystemsDriver.y()
+        .onTrue(m_climber.goToPosition(195.0));
 
-      /*Mover el escalador por voltage */
+    subsystemsDriver.x()
+        .onTrue(m_climber.goToPosition(1));
 
-      subsystemsDriver.y()
-      .onTrue(m_climber.setClimberPosition(-190.0));
+    subsystemsDriver.povUp()
+        .whileTrue(m_climber.setKrakenVoltage(8))
+        .whileFalse(m_climber.setKrakenVoltage(0));
 
-      subsystemsDriver.x()
-      .onTrue(m_climber.setClimberPosition(-4.0));
+    subsystemsDriver.povDown()
+        .whileTrue(m_climber.setKrakenVoltage(-8))
+        .whileFalse(m_climber.setKrakenVoltage(0));
 
-
-      subsystemsDriver.povUp()
-      .whileTrue(m_climber.setKrakenVoltage(-1))
-      .whileFalse(m_climber.setKrakenVoltage(0));
-
-      subsystemsDriver.povDown()
-      .whileTrue(m_climber.setKrakenVoltage(1))
-      .whileFalse(m_climber.setKrakenVoltage(0));
-
-  
     // POV Right - Climber set position
-   
 
     chassisDriver.povRight().whileTrue(m_algae.goToPosition(7.0, AlgaeState.FLOORPOSITION));
-  
-    /*__________________ BACKUP CONTROLLER __________________*/
-  
-      chassisDriver.leftBumper().onTrue(
+
+    /* __________________ BACKUP CONTROLLER __________________ */
+
+    chassisDriver.leftBumper().onTrue(
         new ConditionalCommand(
 
-          new ConditionalCommand( 
-          m_intake.setVoltageCommand(0.4, 0.4),
-          m_intake.setVoltageCommand(0.35, 0.35),
-          ()-> m_elevator.getPosition() > 1.70
-          ), 
+            new ConditionalCommand(
+                m_intake.setVoltageCommand(0.4, 0.4),
+                m_intake.setVoltageCommand(0.35, 0.35),
+                () -> m_elevator.getPosition() > 1.70),
 
-          m_algae.setVoltageCommandRoll(-1), 
+            m_algae.setVoltageCommandRoll(-1),
 
-          ()-> (Constants.outtakeState == OuttakeState.CORAL_PRIORITY
-          && m_intake.hasGamePieceInside()) || !m_algae.isGamePieceInside())
-      ).whileFalse(m_intake.setVoltageCommand(0, 0).alongWith(
-        m_algae.goToPosition(0.1, AlgaeState.BACKPOSITION).andThen(
-        m_algae.setVoltageCommandRoll(0))
-      .onlyIf(()-> !m_algae.isGamePieceInside())));
-
-
-     
+            () -> (Constants.outtakeState == OuttakeState.CORAL_PRIORITY
+                && m_intake.hasGamePieceInside()) || !m_algae.isGamePieceInside()))
+        .whileFalse(m_intake.setVoltageCommand(0, 0).alongWith(
+            m_algae.goToPosition(0.1, AlgaeState.BACKPOSITION).andThen(
+                m_algae.setVoltageCommandRoll(0))
+                .onlyIf(() -> !m_algae.isGamePieceInside())));
 
   }
-  
 
-public static Command climberIpadCommand(Supplier<Integer> val) {
+  public static Command climberIpadCommand(Supplier<Integer> val) {
     return new InstantCommand(() -> {
-        Command selectedCommand;
-        
-        switch (val.get()) {
-          
+      Command selectedCommand;
 
-            case 1:
-                selectedCommand = m_climber.setClimberPosition(-196.0).unless(()-> m_climber.climbState == ClimbingState.CLIMBING); //Step 2
-                break;
-            
-            default:
-                selectedCommand = new DoNothingCommandCommand(); //End
-                break;
-        }
-        if(val.get() == 3){
-       //   Constants.outtakeState = OuttakeState.CORAL_PRIORITY;
-        }
-        if(val.get() == 2){
-          Constants.outtakeState = OuttakeState.ALGAE_PRIORITY;
-        }
-        selectedCommand.schedule();
+      switch (val.get()) {
+
+        case 1:
+          selectedCommand = m_climber.goToPosition(-196.0)
+              .unless(() -> m_climber.climbState == ClimbingState.CLIMBING); // Step 2
+          break;
+
+        default:
+          selectedCommand = new DoNothingCommandCommand(); // End
+          break;
+      }
+      if (val.get() == 3) {
+        // Constants.outtakeState = OuttakeState.CORAL_PRIORITY;
+      }
+      if (val.get() == 2) {
+        Constants.outtakeState = OuttakeState.ALGAE_PRIORITY;
+      }
+      selectedCommand.schedule();
     }, m_climber);
-}
+  }
 
   private Command controllerRumbleCommand() {
     return Commands.startEnd(
@@ -322,36 +283,36 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
   private boolean isJoystickActive() {
     double deadband = 0.2; // Threshold for joystick movement
     return Math.abs(chassisDriver.getLeftX()) > deadband ||
-           Math.abs(chassisDriver.getLeftY()) > deadband ||
-           Math.abs(chassisDriver.getRightX()) > deadband;
-}
+        Math.abs(chassisDriver.getLeftY()) > deadband ||
+        Math.abs(chassisDriver.getRightX()) > deadband;
+  }
 
   public Command getAutonomousCommand() {
     return null;
-   //return new FieldCentricDrive(m_drive,()->0.4, ()->0.0, ()->0.0);
+    // return new FieldCentricDrive(m_drive,()->0.4, ()->0.0, ()->0.0);
   }
 
-  public static IntakeSubsystem getIntakeSubsystem(){
+  public static IntakeSubsystem getIntakeSubsystem() {
     return m_intake;
   }
 
-  public static ElevatorSubsystem getElevatorSubsystem(){
+  public static ElevatorSubsystem getElevatorSubsystem() {
     return m_elevator;
   }
 
-  public static IntakeAlgaeSubsystem getAlgaeSubsystem(){
+  public static IntakeAlgaeSubsystem getAlgaeSubsystem() {
     return m_algae;
   }
 
-  public static CustomDashboardUtil getDashboardUtil(){
+  public static CustomDashboardUtil getDashboardUtil() {
     return m_dashboard;
   }
 
-  public static ClimberSubsystem getClimberSubsystem(){
+  public static ClimberSubsystem getClimberSubsystem() {
     return m_climber;
   }
 
-  public static CommandSwerveDrivetrain getSwerve(){
+  public static CommandSwerveDrivetrain getSwerve() {
     return m_drive;
   }
 }

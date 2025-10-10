@@ -2,7 +2,7 @@ package frc.robot.Subsystems.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem.AlgaeState;
+
 
 import org.littletonrobotics.junction.Logger;
 
@@ -10,7 +10,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public boolean finishedIntakeSequence = true;
 
-  /*Io and inputs */
+  /* Io and inputs */
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
@@ -26,16 +26,16 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setVoltageVoid(double voltage, double leftVolt) {
-    io.setVoltage(voltage,leftVolt);
+    io.setVoltage(voltage, leftVolt);
   }
 
   public void setVelocity(double rightVoltage, double leftVoltage) {
     double valRight = rightVoltage / 60;
     double valLeft = leftVoltage / 60;
-    io.setVelocity(valRight,valLeft);
+    io.setVelocity(valRight, valLeft);
   }
 
-  public void stopMotors(){
+  public void stopMotors() {
     io.stopMotors();
   }
 

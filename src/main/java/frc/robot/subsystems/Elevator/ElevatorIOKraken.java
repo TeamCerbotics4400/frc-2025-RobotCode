@@ -5,8 +5,6 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
 
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 
 import static frc.robot.Constants.ElevatorConstants.*;
@@ -32,7 +30,7 @@ public class ElevatorIOKraken implements ElevatorIO {
     leftConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     leftConfig.CurrentLimits.SupplyCurrentLimit = 40;
     leftConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-      
+
     rightConfig = new TalonFXConfiguration();
     rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     rightConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -47,12 +45,12 @@ public class ElevatorIOKraken implements ElevatorIO {
   }
 
   public double getCurrentPosition() {
-    double val = (rightMotor.getPosition().getValueAsDouble() + leftMotor.getPosition().getValueAsDouble())/2;
-    return val * 0.02988;  //56.18
+    double val = (rightMotor.getPosition().getValueAsDouble() + leftMotor.getPosition().getValueAsDouble()) / 2;
+    return val * 0.02988; // 56.18
   }
-  /**
+
+  /*
    * Update the inputs for the elevator
-   *
    * @param inputs The inputs to update
    */
   @Override
@@ -64,17 +62,17 @@ public class ElevatorIOKraken implements ElevatorIO {
 
     inputs.rightElevatorTemp = rightMotor.getDeviceTemp().getValueAsDouble();
     inputs.rightElevatorCurrent = rightMotor.getStatorCurrent().getValueAsDouble();
-    inputs.rightElevatorVoltage = rightMotor.getMotorVoltage().getValueAsDouble();  
-    
-    Logger.recordOutput("Elevator/Relative encoder pos",rightMotor.getPosition().getValueAsDouble());
+    inputs.rightElevatorVoltage = rightMotor.getMotorVoltage().getValueAsDouble();
+
+    Logger.recordOutput("Elevator/Relative encoder pos", rightMotor.getPosition().getValueAsDouble());
   }
 
-
   @Override
-  public void resetEncoder(){
+  public void resetEncoder() {
     rightMotor.setPosition(0);
     leftMotor.setPosition(0);
-    }
+  }
+
   /**
    * Set the voltage output to both elevator motors
    *
@@ -86,7 +84,7 @@ public class ElevatorIOKraken implements ElevatorIO {
     rightMotor.setControl(m_setterControl.withOutput(volts + feedforward).withEnableFOC(true));
   }
 
-    /**
+  /**
    * Set if the motor should be in brake or coast
    *
    * @param enable to enable brake

@@ -3,7 +3,6 @@ package frc.robot.Subsystems.IntakeAlgae;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import frc.robot.Constants;
@@ -30,7 +29,6 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     pivotConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
     pivotConfig.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
     pivotMotor.setPosition(0);
-
 
     rollerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     rollerConfig.CurrentLimits.StatorCurrentLimit = 60;

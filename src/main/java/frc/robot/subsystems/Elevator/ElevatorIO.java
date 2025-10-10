@@ -22,20 +22,24 @@ public interface ElevatorIO {
    *
    * @param inputs The inputs to update
    */
-  public default void updateInputs(ElevatorInputs inputs){}
+  public default void updateInputs(ElevatorInputs inputs) {
+  }
 
   /**
    * Output a set voltage to the arm extension motor
    *
    * @param volts Voltage to output
    */
-  public default void setVoltage(double volts, double feedforward){}
+  public default void setVoltage(double volts, double feedforward) {
+  }
 
-  public default void enableBreak(boolean enable){}
+  public default void enableBreak(boolean enable) {
+  }
 
-  public default void resetEncoder(){}
-
+  public default void resetEncoder() {
+  }
 
   /** Optimize status signals for running sysID */
-  default void optimizeForSysID() {}
+  default void optimizeForSysID() {
+  }
 }

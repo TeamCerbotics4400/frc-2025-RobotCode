@@ -4,8 +4,6 @@
 
 package frc.robot.Commands.ElevatorCommands;
 
-import static frc.robot.Constants.IntakeAlgaeConstants.pivotAlgaeMotorId;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
