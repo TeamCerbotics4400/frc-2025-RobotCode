@@ -233,8 +233,10 @@ public static OuttakeState outtakeState = OuttakeState.ALGAE_PRIORITY;
     public static final class IntakeAlgaeConstants {
       public static final int pivotAlgaeMotorId = 20;
       public static final int rollerAlgaeMotorId = 50;
-    }
 
+      public static  double maxVel = 55;
+      public static  double maxXLr8tion = 55;
+    }
 
     public static final class VisionConstants {
       public static final int aprilTagCount = 22;

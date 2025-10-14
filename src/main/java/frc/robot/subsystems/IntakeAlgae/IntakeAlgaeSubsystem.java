@@ -2,21 +2,27 @@ package frc.robot.Subsystems.IntakeAlgae;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.Constants.IntakeAlgaeConstants;
+
 public class IntakeAlgaeSubsystem extends SubsystemBase {
 
   private final IntakeAlgaeIO io;
   private final IntakeAlgaeIOInputsAutoLogged inputs = new IntakeAlgaeIOInputsAutoLogged();
-  private PIDController m_controller = new PIDController(0.04, 0, 0.001);
+ // private PIDController m_controller = new PIDController(0.0325, 0, 0.0025);
   private boolean enablePID = false;
   private Debouncer currentFilter = new Debouncer(0.5, DebounceType.kBoth);
+
+  private TrapezoidProfile.Constraints m_profile = new TrapezoidProfile.Constraints(IntakeAlgaeConstants.maxVel, IntakeAlgaeConstants.maxXLr8tion);
+  private ProfiledPIDController m_controller = new ProfiledPIDController(0.055, 0, 0.005 , m_profile);
 
   public static enum AlgaeState {
     FLOORPOSITION,
@@ -42,7 +48,7 @@ public class IntakeAlgaeSubsystem extends SubsystemBase {
     }
 
     Logger.recordOutput("IntakeAlgae/PID output", m_controller.calculate(inputs.positionPiv));
-    Logger.recordOutput("IntakeAlgae/PID setpoint", m_controller.getSetpoint());
+    Logger.recordOutput("IntakeAlgae/PID setpoint", m_controller.getSetpoint().position);
     Logger.recordOutput("IntakeAlgae/PID enables", enablePID);
     Logger.recordOutput("IntakeAlgae/Algae Detected", currentFilter.calculate(inputs.rollerMotorCurrent > 54));
 
@@ -51,6 +57,9 @@ public class IntakeAlgaeSubsystem extends SubsystemBase {
     }
   }
 
+  public ProfiledPIDController getController() {
+    return m_controller;
+  }
   public double getAmperage() {
     return inputs.rollerMotorCurrent;
   }
@@ -60,7 +69,7 @@ public class IntakeAlgaeSubsystem extends SubsystemBase {
   }
 
   public void resetController() {
-    m_controller.reset();
+    getController().reset(inputs.positionPiv);
   }
 
   public void setVoltagePivVoid(double pivotVolt) {
@@ -95,8 +104,8 @@ public class IntakeAlgaeSubsystem extends SubsystemBase {
   public Command goToPosition(double position, AlgaeState state) {
     Command ejecutable = Commands.runOnce(
         () -> {
-          m_controller.reset();
-          m_controller.setSetpoint(position);
+          getController().reset(inputs.positionPiv);
+          getController().setGoal(position);
           enablePID = true;
           systemStates = state;
         },
@@ -105,15 +114,15 @@ public class IntakeAlgaeSubsystem extends SubsystemBase {
   }
 
   public void goToPositionVoid(double position) {
-    m_controller.setSetpoint(position);
+    m_controller.setGoal(position);
     enablePID = true;
   }
 
   public Command goToPositionVoltage(double position) {
     Command ejecutable = Commands.runOnce(
         () -> {
-          m_controller.reset();
-          m_controller.setSetpoint(position);
+          getController().reset(inputs.positionPiv);
+          getController().setGoal(position);
           enablePID = true;
         },
         this);

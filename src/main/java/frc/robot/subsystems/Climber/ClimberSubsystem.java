@@ -54,6 +54,11 @@ public class ClimberSubsystem extends SubsystemBase {
     return run(() -> io.setTalonFXVoltage(voltage));
   }
 
+ /*  public Command setSparkMaxVolatge(double voltage){
+return run (() -> io.CageMotorVoltage(voltage)); 
+
+  }*/ 
+
   public Command goToPosition(double position) {
     return Commands.runOnce(() -> {
       m_controller.reset();
