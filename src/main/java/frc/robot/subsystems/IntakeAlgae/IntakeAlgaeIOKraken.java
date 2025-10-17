@@ -6,42 +6,30 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 import static frc.robot.Constants.IntakeAlgaeConstants.*;
 
 public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
 
-    private final TalonFX pivotMotor = new TalonFX(pivotAlgaeMotorId, Constants.rioCanbus);
-    private final TalonFX rollerMotor = new TalonFX(rollerAlgaeMotorId, Constants.rioCanbus);
-    
-    private TalonFXConfiguration pivotConfig;
-    private TalonFXConfiguration rollerConfig;
+  private final TalonFX pivotMotor = new TalonFX(pivotAlgaeMotorId, Constants.rioCanbus);
 
-      private final Encoder m_encoder;
+  private final TalonFX rollerMotor = new TalonFX(rollerAlgaeMotorId, Constants.rioCanbus);
+
+  private TalonFXConfiguration pivotConfig;
+  private TalonFXConfiguration rollerConfig;
+
   private final DutyCycleOut m_setterControl = new DutyCycleOut(0);
 
-  
-
-    public IntakeAlgaeIOKraken(){ 
-
-      m_encoder = new Encoder(7,6);
-      m_encoder.reset();
-      m_encoder.setDistancePerPulse(1);
+  public IntakeAlgaeIOKraken() {
 
     pivotConfig = new TalonFXConfiguration();
     rollerConfig = new TalonFXConfiguration();
-    pivotMotor.setPosition(0);
 
-    pivotConfig.Feedback.FeedbackRemoteSensorID = 12;
     pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    pivotConfig.CurrentLimits.StatorCurrentLimit = 60;
-    pivotConfig.MotorOutput.withInverted(InvertedValue.Clockwise_Positive);
+    pivotConfig.CurrentLimits.StatorCurrentLimit = 40;
+    pivotConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
     pivotConfig.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
-
-    pivotConfig.Slot0.kP = 0.0;
-    pivotConfig.Slot0.kD = 0.0;
+    pivotMotor.setPosition(0);
 
     rollerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     rollerConfig.CurrentLimits.StatorCurrentLimit = 60;
@@ -51,32 +39,41 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
     rollerConfig.Slot0.kP = 0.0;
     rollerConfig.Slot0.kD = 0.0;
 
-    /* Apply Configurations*/
+    /* Apply Configurations */
     pivotMotor.getConfigurator().apply(pivotConfig);
     rollerMotor.getConfigurator().apply(rollerConfig);
-    }
-    @Override
-    public void updateInputs(IntakeAlgaeIOInputs inputs){
+  }
+
+  public double getCurrentPosition() {
+    double val = pivotMotor.getPosition().getValueAsDouble();
+    return val;
+
+  }
+
+  @Override
+  public void updateInputs(IntakeAlgaeIOInputs inputs) {
     inputs.pivotMotortempCelcius = pivotMotor.getDeviceTemp().getValueAsDouble();
     inputs.pivotMotorappliedVolts = pivotMotor.getMotorVoltage().getValueAsDouble();
     inputs.pivotMotorCurrent = pivotMotor.getStatorCurrent().getValueAsDouble();
     inputs.pivotCurrentRpms = pivotMotor.getVelocity().getValueAsDouble() * 60;
-    inputs.positionPiv = pivotMotor.getPosition().getValueAsDouble();
+    inputs.positionPiv = getCurrentPosition();
 
     inputs.rollerMotorappliedVolts = rollerMotor.getMotorVoltage().getValueAsDouble();
     inputs.rollerMotortempCelcius = rollerMotor.getDeviceTemp().getValueAsDouble();
     inputs.rollerMotorCurrent = rollerMotor.getStatorCurrent().getValueAsDouble();
     inputs.rollerCurrentRpms = rollerMotor.getVelocity().getValueAsDouble() * 60;
-    
-    }
-    @Override
-    public void setVoltagePiv(double pivotVolt){
-       pivotMotor.setControl(m_setterControl.withOutput(pivotVolt).withEnableFOC(true));
-    }
-    @Override
-    public void setVoltageRoll(double rollerVolt){
-      rollerMotor.setControl(m_setterControl.withOutput(rollerVolt).withEnableFOC(true));
-    }
+
+  }
+
+  @Override
+  public void setVoltagePiv(double pivotVolt) {
+    pivotMotor.setControl(m_setterControl.withOutput(pivotVolt).withEnableFOC(true));
+  }
+
+  @Override
+  public void setVoltageRoll(double rollerVolt) {
+    rollerMotor.setControl(m_setterControl.withOutput(rollerVolt).withEnableFOC(true));
+  }
 
   @Override
   public void stopMotors() {
@@ -94,10 +91,6 @@ public class IntakeAlgaeIOKraken implements IntakeAlgaeIO {
 
       pivotMotor.getConfigurator().apply(pivotConfig);
     }
-  }
- 
-  public double getCurrentPosition() {
-    return -m_encoder.getDistance()*0.2737;
   }
     
 }

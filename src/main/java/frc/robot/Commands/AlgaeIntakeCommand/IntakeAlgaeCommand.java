@@ -3,14 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.Commands.AlgaeIntakeCommand;
-
-import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.Util.CustomDashboardUtil;
-import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Subsystems.Elevator.ElevatorSubsystem;
+
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */

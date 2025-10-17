@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
 import frc.robot.Subsystems.Climber.ClimberSubsystem.ClimbingState;
 import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem;
-import frc.robot.Subsystems.IntakeAlgae.IntakeAlgaeSubsystem.AlgaeState;
-
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ClimberSequence extends Command {
   /** Creates a new ClimberSequence. */
@@ -30,20 +28,20 @@ public class ClimberSequence extends Command {
   @Override
   public void execute() {
 
-    if(m_climber.getSparkMaxPosition() < -190){
+    if(m_climber.getClimberPosition() > 180){
       m_climber.climbState = ClimbingState.CLIMBING;
     }
 
-    m_climber.setNeoVoidVoltage(1);
-    if(m_climber.getSparkMaxPosition() > -180 && m_climber.climbState == ClimbingState.CLIMBING){
-    m_algae.goToPositionVoid(10);
+    m_climber.setKrakenVoltage(1);
+    if(m_climber.getClimberPosition() < 170 && m_climber.climbState == ClimbingState.CLIMBING){
+    m_algae.goToPositionVoid(4);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_climber.setNeoVoidVoltage(0);
+    m_climber.setKrakenVoltage(0);
   }
 
   // Returns true when the command should end.

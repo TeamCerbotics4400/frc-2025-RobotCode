@@ -5,8 +5,6 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
 
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 
 import static frc.robot.Constants.ElevatorConstants.*;

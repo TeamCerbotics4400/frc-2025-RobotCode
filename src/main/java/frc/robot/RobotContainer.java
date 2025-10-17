@@ -11,7 +11,6 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -28,7 +26,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Util.CustomDashboardUtil;
 import frc.Util.LocalADStarAK;
 import frc.robot.Commands.DoNothingCommandCommand;
-import frc.robot.Commands.AlgaeIntakeCommand.PriorityOutakeCommand;
 import frc.robot.Commands.AutoCommands.AutoCommand;
 import frc.robot.Commands.AutoCommands.Paths.NoneAuto;
 import frc.robot.Commands.AutoCommands.Paths.WorkShopPaths.LeaveAuto;
@@ -41,15 +38,16 @@ import frc.robot.Commands.AutoCommands.SubsystemCommands.LeaveReefCommand;
 import frc.robot.Commands.ClimberCommand.ClimberSequence;
 import frc.robot.Commands.ElevatorCommands.ElevatorAutoCommand;
 import frc.robot.Commands.ElevatorCommands.Level1CycleCommand;
-import frc.robot.Commands.IntakeCommand.IntakeSequence2;
+
 import frc.robot.Commands.IntakeCommand.IntakeSequence3;
 import frc.robot.Commands.SwerveCommands.FieldCentricDrive;
 import frc.robot.Commands.SwerveCommands.SwerveAutoAlignPose;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OuttakeState;
-import frc.robot.Constants.VisionConstants;
+
 import frc.robot.Subsystems.Climber.ClimberIO;
-import frc.robot.Subsystems.Climber.ClimberIOSparkMax;
+import frc.robot.Subsystems.Climber.ClimberIOKraken;
+
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
 import frc.robot.Subsystems.Climber.ClimberSubsystem.ClimbingState;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
@@ -89,7 +87,7 @@ public class RobotContainer {
   public static IntakeSubsystem m_intake;
 
   /* Climber */
-  public static final ClimberIO climberIO = new ClimberIOSparkMax();
+  public static final ClimberIO climberIO = new ClimberIOKraken();
   public static ClimberSubsystem m_climber;
 
   /*IntakeAlgae */
@@ -209,25 +207,22 @@ public class RobotContainer {
     // Level 1
     chassisDriver.povDown().onTrue(new Level1CycleCommand(m_elevator, m_intake));
   
-    // Level 2
-    chassisDriver.b().onTrue(
+     // Level 2
+     chassisDriver.b().onTrue(
       new ConditionalCommand(
-        m_elevator.goToPosition(0.48)
-          .onlyIf(() -> m_intake.finishedIntakeSequence),
-        m_elevator.goToPosition(0.57),
-        () -> m_algae.getState() != AlgaeState.ACTIVEPOSITION
-      )
-    );
-  
-    // Level 3
-    chassisDriver.x().onTrue(
+          m_elevator.goToPosition(0.48)
+              .onlyIf(() -> m_intake.finishedIntakeSequence),
+          m_elevator.goToPosition(0.57),
+          () -> m_algae.getState() != AlgaeState.FLOORPOSITION));
+
+  // Level 3
+  chassisDriver.x().onTrue(
       new ConditionalCommand(
-        m_elevator.goToPosition(0.94)
-          .onlyIf(() -> m_intake.finishedIntakeSequence),
-        m_elevator.goToPosition(0.57),
-        () -> m_algae.getState() != AlgaeState.ACTIVEPOSITION
-      )
-    );
+          m_elevator.goToPosition(0.94)
+              .onlyIf(() -> m_intake.finishedIntakeSequence),
+          m_elevator.goToPosition(0.57),
+          () -> m_algae.getState() != AlgaeState.FLOORPOSITION));
+
   
     // Level 4
     chassisDriver.y().onTrue(
@@ -274,25 +269,21 @@ public class RobotContainer {
   
     // Left Trigger - Algae to position 10
     chassisDriver.leftTrigger()
-      .whileTrue(
-        m_algae.goToPosition(9.5, AlgaeState.ACTIVEPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0.83))
-      )
-      .whileFalse(
+    .whileTrue(
+        m_algae.goToPosition(10, AlgaeState.FLOORPOSITION)
+            .andThen(m_algae.setVoltageCommandRoll(0.83)))
+    .whileFalse(
         m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0.83))
-      );
-  
-    // Right Trigger - Algae to position 2
-    chassisDriver.rightTrigger()
-      .whileTrue(
-        m_algae.goToPosition(2.5, AlgaeState.ACTIVEPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0.83))
-      )
-      .whileFalse(
+            .andThen(m_algae.setVoltageCommandRoll(0.83)));
+
+// Right Trigger - Algae to position 2
+chassisDriver.rightTrigger()
+    .whileTrue(
+        m_algae.goToPosition(3.3, AlgaeState.REEFPOSITION)
+            .andThen(m_algae.setVoltageCommandRoll(0.83)))
+    .whileFalse(
         m_algae.goToPosition(0.0, AlgaeState.BACKPOSITION)
-          .andThen(m_algae.setVoltageCommandRoll(0.83))
-      );
+            .andThen(m_algae.setVoltageCommandRoll(0.83))); 
 
   
     /*__________________ Climber Manual Commands __________________*/
@@ -303,15 +294,15 @@ public class RobotContainer {
   
     // POV Left - Climber down
     chassisDriver.povLeft()
-      .whileTrue(m_climber.setNeoVoltage(-1))
-      .whileFalse(m_climber.setNeoVoltage(0));
+      .whileTrue(m_climber.setKrakenVoltage(-1))
+      .whileFalse(m_climber.setKrakenVoltage(0));
   
     // POV Right - Climber set position
     subsystemsDriver.povRight().onTrue(
-      m_climber.setNeoPosition(-196)
+      m_climber.goToPosition(195)
     );
 
-    chassisDriver.povRight().whileTrue(m_algae.goToPosition(7.0, AlgaeState.ACTIVEPOSITION));
+    chassisDriver.povRight().whileTrue(m_algae.goToPosition(6.0, AlgaeState.REEFPOSITION));
   
     /*__________________ BACKUP CONTROLLER __________________*/
   
@@ -348,7 +339,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         switch (val.get()) {
           
             case 1:
-                selectedCommand = m_climber.setNeoPosition(-196.0).unless(()-> m_climber.climbState == ClimbingState.CLIMBING); //Step 2
+                selectedCommand = m_climber.goToPosition(195.0).unless(()-> m_climber.climbState == ClimbingState.CLIMBING); //Step 2
                 break;
             
             default:
@@ -429,7 +420,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
            .andThen(m_algae.setVoltageCommandRoll(0.83)));
 
   NamedCommands.registerCommand("PrepareAlgae", 
-    m_algae.goToPosition(0, AlgaeState.BACKPOSITION));
+    m_algae.goToPosition(0.45, AlgaeState.BACKPOSITION));
 
   NamedCommands.registerCommand("OutakeAlgae", 
     m_algae.setVoltageCommandRoll(-0.83)
@@ -445,7 +436,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
     m_elevator.goToPosition(1.758));   
      } 
 
-  private Command controllerRumbleCommand() {
+ /* private Command controllerRumbleCommand() {
     return Commands.startEnd(
         () -> {
           chassisDriver.getHID().setRumble(RumbleType.kBothRumble, 1.0);
@@ -453,7 +444,7 @@ public static Command climberIpadCommand(Supplier<Integer> val) {
         () -> {
           chassisDriver.getHID().setRumble(RumbleType.kBothRumble, 0.0);
         });
-  }
+  } */
 
   private boolean isJoystickActive() {
     double deadband = 0.2; // Threshold for joystick movement
